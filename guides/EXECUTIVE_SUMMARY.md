@@ -8,6 +8,7 @@
 - [Why It Matters](#why-it-matters)
 - [How the Tool Can Be Used](#how-the-tool-can-be-used)
 - [Limitations and Future Research](#limitations-and-future-research)
+- [Opportunities for Further Research and Development](#opportunities-for-further-research-and-development)
 - [Closing Note](#closing-note)
 - [Appendix A: Lessons Learned](#appendix-a-lessons-learned)
 - [Appendix B: Additional Resources](#appendix-b-additional-resources)
@@ -17,15 +18,15 @@
 
 TeamAnalyst is a proof-of-concept research project funded by the Casualty Actuarial Society (CAS) to show how modern AI assistants can support actuarial work. It packages a guided workflow, reusable scripts, and structured review steps into a format that can run inside several agentic AI tools.
 
-The project is designed to help CAS members understand what an agentic actuarial workflow can look like in practice. Rather than asking a user to piece together prompts, code, and review steps from scratch, TeamAnalyst provides an organized starting point for preparing data, running selected reserving methods, making documented selections, assembling a draft analysis, and performing structured review.
+The project is designed to help CAS members understand what an agentic actuarial workflow can look like in practice. Rather than asking a user to piece together prompts, code, and review steps from scratch, TeamAnalyst provides an organized starting point for preparing data, running selected reserving methods, making documented selections, assembling a draft analysis, and performing structured review. It balances the benefits of script-driven mechanics for repeated/non-judgmental steps versus Artificial Intelligence for making judgmental selections. AI was also instrumental in writing the scripts.
 
 ## The Need
 
 Many actuaries are interested in AI, but there is still a gap between general curiosity and practical adoption. Most professionals do not need another abstract demonstration of what AI might do. They need an example that is concrete, relevant to actuarial work, ready to use, and structured enough to learn from safely.
 
-Reserve analysis is a useful setting for that example because it combines data preparation, repeatable calculations, professional judgment, documentation, and review. It is also a domain where users need transparency and reproducibility. A useful AI-enabled workflow therefore has to do more than generate text. It must help users organize work, preserve logic, support review, and leave behind steps that another actuary can follow.
+Reserve analysis is a useful setting for that example because it combines data preparation, repeatable calculations, professional judgment, documentation, and review. It is also a domain where users need transparency and reproducibility. A useful AI-enabled workflow therefore has to do more than generate text. It must help users organize work, preserve logic, support review, and leave behind steps and logic documentation that another actuary can follow.
 
-TeamAnalyst addresses that need by giving CAS members a working example of how AI can assist with actuarial analysis without treating AI as a black box or a replacement for expertise. It is intended to help users understand both the promise and the practical constraints of applying agentic tools to professional work.
+TeamAnalyst addresses this need by giving CAS members a working example of how AI can assist with actuarial analysis without treating AI as a black box or a replacement for expertise. It is intended to help users understand both the promise and the practical constraints of applying agentic tools to professional work.
 
 ## The Solution
 
@@ -46,6 +47,7 @@ In its current proof-of-concept form, TeamAnalyst can support a simplified reser
 - Creating Excel workbooks that support review and selection decisions
 - Assembling a simple draft reserving analysis package
 - Performing a scripted technical review and an AI-assisted peer review
+- Making observations about the data provided such as data inconsistencies, and an ability to discuss observations in a conversational fashion (depending on the AI agentic tool used).
 - Answering user questions about the analysis and workflow
 
 The repository also includes orientation and reference materials so users can understand what the tool is doing, inspect the built-in selection logic, and modify the workflow if they want to build on it.
@@ -76,13 +78,27 @@ The user can also branch into supporting capabilities when needed. The bundle in
 
 For more instructions on getting started, see https://github.com/cas-team-analyst/team-analyst. 
 
-In practical terms, this means TeamAnalyst can be used in several ways: as a learning aid for actuaries who want to understand agentic workflows, as a demonstration of AI-assisted reserving, as a reusable template for internal experimentation, or as a base that technical users can adapt to their own methods and preferences.
+In practical terms, this means TeamAnalyst can be used immediately by all CAS actuaries in several ways:
+- As a learning aid for actuaries who want to understand agentic workflows, 
+- As a demonstration of AI-assisted reserving, 
+- As a reusable template for internal experimentation, or 
+- As a base that technical users can adapt to their own methods and preferences.
 
 ## Limitations
 
-TeamAnalyst is a proof of concept and should be presented that way. It is not intended to be a complete, error-free, or production-approved actuarial system. The CAS does not guarantee the accuracy of the output, and users should not rely on the generated material as a final actuarial work product without appropriate professional review.
+TeamAnalyst is a proof of concept and should be presented that way. It is not intended to be a complete, error-free, or production-approved actuarial system. The CAS and TeamAnalyst's creators do not guarantee the accuracy of the output, and users should not rely on the generated material as a final actuarial work product without appropriate professional review.
 
 The current scope is intentionally narrow. The example workflow focuses on a simplified reserving analysis using triangle-based inputs and a limited set of reserving methods. That focus is a feature, not a flaw: it keeps the tool understandable, teachable, and easier to evaluate while still demonstrating the broader potential of agentic AI in actuarial practice.
+
+## Opportunities for Further Research and Development
+
+While a multitude of opportunities exist for further development of this AI Agentic reserving tool, our Research Team sees a number of immediate opportunities for further development of TeamAnalyst, which any CAS member(s) could undertake:
+
+- Incorporation of trending analysis,
+- Coverage-line specificity,
+- Ability to intake claim-level detail at successive valuations to build triangles, provided in widely-differing formats that tend to exist in actual practice, or
+- Ability to change methodological approach based on a combination of the AI's and the humans' interpretation of diagnostic results (such as changes in claims handling practices, economic environment, etc.).
+
 
 ## Closing Note
 
@@ -107,13 +123,13 @@ For a long time now, the primary way to support knowledge workers with automatio
 
 The research also explored using agentic Python frameworks such as DeepAgents by LangChain. These approaches seemed promising because they are purpose-built for AI workflows and offer abstractions designed for agent orchestration. However, they introduced problems of their own. First, these frameworks lag behind the tools built by major AI companies. Features, performance improvements, and model updates appear in platforms like Claude Cowork, GitHub Copilot, and Gemini CLI months before third-party frameworks catch up. Second, these frameworks still require writing code rather than natural language specifications, which defeats one of the key goals: making the workflow accessible to actuaries who are not professional developers. Third, enterprise platforms built by major AI companies offer stronger security features, audit trails, and compliance controls than open-source frameworks typically provide—a significant concern for actuarial work.
 
-**The spec-based alternative that solves both problems**
+_The spec-based alternative that solves both problems_
 
 Instead of building an application or adopting an agentic framework, TeamAnalyst defines a specification—structured instructions, scripts, and decision frameworks that an AI agent interprets and executes. Anyone who can write clear natural language can modify the workflow. The agent itself can modify the scripts as needed. No need to understand Python internals or UI frameworks. As agent capabilities improve, the same specifications can be reused with minimal rework. The workflow stays portable and future-compatible.
 
 **Lesson 3: Balance deterministic scripts with AI assistance**
 
-Early experiments with purely conversational AI workflows, while still impressive, proved inefficient. Generating everything on the fly consumed excessive tokens, took longer, produced inconsistent results, and made reproduction difficult. Better results were obtained by using pre-written Python scripts as much as possible. This keeps results well-defined, repeatable, trustworthy, and doesn't require the agent to write code from scratch every time it needs to run the workflow for data preparation, standard calculations, technical checks, file generation, etc. We reserve AI assistance for tasks that genuinely benefit from interpretation and judgment and therefore make it worth the cost of tokens: understanding varied input formats, making baseline suggested selections, and performing reviews.
+Early experiments with purely conversational AI workflows, while still impressive, proved inefficient. Generating each analysis from scratch consumed excessive tokens, took longer, produced inconsistent results, and made reproduction difficult. Better results were obtained by using pre-written Python scripts as much as possible. This keeps results well-defined, repeatable, trustworthy, and doesn't require the agent to write code from scratch every time it needs to run the workflow for data preparation, standard calculations, technical checks, file generation, etc. We reserve AI assistance for tasks that genuinely benefit from interpretation and judgment and therefore make it worth the cost of tokens: understanding varied input formats, making baseline suggested selections, and performing reviews.
 
 This balanced design preserves the flexibility and accessibility of natural language instructions while maintaining the efficiency, repeatability, and transparency that professional work requires.
 
