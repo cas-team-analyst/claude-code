@@ -19,7 +19,7 @@ _Instructions for other tools can be found [here](#installation-for-other-agenti
 
 _The video from our CAS presentation can be found at https://www.youtube.com/watch?v=8JZz2zYrim0. It is an edited screen recording of the plugin setup and workflow in Claude Cowork. It does not have audio but will give you a feel for the workflow._
 
-_These instructions are for Windows only._
+_These instructions are for Windows only. Mac/Linux is probably similar, if you find different steps please submit a PR to get them added._
 
 1. Sign up for a Claude Pro account (~$20/month) at https://claude.ai/ and follow installation instructions at https://support.claude.com/en/articles/10065433-installing-claude-desktop
 2. Enable long paths in Windows (Cowork sometimes creates these long paths): Settings > System > Advanced > Enable Long Paths (slide to "On").
