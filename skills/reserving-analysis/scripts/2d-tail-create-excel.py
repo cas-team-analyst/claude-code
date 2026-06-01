@@ -4,7 +4,7 @@
 """
 goal: Create Chain Ladder Selections - Tail.xlsx for actuarial tail curve review and selection.
       Agents select only the curve/method; the tail factor is derived from the selected method
-      and the fitted curve parameters in tail-scenarios.parquet.
+      and the fitted curve parameters in tail-scenarios.csv.
 
 Sheet layout per measure:
   - Section A: Selected LDFs from Chain Ladder Selections - LDFs.xlsx
@@ -29,10 +29,10 @@ from modules.xl_writers import col_letter
 from modules.average_names import pretty_average_name
 
 # Paths
-TAIL_SCENARIOS_PATH = config.PROCESSED_DATA + "tail-scenarios.parquet"
-ENHANCED_PATH = config.PROCESSED_DATA + "2_enhanced.parquet"
-DIAGNOSTICS_PATH = config.PROCESSED_DATA + "3_diagnostics.parquet"
-LDF_AVERAGES_PATH = config.PROCESSED_DATA + "4_ldf_averages.parquet"
+TAIL_SCENARIOS_PATH = config.PROCESSED_DATA + "tail-scenarios.csv"
+ENHANCED_PATH = config.PROCESSED_DATA + "2_enhanced.csv"
+DIAGNOSTICS_PATH = config.PROCESSED_DATA + "3_diagnostics.csv"
+LDF_AVERAGES_PATH = config.PROCESSED_DATA + "4_ldf_averages.csv"
 SELECTIONS_OUTPUT_PATH = config.SELECTIONS
 OUTPUT_FILE_NAME = "Chain Ladder Selections - Tail.xlsx"
 CL_LDF_EXCEL = config.SELECTIONS + "Chain Ladder Selections - LDFs.xlsx"
@@ -746,10 +746,10 @@ def main():
         )
     
     print("Loading data...")
-    df_scenarios = pd.read_parquet(TAIL_SCENARIOS_PATH)
-    df_enhanced = pd.read_parquet(ENHANCED_PATH)
-    df_diagnostics = pd.read_parquet(DIAGNOSTICS_PATH)
-    df_ldf_averages = pd.read_parquet(LDF_AVERAGES_PATH)
+    df_scenarios = pd.read_csv(TAIL_SCENARIOS_PATH)
+    df_enhanced = pd.read_csv(ENHANCED_PATH)
+    df_diagnostics = pd.read_csv(DIAGNOSTICS_PATH)
+    df_ldf_averages = pd.read_csv(LDF_AVERAGES_PATH)
     
     print(f"  {len(df_scenarios)} tail scenarios")
     print(f"  {len(df_enhanced)} enhanced rows")

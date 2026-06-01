@@ -67,14 +67,7 @@ def enhance_triangle_data(df_long: pd.DataFrame) -> pd.DataFrame:
     
     # Drop the temporary prior_value column
     df_enhanced = df_enhanced.drop(columns=['prior_value'])
-    
-    # Convert prior_age to categorical with same categories as age
-    df_enhanced['prior_age'] = pd.Categorical(
-        df_enhanced['prior_age'], 
-        categories=ages, 
-        ordered=True
-    )
-    
+
     # Create interval label for convenience (e.g., "12-24")
     df_enhanced['interval'] = df_enhanced.apply(
         lambda row: f"{row['prior_age']}-{row['age']}" if pd.notna(row['prior_age']) else None,
@@ -99,8 +92,17 @@ def enhance_triangle_data(df_long: pd.DataFrame) -> pd.DataFrame:
 if __name__ == "__main__":
     """Test the enhance_triangle_data function."""
     # Read prepped data from step 1
-    input_file = OUTPUT_PATH + f"1_triangles.parquet"
-    df = pd.read_parquet(input_file)
+    input_file = OUTPUT_PATH + f"1_triangles.csv"
+    # dtype=str prevents pandas from inferring numeric dtypes for columns that contain NaN
+    # (e.g. age=None for Exposure rows), which would turn "12" into "12.0" after astype(str).
+    df = pd.read_csv(input_file, dtype={'age': str, 'period': str})
+    # CSV doesn't preserve ordered categorical dtype. Reconstruct from first-occurrence order in
+    # the file, which matches the row order written by 1a (user controls input order there).
+    # Downstream code calls .cat.categories to get the label list for intervals and sort keys.
+    _age_order = list(dict.fromkeys(df['age'].dropna()))
+    _period_order = list(dict.fromkeys(df['period'].dropna()))
+    df['age'] = pd.Categorical(df['age'], categories=_age_order, ordered=True)
+    df['period'] = pd.Categorical(df['period'], categories=_period_order, ordered=True)
     print(f"Loaded {len(df)} rows, {df['measure'].nunique()} measures, {df['source'].nunique()} sources")
     
     # Enhance the data
@@ -120,8 +122,6 @@ if __name__ == "__main__":
             df_enhanced[col] = df_enhanced[col].round(4)
     
     # Save outputs
-    df_enhanced.to_parquet(OUTPUT_PATH + f"2_enhanced.parquet", index=False)
     df_enhanced.to_csv(OUTPUT_PATH + f"2_enhanced.csv", index=False)
-    print(f"\nSaved to: {OUTPUT_PATH}2_enhanced.[parquet|csv]")
-    print("parquet preserves categorical types, CSV for inspection")
+    print(f"\nSaved to: {OUTPUT_PATH}2_enhanced.csv")
 

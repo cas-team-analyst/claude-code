@@ -222,18 +222,21 @@ def calculate_diagnostics(df_enhanced: pd.DataFrame) -> pd.DataFrame:
     measure_cols = ['incurred_loss', 'paid_loss', 'closed_count', 'exposure']
     result_df = result_df.drop(columns=[col for col in measure_cols if col in result_df.columns])
     
-    # Ensure categorical types
-    result_df['period'] = result_df['period'].astype('category')
-    result_df['age'] = result_df['age'].astype('category')
-    
     return result_df
 
 
 if __name__ == "__main__":
     """Test the calculate_diagnostics function."""
     # Read enhanced data from step 2
-    input_file = OUTPUT_PATH + f"2_enhanced.parquet"
-    df = pd.read_parquet(input_file)
+    input_file = OUTPUT_PATH + f"2_enhanced.csv"
+    df = pd.read_csv(input_file, dtype={'age': str, 'period': str, 'interval': str, 'prior_age': str})
+    # Restore ordered categoricals from input file order (CSV drops dtype).
+    _age_order = list(dict.fromkeys(df['age'].dropna()))
+    _period_order = list(dict.fromkeys(df['period'].dropna()))
+    _interval_order = list(dict.fromkeys(df['interval'].dropna()))
+    df['age'] = pd.Categorical(df['age'], categories=_age_order, ordered=True)
+    df['period'] = pd.Categorical(df['period'], categories=_period_order, ordered=True)
+    df['interval'] = pd.Categorical(df['interval'], categories=_interval_order, ordered=True)
     print(f"Loaded {len(df)} rows, {df['measure'].nunique()} measures")
     
     # Calculate diagnostics
@@ -259,7 +262,5 @@ if __name__ == "__main__":
         diagnostics_df[col] = diagnostics_df[col].round(4)
     
     # Save outputs
-    diagnostics_df.to_parquet(OUTPUT_PATH + f"3_diagnostics.parquet", index=False)
     diagnostics_df.to_csv(OUTPUT_PATH + f"3_diagnostics.csv", index=False)
-    print(f"\nSaved to: {OUTPUT_PATH}3_diagnostics.[parquet|csv]")
-    print("parquet preserves categorical types, CSV for inspection")
+    print(f"\nSaved to: {OUTPUT_PATH}3_diagnostics.csv")

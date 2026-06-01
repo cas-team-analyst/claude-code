@@ -366,9 +366,20 @@ def main():
             "Delete or rename the file before re-running to avoid overwriting manual edits."
         )
     
-    df2 = pd.read_parquet(OUTPUT_PATH + "2_enhanced.parquet")
-    df3 = pd.read_parquet(OUTPUT_PATH + "3_diagnostics.parquet")
-    df4 = pd.read_parquet(OUTPUT_PATH + "4_ldf_averages.parquet")
+    df2 = pd.read_csv(OUTPUT_PATH + "2_enhanced.csv",
+                     dtype={'age': str, 'period': str, 'interval': str, 'prior_age': str})
+    # Restore ordered categoricals from input file order (CSV drops dtype).
+    # .cat.categories is called below to set triangle column and row sequences in Excel.
+    _age_order = list(dict.fromkeys(df2['age'].dropna()))
+    _period_order = list(dict.fromkeys(df2['period'].dropna()))
+    _interval_order = list(dict.fromkeys(df2['interval'].dropna()))
+    _measure_order = list(dict.fromkeys(df2['measure'].dropna()))
+    df2['age'] = pd.Categorical(df2['age'], categories=_age_order, ordered=True)
+    df2['period'] = pd.Categorical(df2['period'], categories=_period_order, ordered=True)
+    df2['interval'] = pd.Categorical(df2['interval'], categories=_interval_order, ordered=True)
+    df2['measure'] = pd.Categorical(df2['measure'], categories=_measure_order)
+    df3 = pd.read_csv(OUTPUT_PATH + "3_diagnostics.csv")
+    df4 = pd.read_csv(OUTPUT_PATH + "4_ldf_averages.csv")
     
     print(f"Loaded data: {len(df2)} enhanced rows, {len(df3)} diagnostic rows, {len(df4)} average rows")
     

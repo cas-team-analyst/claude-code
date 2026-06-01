@@ -64,8 +64,8 @@ def col_letter(col_idx):
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-INPUT_ULTIMATES        = config.ULTIMATES + "projected-ultimates.parquet"
-INPUT_TRIANGLES        = config.PROCESSED_DATA + "1_triangles.parquet"
+INPUT_ULTIMATES        = config.ULTIMATES + "projected-ultimates.csv"
+INPUT_TRIANGLES        = config.PROCESSED_DATA + "1_triangles.csv"
 INPUT_SELECTIONS_EXCEL = config.SELECTIONS + "Ultimates.xlsx"
 OUTPUT_PATH            = config.OUTPUT
 
@@ -73,10 +73,10 @@ OUTPUT_COMPLETE = config.BASE_DIR + "Analysis.xlsx"
 
 INPUT_CL_EXCEL      = config.SELECTIONS  + "Chain Ladder Selections - LDFs.xlsx"
 INPUT_TAIL_EXCEL    = config.SELECTIONS  + "Chain Ladder Selections - Tail.xlsx"
-INPUT_CL_ENHANCED   = config.PROCESSED_DATA + "2_enhanced.parquet"
-INPUT_LDF_AVERAGES  = config.PROCESSED_DATA + "4_ldf_averages.parquet"
-INPUT_DIAGNOSTICS   = config.PROCESSED_DATA + "3_diagnostics.parquet"
-INPUT_LDF_CDF_DETAIL = config.PROCESSED_DATA + "ldf-cdf-detail.parquet"  # LDF/CDF data with source tracking from 2f
+INPUT_CL_ENHANCED   = config.PROCESSED_DATA + "2_enhanced.csv"
+INPUT_LDF_AVERAGES  = config.PROCESSED_DATA + "4_ldf_averages.csv"
+INPUT_DIAGNOSTICS   = config.PROCESSED_DATA + "3_diagnostics.csv"
+INPUT_LDF_CDF_DETAIL = config.PROCESSED_DATA + "ldf-cdf-detail.csv"  # LDF/CDF data with source tracking from 2f
 
 _NUM_FMT = "#,##0"
 _DEC_FMT = "#,##0.000"
@@ -94,7 +94,7 @@ def load_ldf_cdf_detail(detail_path):
         print(f"  Note: {detail_path} not found -- no LDF/CDF detail loaded")
         return {}
     
-    df = pd.read_parquet(detail_path)
+    df = pd.read_csv(detail_path)
     detail_map = {}
     
     for measure in df['measure'].unique():
@@ -379,7 +379,7 @@ def _build_cl_ldfs_col_row_maps(wb_cl, measure_sheet_name):
 
 
 def _tri_col_map_from_df(triangles_df, measure, max_age=None):
-    """Build {age_str: col_letter} for the triangle sheet from parquet data.
+    """Build {age_str: col_letter} for the triangle sheet from triangle data.
     Triangle sheet col A = period, so ages start at col B (index 2).
     Ages sorted ascending match the order written by _copy_ws_filtered.
     max_age caps the map to the cutoff age — add_tail_to_triangle_ws deletes
@@ -1125,13 +1125,13 @@ def create_triangle_sheets_xlw(gen_wb, measures, fmt_dict, ldf_cdf_detail=None, 
 
 def write_exposure_sheet(gen_wb, triangles_path, fmt_dict):
     """
-    Write Exposure sheet from triangles parquet with xlsxwriter.
+    Write Exposure sheet from triangles CSV with xlsxwriter.
     Single age per period -> two-column table (Period | Exposure).
     Multiple ages        -> full triangle (Period | age1 | age2 | ...).
     """
     if not pathlib.Path(triangles_path).exists():
         return
-    tri = pd.read_parquet(triangles_path)
+    tri = pd.read_csv(triangles_path)
     exp = tri[tri["measure"].astype(str) == "Exposure"].copy()
     if exp.empty:
         return
@@ -1612,7 +1612,15 @@ def main():
     exp_row_map = load_exposure_row_map(INPUT_CL_EXCEL)
     
     # We also need triangles_df for diagnostics
-    triangles_df = pd.read_parquet(INPUT_TRIANGLES)
+    triangles_df = pd.read_csv(INPUT_TRIANGLES, dtype={'age': str, 'period': str})
+    # Restore ordered categoricals from input file order (CSV drops dtype).
+    # .cat.categories is called downstream to set period rows and age columns in Excel sheets.
+    _age_order = list(dict.fromkeys(triangles_df['age'].dropna()))
+    _period_order = list(dict.fromkeys(triangles_df['period'].dropna()))
+    _measure_order = list(dict.fromkeys(triangles_df['measure'].dropna()))
+    triangles_df['age'] = pd.Categorical(triangles_df['age'], categories=_age_order, ordered=True)
+    triangles_df['period'] = pd.Categorical(triangles_df['period'], categories=_period_order, ordered=True)
+    triangles_df['measure'] = pd.Categorical(triangles_df['measure'], categories=_measure_order)
     
     # Load LDF/CDF detail from 2f output (includes empirical + fitted LDFs with source tracking)
     ldf_cdf_detail = load_ldf_cdf_detail(INPUT_LDF_CDF_DETAIL)
@@ -1694,8 +1702,18 @@ def main():
     # Add Pre-Method Diagnostics sheet
     if pathlib.Path(INPUT_CL_ENHANCED).exists() and pathlib.Path(INPUT_DIAGNOSTICS).exists():
         print("Building Pre-Method Diagnostics sheet...")
-        df2 = pd.read_parquet(INPUT_CL_ENHANCED)
-        df3 = pd.read_parquet(INPUT_DIAGNOSTICS)
+        df2 = pd.read_csv(INPUT_CL_ENHANCED,
+                          dtype={'age': str, 'period': str, 'interval': str, 'prior_age': str})
+        # Restore ordered categoricals from input file order (CSV drops dtype).
+        _age2 = list(dict.fromkeys(df2['age'].dropna()))
+        _period2 = list(dict.fromkeys(df2['period'].dropna()))
+        _interval2 = list(dict.fromkeys(df2['interval'].dropna()))
+        _measure2 = list(dict.fromkeys(df2['measure'].dropna()))
+        df2['age'] = pd.Categorical(df2['age'], categories=_age2, ordered=True)
+        df2['period'] = pd.Categorical(df2['period'], categories=_period2, ordered=True)
+        df2['interval'] = pd.Categorical(df2['interval'], categories=_interval2, ordered=True)
+        df2['measure'] = pd.Categorical(df2['measure'], categories=_measure2)
+        df3 = pd.read_csv(INPUT_DIAGNOSTICS)
         diagnostic_cols = [col for col in df3.columns if col not in ['period', 'age', 'measure']]
         if diagnostic_cols:
             # Add 'wb' to fmt dict for diagnostics module

@@ -121,8 +121,8 @@ def read_and_process_triangles():
     2. Combine them into a single DataFrame
     3. Ensure proper categorical ordering (CRITICAL: age must be ordered categorical)
     4. Pass validation
-    5. Save to parquet and CSV
-    
+    5. Save to CSV
+
     Example Implementation:
     -----------------------
     # Read each triangle type
@@ -132,9 +132,9 @@ def read_and_process_triangles():
         measure="Incurred Loss",
         unit_type="Dollars"
     )
-    
+
     paid = read_triangle_data(...)
-    
+
     # For Exposure: create with age=None, but define age categories from other triangles
     exposure_data = []
     for period in incurred['period'].cat.categories:
@@ -148,15 +148,15 @@ def read_and_process_triangles():
             'details': ''
         })
     exposure = pd.DataFrame(exposure_data)
-    
+
     # Combine
     all_data = pd.concat([incurred, paid, exposure, ...], ignore_index=True)
-    
+
     # CRITICAL: Re-apply categorical ordering after concat
     # The age column MUST be an ordered categorical even though Exposure rows have None values
     all_data['period'] = pd.Categorical(
-        all_data['period'], 
-        categories=incurred['period'].cat.categories, 
+        all_data['period'],
+        categories=incurred['period'].cat.categories,
         ordered=True
     )
     all_data['age'] = pd.Categorical(
@@ -167,12 +167,12 @@ def read_and_process_triangles():
     all_data['measure'] = all_data['measure'].astype('category')
     all_data['unit_type'] = all_data['unit_type'].astype('category')
     all_data['source'] = all_data['source'].astype('category')
-    
+
     # Validate using the combined validator that handles both triangles and exposure
     validate_combined_data(all_data)
-    
-    # Save
-    all_data.to_parquet(OUTPUT_PATH + "1_triangles.parquet", index=False)
+
+    # Save — row order matters. Downstream scripts reconstruct age/period sort order from
+    # first occurrence in this file, so write rows in chronological period / ascending age order.
     all_data.to_csv(OUTPUT_PATH + "1_triangles.csv", index=False)
     """
     raise NotImplementedError(
@@ -252,7 +252,6 @@ def read_and_process_expected_loss_rates(triangle_data: pd.DataFrame, file_path:
     df['expected_loss_rate'] = pd.to_numeric(df['expected_loss_rate'], errors='coerce')
     df['expected_freq'] = pd.to_numeric(df['expected_freq'], errors='coerce')
 
-    df.to_parquet(OUTPUT_PATH + "1_expected_loss_rates.parquet", index=False)
     df.to_csv(OUTPUT_PATH + "1_expected_loss_rates.csv", index=False)
     print(f"  Saved {len(df)} expected loss rate records")
     return df
@@ -267,10 +266,10 @@ if __name__ == "__main__":
         # Process triangle data
         print("\n[1/3] Processing triangle data...")
         read_and_process_triangles()
-        print(f"✓ Triangle data complete: {OUTPUT_PATH}1_triangles.parquet/.csv")
-        
+        print(f"✓ Triangle data complete: {OUTPUT_PATH}1_triangles.csv")
+
         # Load triangles (already validated in read_and_process_triangles)
-        df_triangles = pd.read_parquet(OUTPUT_PATH + "1_triangles.parquet")
+        df_triangles = pd.read_csv(OUTPUT_PATH + "1_triangles.csv")
         print(f"  ✓ Loaded {len(df_triangles)} rows")
         
         # Process prior selections (optional)
@@ -286,7 +285,7 @@ if __name__ == "__main__":
         df_expected = read_and_process_expected_loss_rates(df_triangles)
         if df_expected is not None:
             validate_expected_loss_rates(df_expected, df_triangles)
-            print(f"✓ Expected loss rates validated and saved to: {OUTPUT_PATH}1_expected_loss_rates.parquet/.csv")
+            print(f"✓ Expected loss rates validated and saved to: {OUTPUT_PATH}1_expected_loss_rates.csv")
         
         print("\n" + "="*70)
         print("✓ DATA PREPARATION COMPLETE!")

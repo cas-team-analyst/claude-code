@@ -7,11 +7,11 @@ Chain Ladder core: build CDFs from selected LDFs and project Chain Ladder ultima
 goal: Calculate Chain Ladder ultimates for all periods and measures using selected LDFs.
 
 inputs:
-    ../processed-data/1_triangles.parquet - Triangle data (for ordered age list and diagonal)
+    ../processed-data/1_triangles.csv - Triangle data (for ordered age list and diagonal)
     ../selections/Chain Ladder Selections - LDFs.xlsx - LDF selections by measure
 
 outputs:
-    ../ultimates/projected-ultimates.parquet - Combined ultimates file with CL columns
+    ../ultimates/projected-ultimates.csv - Combined ultimates file with CL columns
     ../ultimates/projected-ultimates.csv - Same data in CSV format
 
 run-note: When copied to a project, run from the scripts/ directory:
@@ -27,7 +27,7 @@ from pathlib import Path
 from modules import config
 
 # Paths from modules/config.py — override here if needed:
-INPUT_TRIANGLE_DATA    = config.PROCESSED_DATA + "1_triangles.parquet"
+INPUT_TRIANGLE_DATA    = config.PROCESSED_DATA + "1_triangles.csv"
 INPUT_SELECTIONS_EXCEL = config.SELECTIONS + "Chain Ladder Selections - LDFs.xlsx"
 INPUT_TAIL_EXCEL       = config.SELECTIONS + "Chain Ladder Selections - Tail.xlsx"
 OUTPUT_PATH            = config.ULTIMATES
@@ -424,12 +424,18 @@ if __name__ == "__main__":
     
     # Load triangle data
     print(f"\nReading triangle data from: {INPUT_TRIANGLE_DATA}")
-    df_triangles = pd.read_parquet(INPUT_TRIANGLE_DATA)
-    
+    df_triangles = pd.read_csv(INPUT_TRIANGLE_DATA, dtype={'age': str, 'period': str})
+    # Restore ordered categoricals from input file order (CSV drops dtype).
+    # age order drives the LDF selection column sequence read from the Excel workbook.
+    _age_order = list(dict.fromkeys(df_triangles['age'].dropna()))
+    _measure_order = list(dict.fromkeys(df_triangles['measure'].dropna()))
+    df_triangles['age'] = pd.Categorical(df_triangles['age'], categories=_age_order, ordered=True)
+    df_triangles['measure'] = pd.Categorical(df_triangles['measure'], categories=_measure_order)
+
     # Get ordered list of ages
     ages = [str(a) for a in df_triangles['age'].cat.categories]
     print(f"  Found {len(ages)} age periods: {ages[0]} to {ages[-1]}")
-    
+
     # Get list of measures (excluding Exposure if present)
     measures = [m for m in df_triangles['measure'].cat.categories if m != 'Exposure']
     print(f"  Found {len(measures)} measure(s): {', '.join(measures)}")
@@ -448,10 +454,10 @@ if __name__ == "__main__":
     print(f"\nReading LDF selections from: {INPUT_SELECTIONS_EXCEL}")
     
     # Load tail scenarios for curve fitting
-    tail_scenarios_path = Path(config.PROCESSED_DATA + "tail-scenarios.parquet")
+    tail_scenarios_path = Path(config.PROCESSED_DATA + "tail-scenarios.csv")
     tail_scenarios_df = None
     if tail_scenarios_path.exists():
-        tail_scenarios_df = pd.read_parquet(tail_scenarios_path)
+        tail_scenarios_df = pd.read_csv(tail_scenarios_path)
         print(f"Loaded {len(tail_scenarios_df)} tail scenarios from: {tail_scenarios_path}")
     else:
         print(f"Note: Tail scenarios file not found: {tail_scenarios_path}")
@@ -497,12 +503,9 @@ if __name__ == "__main__":
     # This includes empirical LDFs, fitted LDFs, and source tracking
     detail_output_dir = Path(config.PROCESSED_DATA)
     detail_output_dir.mkdir(parents=True, exist_ok=True)
-    detail_parquet = detail_output_dir / "ldf-cdf-detail.parquet"
     detail_csv = detail_output_dir / "ldf-cdf-detail.csv"
-    combined_cdfs.to_parquet(detail_parquet, index=False)
     combined_cdfs.to_csv(detail_csv, index=False)
     print(f"\nSaved LDF/CDF detail data:")
-    print(f"  Parquet: {detail_parquet}")
     print(f"  CSV: {detail_csv}")
     print(f"  Columns: {combined_cdfs.columns.tolist()}")
     print(f"  Sources: {combined_cdfs['source'].value_counts().to_dict()}")
@@ -523,13 +526,12 @@ if __name__ == "__main__":
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # Check if projected-ultimates already exists and merge if so
-    output_parquet = output_dir / "projected-ultimates.parquet"
     output_csv = output_dir / "projected-ultimates.csv"
-    
-    if output_parquet.exists():
-        print(f"\nMerging with existing data in: {output_parquet}")
-        df_existing = pd.read_parquet(output_parquet)
-        
+
+    if output_csv.exists():
+        print(f"\nMerging with existing data in: {output_csv}")
+        df_existing = pd.read_csv(output_csv)
+
         # Merge on period, measure, current_age (outer join to keep all rows)
         df_combined = df_existing.merge(
             df_cl,
@@ -537,7 +539,7 @@ if __name__ == "__main__":
             how='outer',
             suffixes=('', '_new')
         )
-        
+
         # Update/add CL columns from new data
         for col in ['actual', 'cdf', 'pct_developed', 'ultimate_cl', 'ibnr_cl']:
             if col + '_new' in df_combined.columns:
@@ -545,19 +547,17 @@ if __name__ == "__main__":
                 df_combined.drop(columns=[col + '_new'], inplace=True)
             elif col not in df_combined.columns and col in df_cl.columns:
                 df_combined[col] = df_cl.set_index(['period', 'measure', 'current_age'])[col]
-        
+
         df_final = df_combined
         print(f"  Combined with {len(df_existing)} existing row(s)")
     else:
         df_final = df_cl
         print(f"\nCreating new projected-ultimates file")
-    
+
     # Save results
-    df_final.to_parquet(output_parquet, index=False)
     df_final.to_csv(output_csv, index=False)
-    
+
     print(f"\nSaved Chain Ladder ultimates to projected-ultimates:")
-    print(f"  Parquet: {output_parquet}")
     print(f"  CSV: {output_csv}")
     
     print("\nSample of results:")

@@ -11,12 +11,12 @@ Formula:
     BF IBNR     = (1 - pct_developed) × Expected
 
 inputs:
-    ../processed-data/1_triangles.parquet - Triangle data (for diagonal/actual values)
-    ../ultimates/chain-ladder.parquet - CL ultimates with pct_developed
-    ../ultimates/initial-expected.parquet - Expected ultimates by period and measure
+    ../processed-data/1_triangles.csv - Triangle data (for diagonal/actual values)
+    ../ultimates/projected-ultimates.csv - CL ultimates with pct_developed
+    ../ultimates/projected-ultimates.csv - Expected ultimates by period and measure
 
 outputs:
-    ../ultimates/projected-ultimates.parquet - Combined ultimates file with BF columns
+    ../ultimates/projected-ultimates.csv - Combined ultimates file with BF columns
     ../ultimates/projected-ultimates.csv - Same data in CSV format
 
 run-note: When copied to a project, run from the scripts/ directory:
@@ -34,9 +34,9 @@ from modules import config
 # Paths from modules/config.py — override here if needed:
 # NOTE: Set INPUT_IE_ULTIMATES to None if Initial Expected data is not available.
 #       This script will exit gracefully since BF requires Initial Expected ultimates.
-INPUT_TRIANGLE_DATA = config.PROCESSED_DATA + "1_triangles.parquet"
-INPUT_CL_ULTIMATES  = config.ULTIMATES + "projected-ultimates.parquet"
-INPUT_IE_ULTIMATES  = config.ULTIMATES + "projected-ultimates.parquet"  # Set to None if not available
+INPUT_TRIANGLE_DATA = config.PROCESSED_DATA + "1_triangles.csv"
+INPUT_CL_ULTIMATES  = config.ULTIMATES + "projected-ultimates.csv"
+INPUT_IE_ULTIMATES  = config.ULTIMATES + "projected-ultimates.csv"  # Set to None if not available
 OUTPUT_PATH         = config.ULTIMATES
 
 
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     
     # Load triangle data for diagonal
     print(f"\nReading triangle data from: {INPUT_TRIANGLE_DATA}")
-    df_triangles = pd.read_parquet(INPUT_TRIANGLE_DATA)
+    df_triangles = pd.read_csv(INPUT_TRIANGLE_DATA)
     
     # Extract diagonal
     print("\nExtracting diagonal values...")
@@ -164,7 +164,7 @@ if __name__ == "__main__":
         exit(1)
     
     print(f"\nReading Chain Ladder ultimates from: {INPUT_CL_ULTIMATES}")
-    df_cl = pd.read_parquet(INPUT_CL_ULTIMATES)
+    df_cl = pd.read_csv(INPUT_CL_ULTIMATES)
     
     # Load Initial Expected ultimates
     ie_path = Path(INPUT_IE_ULTIMATES)
@@ -175,7 +175,7 @@ if __name__ == "__main__":
         sys.exit(0)
     
     print(f"Reading Initial Expected ultimates from: {INPUT_IE_ULTIMATES}")
-    df_ie = pd.read_parquet(INPUT_IE_ULTIMATES)
+    df_ie = pd.read_csv(INPUT_IE_ULTIMATES)
     
     # Ensure all columns are strings for matching
     diagonal['period'] = diagonal['period'].astype(str)
@@ -204,13 +204,12 @@ if __name__ == "__main__":
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # Check if projected-ultimates already exists and merge if so
-    output_parquet = output_dir / "projected-ultimates.parquet"
     output_csv = output_dir / "projected-ultimates.csv"
-    
-    if output_parquet.exists():
-        print(f"\nMerging with existing data in: {output_parquet}")
-        df_existing = pd.read_parquet(output_parquet)
-        
+
+    if output_csv.exists():
+        print(f"\nMerging with existing data in: {output_csv}")
+        df_existing = pd.read_csv(output_csv)
+
         # Merge on period, measure, current_age (outer join to keep all rows)
         df_combined = df_existing.merge(
             df_bf[['period', 'measure', 'current_age', 'ultimate_bf', 'ibnr_bf']],
@@ -218,7 +217,7 @@ if __name__ == "__main__":
             how='outer',
             suffixes=('', '_new')
         )
-        
+
         # Update/add BF columns from new data
         for col in ['ultimate_bf', 'ibnr_bf']:
             if col + '_new' in df_combined.columns:
@@ -226,19 +225,17 @@ if __name__ == "__main__":
                 df_combined.drop(columns=[col + '_new'], inplace=True)
             elif col not in df_combined.columns and col in df_bf.columns:
                 df_combined[col] = df_bf.set_index(['period', 'measure', 'current_age'])[col]
-        
+
         df_final = df_combined
         print(f"  Combined with {len(df_existing)} existing row(s)")
     else:
         df_final = df_bf
         print(f"\nCreating new projected-ultimates file")
-    
+
     # Save results
-    df_final.to_parquet(output_parquet, index=False)
     df_final.to_csv(output_csv, index=False)
-    
+
     print(f"\nSaved Bornhuetter-Ferguson ultimates to projected-ultimates:")
-    print(f"  Parquet: {output_parquet}")
     print(f"  CSV: {output_csv}")
     
     print("\nSample of results:")

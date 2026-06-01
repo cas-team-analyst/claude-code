@@ -10,8 +10,8 @@ Usage (run from scripts/ directory):
 
 Inputs:
     ../selections/Ultimates.xlsx          - Selected ultimates (User Selection → Rules-Based AI)
-    ../ultimates/projected-ultimates.parquet - Projected ultimates with actual values
-    ../processed-data/1_triangles.parquet    - Triangle data (for paid/case reserves calculation)
+    ../ultimates/projected-ultimates.csv - Projected ultimates with actual values
+    ../processed-data/1_triangles.csv    - Triangle data (for paid/case reserves calculation)
 
 Outputs:
     ../selections/summary-indications.json   - JSON file with totals by category
@@ -31,8 +31,8 @@ from modules.analysis_loaders import (
 
 # Paths
 INPUT_ULTIMATES_EXCEL = config.SELECTIONS + "Ultimates.xlsx"
-INPUT_ULTIMATES_PARQUET = config.ULTIMATES + "projected-ultimates.parquet"
-INPUT_TRIANGLES = config.PROCESSED_DATA + "1_triangles.parquet"
+INPUT_ULTIMATES_CSV = config.ULTIMATES + "projected-ultimates.csv"
+INPUT_TRIANGLES = config.PROCESSED_DATA + "1_triangles.csv"
 OUTPUT_JSON = config.SELECTIONS + "summary-indications.json"
 
 
@@ -49,7 +49,7 @@ def calculate_case_reserves(triangles_path, df_ult, sel_lookup):
         print(f"  Warning: {triangles_path} not found - cannot calculate case reserves")
         return {}
     
-    tri = pd.read_parquet(triangles_path)
+    tri = pd.read_csv(triangles_path)
     tri['period'] = tri['period'].astype(str)
     tri['measure'] = tri['measure'].astype(str)
     
@@ -87,8 +87,8 @@ def main():
         return
     
     # Load projected ultimates
-    print(f"Reading {INPUT_ULTIMATES_PARQUET}")
-    df_ult = pd.read_parquet(INPUT_ULTIMATES_PARQUET)
+    print(f"Reading {INPUT_ULTIMATES_CSV}")
+    df_ult = pd.read_csv(INPUT_ULTIMATES_CSV)
     df_ult['period'] = df_ult['period'].astype(str)
     df_ult['measure'] = df_ult['measure'].astype(str)
     

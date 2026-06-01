@@ -11,11 +11,11 @@
 goal: Calculate Initial Expected ultimates for all periods and measures.
 
 inputs:
-    ../processed-data/1_triangles.parquet - Triangle data including Exposure measure (diagonal used)
-    ../processed-data/1_expected_loss_rates.parquet - Optional expected loss rates and frequencies by period
+    ../processed-data/1_triangles.csv - Triangle data including Exposure measure (diagonal used)
+    ../processed-data/1_expected_loss_rates.csv - Optional expected loss rates and frequencies by period
 
 outputs:
-    ../ultimates/projected-ultimates.parquet - Combined ultimates file with IE columns
+    ../ultimates/projected-ultimates.csv - Combined ultimates file with IE columns
     ../ultimates/projected-ultimates.csv - Same data in CSV format
 
 run-note: When copied to a project, run from the scripts/ directory:
@@ -33,8 +33,8 @@ from modules import config
 # NOTE: Set INPUT_EXPECTED_RATES to None if expected loss rate data is not available.
 #       In that case, this script uses the built-in fallback based on
 #       a 3-year rolling average of diagonal loss per unit of exposure.
-INPUT_TRIANGLE_DATA  = config.PROCESSED_DATA + "1_triangles.parquet"
-INPUT_EXPECTED_RATES = config.PROCESSED_DATA + "1_expected_loss_rates.parquet"  # Set to None if not available
+INPUT_TRIANGLE_DATA  = config.PROCESSED_DATA + "1_triangles.csv"
+INPUT_EXPECTED_RATES = config.PROCESSED_DATA + "1_expected_loss_rates.csv"  # Set to None if not available
 OUTPUT_PATH          = config.ULTIMATES
 
 
@@ -297,7 +297,7 @@ if __name__ == "__main__":
 
     # Load triangle data
     print(f"\nReading triangle data from: {INPUT_TRIANGLE_DATA}")
-    df_triangles = pd.read_parquet(INPUT_TRIANGLE_DATA)
+    df_triangles = pd.read_csv(INPUT_TRIANGLE_DATA)
 
     # Extract diagonal values
     print("\nExtracting diagonal values...")
@@ -315,7 +315,7 @@ if __name__ == "__main__":
     # Load expected rates, or build fallback if not available
     if INPUT_EXPECTED_RATES is not None and Path(INPUT_EXPECTED_RATES).exists():
         print(f"\nReading expected rates from: {INPUT_EXPECTED_RATES}")
-        df_expected_rates = pd.read_parquet(INPUT_EXPECTED_RATES)
+        df_expected_rates = pd.read_csv(INPUT_EXPECTED_RATES)
     else:
         print("\n" + "=" * 80)
         print("EXPECTED LOSS RATE (ELR) FILE NOT PROVIDED")
@@ -343,13 +343,12 @@ if __name__ == "__main__":
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # Check if projected-ultimates already exists and merge if so
-    output_parquet = output_dir / "projected-ultimates.parquet"
     output_csv = output_dir / "projected-ultimates.csv"
-    
-    if output_parquet.exists():
-        print(f"\nMerging with existing data in: {output_parquet}")
-        df_existing = pd.read_parquet(output_parquet)
-        
+
+    if output_csv.exists():
+        print(f"\nMerging with existing data in: {output_csv}")
+        df_existing = pd.read_csv(output_csv)
+
         # Merge on period, measure, current_age (outer join to keep all rows)
         df_combined = df_existing.merge(
             df_ie[['period', 'measure', 'current_age', 'ultimate_ie', 'ibnr_ie']],
@@ -357,7 +356,7 @@ if __name__ == "__main__":
             how='outer',
             suffixes=('', '_new')
         )
-        
+
         # Update/add IE columns from new data
         for col in ['ultimate_ie', 'ibnr_ie']:
             if col + '_new' in df_combined.columns:
@@ -365,19 +364,17 @@ if __name__ == "__main__":
                 df_combined.drop(columns=[col + '_new'], inplace=True)
             elif col not in df_combined.columns and col in df_ie.columns:
                 df_combined[col] = df_ie.set_index(['period', 'measure', 'current_age'])[col]
-        
+
         df_final = df_combined
         print(f"  Combined with {len(df_existing)} existing row(s)")
     else:
         df_final = df_ie
         print(f"\nCreating new projected-ultimates file")
-    
+
     # Save results
-    df_final.to_parquet(output_parquet, index=False)
     df_final.to_csv(output_csv, index=False)
-    
+
     print(f"\nSaved initial expected ultimates to projected-ultimates:")
-    print(f"  Parquet: {output_parquet}")
     print(f"  CSV: {output_csv}")
     
     print("\nSample of results:")
