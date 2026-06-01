@@ -139,7 +139,7 @@ def calculate_ldf_averages(df_enhanced: pd.DataFrame) -> pd.DataFrame:
     return df_summary
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     """Test the calculate_ldf_averages function."""
     # Read enhanced data from step 2
     input_file = OUTPUT_PATH + f"2_enhanced.csv"

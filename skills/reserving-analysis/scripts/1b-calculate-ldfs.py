@@ -89,7 +89,7 @@ def enhance_triangle_data(df_long: pd.DataFrame) -> pd.DataFrame:
     return df_enhanced
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     """Test the enhance_triangle_data function."""
     # Read prepped data from step 1
     input_file = OUTPUT_PATH + f"1_triangles.csv"

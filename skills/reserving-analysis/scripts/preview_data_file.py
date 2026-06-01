@@ -31,7 +31,7 @@ def preview_data_file(file_path: str, sheet_name: Union[str, int] = 0, sample_si
             try:
                 df = pd.read_csv(file_path)
                 sheets_info = "File type: CSV (single sheet) - headers detected"
-            except Exception:
+            except Exception:  # pragma: no cover
                 try:
                     # If that fails, try without headers
                     df = pd.read_csv(file_path, header=None)
@@ -126,7 +126,7 @@ def preview_data_file(file_path: str, sheet_name: Union[str, int] = 0, sample_si
         else:
             return f"Error: Unsupported file type: {ext}. Supported: CSV, {', '.join(SUPPORTED_EXCEL)}"
 
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         return f"Error reading file {file_path}: {str(e)}"
 
     total_rows = len(df)

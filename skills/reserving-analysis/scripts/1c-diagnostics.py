@@ -225,7 +225,7 @@ def calculate_diagnostics(df_enhanced: pd.DataFrame) -> pd.DataFrame:
     return result_df
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     """Test the calculate_diagnostics function."""
     # Read enhanced data from step 2
     input_file = OUTPUT_PATH + f"2_enhanced.csv"
