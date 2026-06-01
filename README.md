@@ -19,12 +19,16 @@ _Instructions for other tools can be found [here](#installation-for-other-agenti
 
 _The video from our CAS presentation can be found at https://www.youtube.com/watch?v=8JZz2zYrim0. It is an edited screen recording of the plugin setup and workflow in Claude Cowork. It does not have audio but will give you a feel for the workflow._
 
+_These instructions are for Windows only._
+
 1. Sign up for a Claude Pro account (~$20/month) at https://claude.ai/ and follow installation instructions at https://support.claude.com/en/articles/10065433-installing-claude-desktop
-2. Open Claude Desktop and select "Cowork" on the top left (default is "Chat")
-3. Select the "Sonnet" model on the bottom right below the chat widget. Opus will quickly hit limits. Haiku loses focus during long workflows.
-4. Download `teamanalyst-cowork.zip` from https://github.com/cas-team-analyst/team-analyst/blob/main/plugins/teamanalyst-cowork.zip
-5. Import the plugin: Customize > Personal plugins > + > Create plugin > Upload plugin > Browse files > Select `teamanalyst-cowork.zip`
-6. Prepare your data. At least one loss or claim count triangle is required. Optionally, you can also provide exposures, prior selections, and initial expected loss rate and/or frequency. You can also download a file from https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data to use.
+2. Enable long paths in Windows (Cowork sometimes creates these long paths): Settings > System > Advanced > Enable Long Paths (slide to "On").
+3. Open Claude Desktop and select **Cowork** on the top left (default is "Chat").
+    - It is likely you'll need to enable virtualization. If you see Cowork greyed out, click it anyway and you will see a button to enable virtualization. It will run, take a few minutes, and then will require a restart.
+4. Select the **Sonnet** model with **Medium** effort on the bottom right below the chat widget. Opus will quickly hit limits. Haiku loses focus during long workflows.
+5. Download `teamanalyst-cowork.zip` from https://github.com/cas-team-analyst/team-analyst/blob/main/plugins/teamanalyst-cowork.zip
+6. Import the plugin: Customize > Personal plugins > + > Create plugin > Upload plugin > Browse files > Select `teamanalyst-cowork.zip`
+7. Prepare your data. At least one loss or claim count triangle is required. Optionally, you can also provide exposures, prior selections, and initial expected loss rate and/or frequency. You can also download a file from https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data to use.
 
 Now you are ready to run the workflow! It may take 20-40 minutes to complete the workflow, so you may want to wait until you have about 40 minutes of free time.
 
