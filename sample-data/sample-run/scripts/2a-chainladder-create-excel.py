@@ -324,22 +324,14 @@ def export_md_data(measures, df2, df3, df4, exp_md, prior_selections=None):
         if prior_selections is not None:
             prior_m = prior_selections[prior_selections['measure'] == measure]
             if not prior_m.empty:
-                # Prior selections are stored as JSON in 'selections' column with interval keys
-                prior_row = prior_m.iloc[0]
-                import json
-                if 'selections' in prior_row and prior_row['selections']:
-                    try:
-                        prior_dict = json.loads(prior_row['selections']) if isinstance(prior_row['selections'], str) else prior_row['selections']
-                        prior_md = "## Prior Selections\n\n"
-                        prior_md += "| Interval | LDF | Reasoning |\n"
-                        prior_md += "|---|---|---|\n"
-                        for interval, data in sorted(prior_dict.items()):
-                            ldf_val = data.get('selection', 'N/A')
-                            reasoning = data.get('reasoning', '')[:80] + "..." if len(data.get('reasoning', '')) > 80 else data.get('reasoning', '')
-                            prior_md += f"| {interval} | {ldf_val} | {reasoning} |\n"
-                        prior_md += "\n"
-                    except (json.JSONDecodeError, TypeError):
-                        pass
+                prior_md = "## Prior Selections\n\n"
+                prior_md += "| Interval | LDF | Reasoning |\n"
+                prior_md += "|---|---|---|\n"
+                for _, row in prior_m.iterrows():
+                    reasoning = str(row.get('reasoning', ''))
+                    truncated = reasoning[:80] + "..." if len(reasoning) > 80 else reasoning
+                    prior_md += f"| {row['interval']} | {row['selection']:.4f} | {truncated} |\n"
+                prior_md += "\n"
         
         if not prior_md:
             prior_md = "## Prior Selections\n\nNo prior LDF selections found for this analysis.\n\n"
@@ -374,9 +366,20 @@ def main():
             "Delete or rename the file before re-running to avoid overwriting manual edits."
         )
     
-    df2 = pd.read_parquet(OUTPUT_PATH + "2_enhanced.parquet")
-    df3 = pd.read_parquet(OUTPUT_PATH + "3_diagnostics.parquet")
-    df4 = pd.read_parquet(OUTPUT_PATH + "4_ldf_averages.parquet")
+    df2 = pd.read_csv(OUTPUT_PATH + "2_enhanced.csv",
+                     dtype={'age': str, 'period': str, 'interval': str, 'prior_age': str})
+    # Restore ordered categoricals from input file order (CSV drops dtype).
+    # .cat.categories is called below to set triangle column and row sequences in Excel.
+    _age_order = list(dict.fromkeys(df2['age'].dropna()))
+    _period_order = list(dict.fromkeys(df2['period'].dropna()))
+    _interval_order = list(dict.fromkeys(df2['interval'].dropna()))
+    _measure_order = list(dict.fromkeys(df2['measure'].dropna()))
+    df2['age'] = pd.Categorical(df2['age'], categories=_age_order, ordered=True)
+    df2['period'] = pd.Categorical(df2['period'], categories=_period_order, ordered=True)
+    df2['interval'] = pd.Categorical(df2['interval'], categories=_interval_order, ordered=True)
+    df2['measure'] = pd.Categorical(df2['measure'], categories=_measure_order)
+    df3 = pd.read_csv(OUTPUT_PATH + "3_diagnostics.csv")
+    df4 = pd.read_csv(OUTPUT_PATH + "4_ldf_averages.csv")
     
     print(f"Loaded data: {len(df2)} enhanced rows, {len(df3)} diagnostic rows, {len(df4)} average rows")
     
@@ -442,7 +445,7 @@ def main():
     print(f"\nSaved: {output_file}")
     print("  All values hard-coded from source data (no formulas)")
     
-    export_md_data(measures, df2, df3, df4, exp_md)
+    export_md_data(measures, df2, df3, df4, exp_md, df_prior)
 
 if __name__ == "__main__":
     main()

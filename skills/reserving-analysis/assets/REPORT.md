@@ -1,5 +1,7 @@
 # Reserving Analysis — Working Draft
 
+_This is a draft report that should be filled in as you make your way through the PROGRESS.md steps._
+
 **Analysis:** [Segment / Program Name]
 **Valuation Date:** [MM/DD/YYYY]
 **Draft Version:** [e.g., v0.3 — For Peer Review]
@@ -7,7 +9,7 @@
 **Submitted to:** [Reviewing Actuary Name]
 **Draft Date:** [MM/DD/YYYY]
 
-> **Draft status:** This is a working document prepared for internal peer review. It is not a final actuarial communication and should not be distributed outside the review team. Numbers, selections, and commentary are subject to change based on reviewer feedback.
+> **Draft status:** This is a working document prepared for internal peer review. It has many blank sections because the project only runs a basic reserving workflow, not a full analysis. It is not a final actuarial communication and should not be distributed outside the review team. Numbers, selections, and commentary are subject to change based on reviewer feedback.
 
 ---
 

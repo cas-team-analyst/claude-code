@@ -1,11 +1,16 @@
 # Tail Context: Reported Count
 
 ## Table of Contents
+- [Prior Selection](#prior-selection)
 - [Exposure](#exposure)
 - [Averages](#averages)
 - [Selected LDFs](#selected-ldfs)
 - [Empirical Age-to-Age Factors](#empirical-age-to-age-factors)
 - [Curves](#curves)
+
+## Prior Selection
+
+No prior tail selections found for this analysis.
 
 ## Exposure
 | Period | Exposure |
@@ -60,8 +65,8 @@ Averages, min/max, CVs, and slopes for each interval (mirrors Excel averages sec
 ## Selected LDFs
 | | 11-23 | 23-35 | 35-47 | 47-59 | 59-71 | 71-83 | 83-95 | 95-107 | 107-119 | 119-131 | 131-143 | 143-155 | 155-167 | 167-179 | 179-191 | 191-203 | 203-215 | 215-227 | 227-239 | 239-251 | 251-263 | 263-275 | 275-287 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Selection | 1.1330 | 1.0000 | 1.0004 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |  |
-| Reasoning | 3-year avg_exclude_high_low (CV=0.013, very low). Convergence override applies: ... | Convergence: all averages within ±0.007 at 1.0000-1.0037. CV_3yr=0.0, CV_5yr=0.0... | Convergence: all averages 1.0000-1.0009. CV_3yr=0.0, CV_5yr=0.0019. Convergence ... | Convergence: all averages converge at 0.9999-1.0014. CV_3yr=0.0024, CV_5yr=0.002... | Convergence: all averages 0.9987-1.0019. CV_3yr=0.0021, CV_5yr=0.0017. Tight con... | Convergence: all averages 1.0000-1.0015. CV_3yr=0.0, CV_5yr=0.0. Perfect converg... | Convergence: all averages 0.9986-1.0000. CV_3yr=0.0024, CV_5yr=0.0019. Convergen... | Convergence: all averages 0.9999-1.0000. CV_3yr=0.0, CV_5yr=0.0. Perfect converg... | Convergence: all averages 0.9961-0.9977. CV_3yr=0.0068, CV_5yr=0.0052 (slightly ... | Convergence: all averages exactly 1.0. CV_3yr=0.0, CV_5yr=0.0. Perfect convergen... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. Perfect convergence; sele... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All diagonals 1.0. Perfec... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All data points exactly 1... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All observations 1.0. Sel... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All diagonals 1.0; report... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All values 1.0. Select 1.... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All observations 1.0. Sel... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All data 1.0. Select 1.00... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All diagonals 1.0. Select... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All data 1.0. Select 1.00... | Convergence: all averages 1.0. CV_3yr=0.0, CV_5yr=0.0. All observations 1.0. Sel... | All averages exactly 1.0. CV_3yr=0.0, CV_5yr=0.0. Reported count triangle fully ... | [CUTOFF] CUTOFF at 275 months: CV=NaN indicates insufficient data (likely <2 obs... |
+| Selection | 1.0900 | 1.0020 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |  |  |  |  |  |  |  |  |  |  |  |  |
+| Reasoning | 1.0900 selected. CV_5yr=0.032, CV_3yr=0.013 (very low). All averages are well-de... | 1.0020 selected. CV_5yr=0.000, CV_3yr=0.000 (essentially zero). All averages acr... | 1.0000 selected. CV_5yr=0.002 (essentially zero). All averages converge tightly ... | 1.0000 selected. CV_5yr=0.003 (essentially zero). All averages: 3yr=1.001, 5yr=1... | 1.0000 selected. CV_5yr=0.002 (essentially zero). All averages at 0.999-1.002. T... | [CUTOFF] CUTOFF at 71 months: is_monotone_from_here=True. CV is 0.000 for all wi... | 1.0000. No meaningful development. All averages 1.000. Selected at 1.000. | 1.0000. Flat — all factors are exactly 1.000 across all periods. No development ... | 1.0000. All factors are exactly 1.000 except 2015 (0.988 — a downward adjustment... | 1.0000. All factors are 1.000 across all periods. No development. | 1.0000. All factors are 1.000 across all periods. No development. | [CUTOFF] Cutoff at 143 months. From 35 months onward, reported count development... |  |  |  |  |  |  |  |  |  |  |  |
 
 ## Empirical Age-to-Age Factors
 | Period | 11-23 | 23-35 | 35-47 | 47-59 | 59-71 | 71-83 | 83-95 | 95-107 | 107-119 | 119-131 | 131-143 | 143-155 | 155-167 | 167-179 | 179-191 | 191-203 | 203-215 | 215-227 | 227-239 | 239-251 | 251-263 | 263-275 | 275-287 |
@@ -89,18 +94,17 @@ Averages, min/max, CVs, and slopes for each interval (mirrors Excel averages sec
 | 2021 | 1.1416 | 1.0000 | 1.0000 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 | 2022 | 1.1414 | 1.0000 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 | 2023 | 1.1159 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| 2024 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 ## Curves
 All tail curve scenarios with diagnostics.
 
 | method | method_params | tail_factor | n_factors_in_fit | n_ay_contributing | is_monotone_from_here | cv_at_starting_age | slope_sign_changes | min_selected_ldf | max_selected_ldf | avg_selected_ldf | r_squared | loo_std_dev | loo_min | loo_max | gap_to_last_observed | gap_flag | pct_of_cdf | materiality_ok | sensitivity_plus10_reserve_delta | sensitivity_minus10_reserve_delta | sensitivity_plus20_reserve_delta | sensitivity_minus20_reserve_delta | residuals_json |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| bondy | None | 1.0 | 22 | 24 | False | 0.0 | 2 | 1.0 | 1.0 | 1.0 | nan | 0.0 | 1.0 | 1.0 | nan | False | nan | <NA> | nan | nan | nan | nan | None |
-| modified_bondy_double_dev | None | 1.0 | 22 | 24 | False | 0.0 | 2 | 1.0 | 1.0 | 1.0 | nan | nan | nan | nan | nan | False | nan | <NA> | nan | nan | nan | nan | None |
-| modified_bondy_square_ratio | None | 1.0 | 22 | 24 | False | 0.0 | 2 | 1.0 | 1.0 | 1.0 | nan | nan | nan | nan | nan | False | nan | <NA> | nan | nan | nan | nan | None |
-| exp_dev_quick | [0.1330000000000001, 0.05484084971070513] | 1.0000000000115128 | 22 | 24 | False | 0.0 | 2 | 1.0 | 1.0 | 1.0 | 1.0 | 0.0 | 1.0000000000115128 | 1.0000000000115128 | 8.326672684688674e-17 | False | 8.626837512800163e-09 | True | 779.2930970024056 | -952.469340780716 | 1428.7040111710744 | -2143.056016756611 | {"0": -4.440892098500626e-16, "2": 8.881784197001252e-16} |
-| exp_dev_quick_exact_last | [0.1330000000000001, 0.05484084971070513] | 1.0000000000115128 | 22 | 24 | False | 0.0 | 2 | 1.0 | 1.0 | 1.0 | 1.0 | 0.0 | 1.0000000000115128 | 1.0000000000115128 | 8.326672684688674e-17 | False | 8.626837512800163e-09 | True | 779.2930970024056 | -952.469340780716 | 1428.7040111710744 | -2143.056016756611 | {"0": -4.440892098500626e-16, "2": 8.881784197001252e-16} |
-| exp_dev_product | [0.1330000000000001, 0.05484084971070513] | 1.0 | 22 | 24 | False | 0.0 | 2 | 1.0 | 1.0 | 1.0 | 1.0 | 0.0 | 1.0000000000115128 | 1.0000000000115128 | 8.326672684688674e-17 | False | nan | <NA> | nan | nan | nan | nan | {"0": -4.440892098500626e-16, "2": 8.881784197001252e-16} |
-| skurnick | {"r": 0.61834694, "A": 16.25614305, "n": 3} | 2.627988840124679 | 22 | 24 | False | 0.0 | 2 | 1.0 | 1.0 | 1.0 | 0.06953720104774952 | nan | nan | nan | nan | False | 82.2755798296319 | False | 296.5359232554456 | -362.43279508998694 | 543.6491926349818 | -815.4737889524704 | None |
+| bondy | nan | 1.0 | 5 | 0 | True | 0.0012 | 0 | 0.9963 | 1.027 | 1.0019 | nan | 0.0005020119305775 | 0.999822754491018 | 1.002206047222694 | nan | False | nan | nan | nan | nan | nan | nan | nan |
+| modified_bondy_double_dev | nan | 1.0 | 5 | 0 | True | 0.0012 | 0 | 0.9963 | 1.027 | 1.0019 | nan | nan | nan | nan | nan | False | nan | nan | nan | nan | nan | nan | nan |
+| modified_bondy_square_ratio | nan | 1.0 | 5 | 0 | True | 0.0012 | 0 | 0.9963 | 1.027 | 1.0019 | nan | nan | nan | nan | nan | False | nan | nan | nan | nan | nan | nan | nan |
+| exp_dev_quick | [0.09000000000000005, 0.022222222222222244] | 1.0000000000000056 | 5 | 0 | True | 0.0012 | 0 | 0.9963 | 1.027 | 1.0019 | 1.0 | 0.0 | 1.0000000000000056 | 1.0000000000000056 | 2.775557561562892e-17 | False | 6.022038536694959e-12 | True | 808.7423817918761 | -988.462911078956 | 1482.6943666184357 | -2224.0415499276533 | {"0": 4.440892098500626e-16, "1": 0.0} |
+| exp_dev_quick_exact_last | [0.09000000000000005, 0.022222222222222244] | 1.0000000000000056 | 5 | 0 | True | 0.0012 | 0 | 0.9963 | 1.027 | 1.0019 | 1.0 | 0.0 | 1.0000000000000056 | 1.0000000000000056 | 2.775557561562892e-17 | False | 6.022038536694959e-12 | True | 808.7423817918761 | -988.462911078956 | 1482.6943666184357 | -2224.0415499276533 | {"0": 4.440892098500626e-16, "1": 0.0} |
+| exp_dev_product | [0.09000000000000005, 0.022222222222222244] | 1.0 | 5 | 0 | True | 0.0012 | 0 | 0.9963 | 1.027 | 1.0019 | 1.0 | 0.0 | 1.0000000000000056 | 1.0000000000000056 | 2.775557561562892e-17 | False | nan | nan | nan | nan | nan | nan | {"0": 4.440892098500626e-16, "1": 0.0} |
+| skurnick | {"r": 0.61834694, "A": 16.25614305, "n": 3} | 2.627988840124679 | 5 | 0 | True | 0.0012 | 0 | 0.9963 | 1.027 | 1.0019 | 0.0695372010477495 | nan | nan | nan | nan | False | 87.04720147609115 | False | 307.74193917562843 | -376.1290367702122 | 564.1935551553188 | -846.2903327329768 | nan |
 

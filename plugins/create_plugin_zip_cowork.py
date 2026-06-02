@@ -1,7 +1,7 @@
 # Creates team-analyst-plugin.zip in the .claude-plugin folder.
 #
 # Usage (run from project root):
-#  `python plugins/create_plugin_cowork.py
+#  python plugins/create_plugin_zip_cowork.py
 
 import zipfile
 from pathlib import Path
@@ -9,8 +9,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 PLUGIN_DIR = PROJECT_ROOT / ".claude-plugin"
 OUTPUT_DIR = PROJECT_ROOT / "plugins"
-OUTPUT_ZIP = OUTPUT_DIR / "teamanalyst-Cowork.zip"
-ZIP_FILENAME = "teamanalyst-Cowork.zip"
+OUTPUT_ZIP = OUTPUT_DIR / "teamanalyst-cowork.zip"
+ZIP_FILENAME = "teamanalyst-cowork.zip"
 
 TOP_LEVEL_FILES = []
 

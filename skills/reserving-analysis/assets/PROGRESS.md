@@ -1,3 +1,19 @@
+# General Procedures
+
+## Progress Tracking
+
+ALWAYS COME BACK TO PROGRESS TO MARK THE [] STEP COMPLETE BEFORE STARTING THE NEXT [] STEP.
+
+Process to complete each step:
+1. Mark status as "In Progress [yyyy-mm-dd]"
+2. Inform the user about the step. 
+3. Perform the requested action. Keep the user informed as you work.
+4. When complete
+    - Update REPORT.md
+    - Update REPLICATE.md
+    - Mark the step as complete with [X]
+5. Move on to the next step.
+
 # Step 1: Project Setup
 
 - [ ] Respond to the user with the welcome message from assets/welcome-message.md and wait for their confirmation.
@@ -21,7 +37,7 @@
 
 # Step 2: Exploratory Data Analysis
 
-- [ ] Review the files available using the explore-excel in the reserving-analysis skill scripts. For each file add a file summary subsection to REPORT.md in the data section.
+- [ ] Review the files available using the preview_data_file scripts. For each file add a file summary subsection to REPORT.md in the data section.
 
 - [ ] **Update REPORT.md:**
   - Fill in **Section 3.1 Data Used** table: one row per data file (source name, as-of date, notes on format/coverage). Include triangle files and any other inputs.

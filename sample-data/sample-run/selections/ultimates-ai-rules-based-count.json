@@ -2,121 +2,121 @@
   {
     "period": 2001,
     "selection": 701,
-    "reasoning": "Reported Count CL ultimate 701. Fully developed tail year (287 months, CDF 1.0). All methods (CL, IE, BF) converge at 701. No IBNR. Reported Count primary measure; CL selected as baseline method."
+    "reasoning": "Selected 701. Tail maturity (age 287 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=701.  IE (701) close to actual (701); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2002,
     "selection": 652,
-    "reasoning": "Reported Count CL ultimate 652. Fully developed (275 months, CDF 1.0). All methods converge: CL = 652, IE = 683, BF = 652. Reported Count primary; CL/BF consensus selected. Minimal IE divergence (31 counts, negligible)."
+    "reasoning": "Selected 652. Tail maturity (age 275 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=652.  IE (683) close to actual (652); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2003,
     "selection": 552,
-    "reasoning": "Reported Count CL ultimate 552. Fully developed (263 months, CDF 1.0). All methods converge: CL = 552, IE = 648, BF = 552. Reported Count primary; CL/BF consensus selected. IE shows 97-count divergence; CL/BF more credible at full maturity."
+    "reasoning": "Selected 552. Tail maturity (age 263 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=552.  IE (648) diverges 17% from fully-developed actual; IE not credible at this stage. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2004,
     "selection": 643,
-    "reasoning": "Reported Count CL ultimate 643. Fully developed (251 months, CDF 1.0). Methods converge: CL = 643, IE = 628, BF = 643. Reported Count primary; CL/BF consensus selected. IE shows minor negative IBNR (-15); CL/BF preferred."
+    "reasoning": "Selected 643. Tail maturity (age 251 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=643.  IE (628) would imply negative IBNR; disqualified. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2005,
     "selection": 641,
-    "reasoning": "Reported Count CL ultimate 641. Fully developed (239 months, CDF 1.0). Methods converge: CL = 641, IE = 624, BF = 641. Reported Count primary; CL/BF consensus selected. IE shows negative IBNR (-18); CL/BF credible."
+    "reasoning": "Selected 641. Tail maturity (age 239 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=641.  IE (624) would imply negative IBNR; disqualified. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2006,
     "selection": 497,
-    "reasoning": "Reported Count CL ultimate 497. Fully developed (227 months, CDF 1.0). Methods converge: CL = 497, IE = 607, BF = 497. Reported Count primary; CL/BF consensus selected. IE shows 110-count divergence indicating a priori mismatch."
+    "reasoning": "Selected 497. Tail maturity (age 227 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=497.  IE (607) diverges 22% from fully-developed actual; IE not credible at this stage. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2007,
     "selection": 476,
-    "reasoning": "Reported Count CL ultimate 476. Fully developed (215 months, CDF 1.0). Methods converge: CL = 476, IE = 550, BF = 476. Reported Count primary; CL/BF consensus selected. IE shows 74-count divergence; CL/BF more credible."
+    "reasoning": "Selected 476. Tail maturity (age 215 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=476.  IE (550) diverges 16% from fully-developed actual; IE not credible at this stage. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2008,
     "selection": 329,
-    "reasoning": "Reported Count CL ultimate 329. Fully developed (203 months, CDF 1.0). Methods converge: CL = 329, IE = 444, BF = 329. Reported Count primary; CL/BF consensus selected. IE shows significant divergence (116 counts); CL/BF preferred."
+    "reasoning": "Selected 329. Tail maturity (age 203 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=329.  IE (444) diverges 35% from fully-developed actual; IE not credible at this stage. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2009,
     "selection": 322,
-    "reasoning": "Reported Count CL ultimate 322. Fully developed (191 months, CDF 1.0). Methods converge: CL = 322, IE = 384, BF = 322. Reported Count primary; CL/BF consensus selected. IE shows 62-count divergence; CL/BF credible."
+    "reasoning": "Selected 322. Tail maturity (age 191 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=322.  IE (384) diverges 19% from fully-developed actual; IE not credible at this stage. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2010,
     "selection": 272,
-    "reasoning": "Reported Count CL ultimate 272. Fully developed (179 months, CDF 1.0). Methods converge: CL = 272, IE = 314, BF = 272. Reported Count primary; CL/BF consensus selected. IE shows 42-count divergence; CL/BF more credible."
+    "reasoning": "Selected 272. Tail maturity (age 179 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=272.  IE (314) diverges 15% from fully-developed actual; IE not credible at this stage. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2011,
     "selection": 346,
-    "reasoning": "Reported Count CL ultimate 346. Fully developed (167 months, CDF 1.0). Methods converge: CL = 346, IE = 319, BF = 346. Reported Count primary; CL/BF consensus selected. IE shows negative IBNR (-26); CL/BF preferred."
+    "reasoning": "Selected 346. Tail maturity (age 167 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=346.  IE (319) would imply negative IBNR; disqualified. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2012,
     "selection": 261,
-    "reasoning": "Reported Count CL ultimate 261. Fully developed (155 months, CDF 1.0). Methods converge: CL = 261, IE = 299, BF = 261. Reported Count primary; CL/BF consensus selected. IE shows 38-count divergence; CL/BF credible."
+    "reasoning": "Selected 261. Tail maturity (age 155 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=261.  IE (299) close to actual (261); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2013,
     "selection": 292,
-    "reasoning": "Reported Count CL ultimate 292. Fully developed (143 months, CDF 1.0). Methods converge: CL = 292, IE = 306, BF = 292. Reported Count primary; CL/BF consensus selected. IE shows 14-count divergence (minimal); CL/BF preferred."
+    "reasoning": "Selected 292. Tail maturity (age 143 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=292.  IE (306) close to actual (292); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2014,
     "selection": 455,
-    "reasoning": "Reported Count CL ultimate 455. Fully developed (131 months, CDF 1.0). Methods converge: CL = 455, IE = 341, BF = 455. Reported Count primary; CL/BF consensus selected. IE shows negative IBNR (-114); CL/BF more credible."
+    "reasoning": "Selected 455. Tail maturity (age 131 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=455.  IE (341) diverges 25% from fully-developed actual; IE not credible at this stage. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2015,
     "selection": 334,
-    "reasoning": "Reported Count CL ultimate 334. Fully developed (119 months, CDF 1.0). Methods converge: CL = 334, IE = 367, BF = 334. Reported Count primary; CL/BF consensus selected. IE shows 34-count divergence; CL/BF preferred."
+    "reasoning": "Selected 334. Tail maturity (age 119 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=334.  IE (367) close to actual (334); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2016,
     "selection": 391,
-    "reasoning": "Reported Count CL ultimate 391. Fully developed (107 months, CDF 1.0). Methods converge: CL = 391, IE = 402, BF = 391. Reported Count primary; CL/BF consensus selected. IE shows 11-count divergence (minimal); CL/BF credible."
+    "reasoning": "Selected 391. Tail maturity (age 107 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=391.  IE (402) close to actual (391); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2017,
     "selection": 310,
-    "reasoning": "Reported Count CL ultimate 310. Fully developed (95 months, CDF 1.0). Methods converge: CL = 310, IE = 352, BF = 310. Reported Count primary; CL/BF consensus selected. IE shows 42-count divergence; CL/BF preferred."
+    "reasoning": "Selected 310. Tail maturity (age 95 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=310.  IE (352) close to actual (310); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2018,
     "selection": 326,
-    "reasoning": "Reported Count CL ultimate 326. Fully developed (83 months, CDF 1.0). Methods converge: CL = 326, IE = 350, BF = 326. Reported Count primary; CL/BF consensus selected. IE shows 24-count divergence; CL/BF credible."
+    "reasoning": "Selected 326. Late maturity (age 83 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=326.  IE (350) close to actual (326); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2019,
     "selection": 358,
-    "reasoning": "Reported Count CL ultimate 358. Fully developed (71 months, CDF 1.0). Methods converge: CL = 358, IE = 338, BF = 358. Reported Count primary; CL/BF consensus selected. IE shows negative IBNR (-20); CL/BF preferred."
+    "reasoning": "Selected 358. Late maturity (age 71 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=358.  IE (338) would imply negative IBNR; disqualified. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2020,
     "selection": 371,
-    "reasoning": "Reported Count CL ultimate 371. Fully developed (59 months, CDF 1.0). Methods converge: CL = 371, IE = 358, BF = 371. Reported Count primary; CL/BF consensus selected. IE shows negative IBNR (-13); CL/BF credible."
+    "reasoning": "Selected 371. Mid maturity (age 59 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=371.  IE (358) would imply negative IBNR; disqualified. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2021,
     "selection": 330,
-    "reasoning": "Reported Count CL ultimate 330. Fully developed (47 months, CDF 1.0). Methods converge: CL = 330, IE = 360, BF = 330. Reported Count primary; CL/BF consensus selected. IE shows 30-count divergence; CL/BF preferred."
+    "reasoning": "Selected 330. Mid maturity (age 47 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=330.  IE (360) close to actual (330); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2022,
     "selection": 298,
-    "reasoning": "Reported Count CL ultimate 298. Nearly fully developed (35 months, CDF 1.0004, 99.96%). Methods converge: CL = 298, IE = 340, BF = 298. Reported Count primary; CL/BF consensus selected. IE shows 42-count divergence indicating a priori mismatch. CL credible at near-full development."
+    "reasoning": "Selected 298. Early-mid maturity (age 35 months, CDF=1.00). Reported count is fully developed: CL=BF=actual=298.  IE (340) close to actual (298); consistent. No further development expected; selection equals the fully-reported count. No prior selections."
   },
   {
     "period": 2023,
     "selection": 305,
-    "reasoning": "Reported Count CL ultimate 305. Nearly fully developed (23 months, CDF 1.0004, 99.96%). Methods converge: CL = 305, IE = 317, BF = 305. Reported Count primary; CL/BF consensus selected. IE shows 13-count divergence (minimal). CL/BF convergence indicates credibility. No material IBNR."
+    "reasoning": "Selected 305. Green maturity (age 23 months, CDF=1.002). BF (305) and CL (305) converge within 0.0% \u2014 BF selected as primary method appropriate for this maturity. IE (317) is 3.9% above BF; IE provides secondary confirmation of slightly higher development but BF is preferred. No prior selections."
   },
   {
     "period": 2024,
-    "selection": 290,
-    "reasoning": "Reported Count CL ultimate 290. Early maturity (11 months, CDF 1.1335, 88.23% developed). Methods show tight convergence: CL = 290, IE = 292, BF = 290. Reported Count primary; convergence check applied: CL/BF consensus at 290 selected over IE at 292. 1% divergence within reasonable bounds at this immaturity. 34 counts IBNR expected."
+    "selection": 281,
+    "reasoning": "Selected 281. Green maturity (age 11 months, CDF=1.092). BF (281) and CL (280) converge within 0.4% \u2014 BF selected as primary method appropriate for this maturity. IE (292) is 3.9% above BF; IE provides secondary confirmation of slightly higher development but BF is preferred. No prior selections."
   }
 ]

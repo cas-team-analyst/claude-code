@@ -1,32 +1,32 @@
-# Peer Review — Workers Compensation (Sample Run)
+# Peer Review — Workers Compensation Sample Run
 
-**Analysis folder:** `sample-run/`
-**Files reviewed:**
-- `Analysis.xlsx` (values-only workbook, 15 sheets)
-- `Tech Review.xlsx`
-- `REPORT.md`
-- `REPLICATE.md`
-
-**Review date:** 2026-04-30
+**Analysis folder:** C:\Users\super\Documents\actuarial\cas-rfp\spec-only\team-analyst\sample-data\sample-run
+**Review date:** 2026-06-01
 **Status:** Advisory — no selections were modified
+
+**Files reviewed:**
+- Analysis.xlsx
+- Tech Review.xlsx
+- REPORT.md
+- REPLICATE.md
 
 ---
 
 ## Summary
 
-This is a well-structured initial analysis of a Workers Compensation triangle (AY 2001–2024) using Chain Ladder, BF, and Initial Expected methods. Documentation is substantially complete for a working draft, and the analyst has done commendable work flagging known judgment calls in Section 11. The analysis is acceptable for internal review purposes, with three areas that warrant closer attention before the reserve is finalized: the CL-over-BF selection for AY 2022, the choice of Paid BF over Incurred BF for AYs 2023–2024, and the unvalidated ELR fallback that underpins all BF estimates. Several documentation inconsistencies also need correction.
+This is a Workers Compensation Chain Ladder + BF reserving study (AY 2001–2024) producing a selected total unpaid of $6.1M on a $47.9M ultimate. The workflow ran cleanly and the method selection logic is generally sound. One technical FAIL requires correction before finalization (AY 2002 negative IBNR), and one high-priority judgment call — the tail curve method selection — carries a material reserve difference between the two AI approaches that needs an explicit rationale. Documentation in REPORT.md and REPLICATE.md is substantially incomplete and does not currently meet ASOP 41 standards for a final actuarial communication.
 
 ---
 
 ## High-Priority Findings
 
-| # | AY(s) | Finding | Section |
-|---|---|---|---|
-| H1 | 2022 | CL selected at 62% development — BF typically preferred here | Cross-Method Consistency |
-| H2 | 2023–2024 | Paid BF chosen over Incurred BF with 20–33% spread; conservative framing not a sufficient ASOP 43 justification | Cross-Method Consistency |
-| H3 | 2020–2024 | ELR fallback drives all BF estimates; no validation against underwriting — largest source of parameter risk | ASOP Compliance (ASOP 25) |
-| H4 | 2007 | Large-loss year carried at selected ultimate with no separate large-loss analysis; potential for significant adverse development | Paid vs. Incurred Reasonability |
-| H5 | All | Tech Review run on values-only workbook — 11 of 16 WARNs are structural/expected; important check groups skipped entirely | Technical Review Diagnostics |
+1. **[FAIL] AY 2002 negative IBNR (-$30,239)** — Selected ultimate ($2,297,495) falls below current incurred losses ($2,327,734). Fix required before any distribution. See §Cross-Method Consistency and §Proposed Alternatives.
+
+2. **[High] Tail curve method divergence** — Rules-based selector chose Bondy/modified_bondy (implied tail 1.003–1.005) while the open-ended selector chose exp_dev_quick_exact_last (implied tail 1.066–1.072). The gap is 6–7 tail points. The driving issue — whether the gap_flag=True disqualification of exponential forms is appropriate given late-age development evidence — has not been resolved and is the single largest source of reserve uncertainty in this analysis. See §Technical Review Diagnostics and §Proposed Alternatives.
+
+3. **[High] REPORT.md Section 5.2 misstates ELRs** — The text reads "~1.0% for AY 2020–2024" but the actual fallback ELRs embedded in 3-ie-ultimates.py produce IE values implying ~0.2–0.3% pure premium rates for those years (e.g., AY 2024 IE = $997,790 / $498.9M exposure = 0.20%). The ~1.0% figure belongs to AY 2001, not recent years. This is a documentation error that would mislead a reader assessing the BF a priori reasonableness.
+
+4. **[High] REPORT.md and REPLICATE.md are substantially incomplete** — Multiple sections contain only template placeholders. A reviewer or future analyst cannot currently reproduce or independently evaluate the analysis from these documents. See §Documentation Quality.
 
 ---
 
@@ -34,181 +34,147 @@ This is a well-structured initial analysis of a Workers Compensation triangle (A
 
 ### Cross-Method Consistency
 
-**Paid vs. Incurred CL spread — generally acceptable, two years worth flagging.**
+**Paid vs. incurred LDF ordering.** Paid LDFs appropriately exceed incurred LDFs at early and mid maturities (ages 11–83 months). However, there are inversions at three late-age intervals:
 
-For most accident years (2003–2022), Incurred CL and Paid CL ultimates are within ±5%, which is expected for a maturing WC book. Two exceptions warrant attention:
-
-- **AY 2012 (155 months): 12.2% spread.** Incurred CL = $1,402,971; Paid CL = $1,250,085. At this maturity, the $169,516 case reserve outstanding (Incurred – Paid diagonal) is elevated for a WC year that should be approaching finality. The analyst's note of "minor data timing" may be accurate, but consider whether case reserves are being held conservatively on late-developing claims. If paid development accelerates in the next diagonal, the Incurred CL selection would look over-stated. You may want to verify whether any open claims remain in this year and whether the case reserve is appropriately set.
-
-- **AY 2023 (23 months): 11.6% spread; AY 2024 (11 months): 30.9%.** Both are expected given extreme immaturity — not a concern, just noted for completeness.
-
-**AY 2022: CL selected at 62% development — unusual choice.**
-
-At 35 months (62% developed), the analyst selects Incurred CL ($1,332,512) over Incurred BF ($1,190,947) or Paid BF ($1,183,961). The selection reasoning argues that CL "credibility is higher at 62% development" because "CL and BF are close." This framing is circular — closeness of CL and BF in other years does not establish CL credibility for this year. Actuarial practice and ASOP 43 generally prefer BF for years below 70% developed because the a priori assumption dampens the leveraged CDF. The CDF at 35 months is 1.61 (implying 38% of losses are yet to emerge) — more than enough tail to introduce meaningful estimation error in CL alone.
-
-Proposed alternative: select Incurred BF ($1,190,947), reducing the AY 2022 ultimate by approximately $141,565 (–10.6%). See Proposed Alternatives section.
-
-**AY 2023–2024: Paid BF over Incurred BF — rationale needs strengthening.**
-
-The analyst selects Paid BF for AYs 2023 and 2024, citing "conservative positioning." The spread is material:
-
-| AY | Incurred BF | Paid BF | Spread |
+| Interval | Paid LDF (RB) | Incurred LDF (RB) | Direction |
 |---|---|---|---|
-| 2023 | $2,128,807 | $1,771,456 | $357,351 (20%) |
-| 2024 | $1,577,300 | $1,190,793 | $386,507 (32%) |
+| 95–107 | 1.013 | 1.015 | Paid < Incurred (minor) |
+| 131–143 | 1.010 | 1.030 | Paid < Incurred (notable) |
+| 167–179 | 1.0075 | 1.010 | Paid < Incurred (minor) |
+| 179–191 | 1.0025 | 1.003 | Paid < Incurred (minor) |
 
-ASOP 43 does not endorse "conservatism" as a standalone selection criterion — the standard requires methods to produce a "reasonable" estimate, not a deliberately low one. At these maturities (23 and 11 months), incurred data is richer: case reserves are set by claims adjusters with direct knowledge of open claims, and incurred development patterns are typically more stable than paid patterns at early ages. The argument that paid BF is preferable because paid CDFs are lower than incurred CDFs at 23 months is somewhat expected and does not by itself make Paid BF the better estimator.
+The 131–143 inversion is the most notable: incurred is selected 2.0 points above paid at an age where case reserves should be winding down. This may reflect a period of incurred reserve strengthening pulling up the incurred average at this interval. It is worth examining whether excluding one or two volatile incurred development factors at 131–143 months would change the selection, though the reserve impact is modest at this maturity.
 
-You may want to consider whether Incurred BF is a better anchor for these two years, with Paid BF retained as a reasonable lower bound. A disclosed blend (e.g., 50/50 at 23 months) could also be defensible. The aggregate reserve impact of switching both years to Incurred BF would be approximately +$744K, shifting total IBNR from $3.20M to roughly $3.94M.
+**Rules-based vs. open-ended LDF agreement.** Both selectors agree well at early ages (11–83 months). Divergences emerge in the 107–179 range for paid loss:
 
-**BF vs. CL consistency — appropriate for most years.**
+| Interval | Paid OE | Paid RB | Difference |
+|---|---|---|---|
+| 107–119 | 1.040 | 1.055 | −0.015 |
+| 119–131 | 1.025 | 1.010 | +0.015 |
+| 131–143 | 1.020 | 1.010 | +0.010 |
 
-For 2001–2019, the pattern of Incurred CL as primary method for mature years is sensible. The shift to BF for 2020–2022 is directionally right. The switch back to CL for AY 2022 at 62% development is the outlier discussed above.
+These differences partially offset, so the net CDF impact is small. No single divergence is large enough to flag independently.
+
+**BF vs. CL consistency.** BF ultimates are consistently within 5% of CL ultimates for AY 2008–2018, confirming the a priori is reasonably calibrated for mid-maturity years. For AY 2019–2022 the two methods show somewhat wider spreads (as expected at lower maturities), and the blending logic appropriately shifts weight toward BF.
 
 ---
 
 ### Paid vs. Incurred Reasonability
 
-**No paid ultimate falls below incurred losses** — the fundamental paid/incurred sanity check passes across all 24 AYs. This is a positive finding.
+**AY 2002 — floor violation (FAIL).** The selected ultimate ($2,297,495) is below current incurred losses ($2,327,734). The blend of 70% Incurred CL ($2,334,717) + 30% Paid CL ($2,210,644) mathematically produces a result below actuals. At 275 months, blending in paid CL at 30% weight serves no useful purpose — paid development below incurred at near-full maturity simply reflects remaining open case reserves, not a signal that the ultimate should be lower. The selection should be floored at the actual incurred.
 
-**AY 2007 — large-loss year carried without separate analysis.**
+**AY 2007 large-loss year.** Incurred actual ($4,810,775) is 3–4× the typical year. The IE/BF a priori ($2,850,338) badly underestimates this year, and the CDF at 215 months is only 1.018, so the CL selection of $4,917,122 is well-grounded and the judgment to use full CL weight here is defensible. The open-ended selector's $4,898,021 (pure Incurred CL) and the rules-based $4,917,122 (CL midpoint) are close ($19K gap). No material concern.
 
-Paid and Incurred diagonals for AY 2007 are $4.79M and $4.81M respectively — approximately 3× peer years at comparable maturity. The Incurred CL ultimate of $4,878,544 implies only $67,769 IBNR (1.4%) at 215 months, which is consistent with high maturity. However:
-
-- No separate identification or capping of the large loss has been performed.
-- If a single large claim is still open in AY 2007 (possible at 215 months for a WC permanent disability case), further development could materially shift the ultimate.
-- The analyst has appropriately flagged this for escalation to chief actuary/committee. This reviewer concurs that AY 2007 and AY 2015 (similarly elevated) warrant verification of open-claim status before the reserve is finalized.
-
-**AY 2001 and AY 2002 — elevated loss rates.**
-
-The implied loss rate (loss per dollar of payroll) for AY 2001 is approximately 1.00% — roughly 2–3× most other years in the 2003–2022 range. AY 2002 is 0.72%, also elevated. These are the most mature years and fully settled, so the observation is informational rather than actionable. It may reflect a different book composition in early accident years, or simply higher industry WC loss rates in 2001–2002. No restatement is needed, but a brief note in the report acknowledging this pattern (rather than readers inferring it from the loss rate column) would improve transparency.
+**AY 2023–2024 paid-to-incurred ratios.** For AY 2024 (age 11 months), paid-to-incurred is 0.40 and paid CDF is 6.72. The extreme CL leverage is correctly handled by excluding CL from the selection and using BF exclusively. For AY 2023 (age 23 months), paid CDF is 2.63 and the selection likewise excludes paid CL in favor of BF. These are reasonable judgments per the selection reasoning.
 
 ---
 
-### Recent Year Loss Rate Stability
+### Recent Year Stability
 
-The implied loss rates (ultimate loss / payroll) by recent accident year are:
+Selected loss rates (ultimate / payroll exposure) show a declining trend in recent years:
 
-| AY | Age (mo) | Selected Ultimate | Loss Rate | Method |
-|---|---|---|---|---|
-| 2017 | 95 | $1,303,581 | 0.30% | Incurred CL |
-| 2018 | 83 | $2,595,631 | 0.59% | Incurred CL |
-| 2019 | 71 | $3,093,231 | 0.68% | Incurred CL |
-| 2020 | 59 | $1,414,067 | 0.31% | Paid BF |
-| 2021 | 47 | $1,394,937 | 0.30% | Incurred BF |
-| 2022 | 35 | $1,332,512 | 0.28% | Incurred CL |
-| 2023 | 23 | $1,771,456 | 0.36% | Paid BF |
-| 2024 | 11 | $1,190,793 | 0.24% | Paid BF |
+| AY | Selected Ultimate | Exposure | Implied Loss Rate |
+|---|---|---|---|
+| 2015 | $3,688,580 | ~$417M | 0.88% |
+| 2016 | $2,842,344 | ~$426M | 0.67% |
+| 2017 | $1,421,504 | ~$434M | 0.33% |
+| 2018 | $2,785,760 | ~$443M | 0.63% |
+| 2019 | $3,113,619 | $451.9M | 0.69% |
+| 2020 | $1,439,104 | $460.9M | 0.31% |
+| 2021 | $1,469,786 | $470.1M | 0.31% |
+| 2022 | $1,301,030 | $479.5M | 0.27% |
+| 2023 | $1,806,125 | $489.1M | 0.37% |
+| 2024 | $1,355,317 | $498.9M | 0.27% |
 
-Two patterns worth noting:
+AY 2020–2024 selected rates average approximately 0.31%, materially below the 0.40–0.89% seen in AY 2015–2019 (excluding the 2007 outlier). Two explanations are plausible and worth discussing in the REPORT: (a) genuine improvement in WC loss experience due to safety programs, mix shift, or favorable claim closure trends; or (b) the BF a priori (computed as a 3-year rolling average of recent empirical rates) is itself tracking the low emergence and thereby anchoring ultimates too low. If explanation (b) is correct, IBNR for AY 2021–2024 may be under-stated. The reviewer may want to consider whether an independent ELR benchmark (pricing indication, industry data) would produce materially different a priori values for these years.
 
-1. **AY 2019 stands out at 0.68% vs. the 0.28–0.59% range of neighboring years.** At 71 months with a CDF of 1.19 (84% developed), the CL ultimate is being leveraged. It is possible that AY 2019 is a legitimately adverse year — but the magnitude of the jump from AY 2018 (0.59%) and subsequent drop to AY 2020 (0.31%) suggests that the Incurred CL for 2019 may be over-leveraging a period of elevated diagonal development. The BF indication ($2,960,229) is materially lower by 5.3%. You may want to consider whether BF deserves more weight for AY 2019 given this pattern.
-
-2. **The AY 2019–2020 drop from 0.68% to 0.31%** is dramatic and likely partly attributable to COVID-19 effects on payroll and claim activity in 2020. The report does not mention this possible explanation. Adding a brief comment under Section 8.2 or Section 3.3 noting that 2020–2022 loss rates may reflect pandemic-era claim suppression would help a reviewer understand the pattern.
+AY 2019 at 0.69% stands out above recent peers. At age 71 months (CDF ~1.35), the CL indication is elevated and the BF blend pulls the selection toward $3.1M. This year warrants a watch in the next review cycle to confirm whether actual emergence supports the current selection.
 
 ---
 
 ### ASOP Compliance
 
-**ASOP 23 (Data Quality):** Disclosed appropriately. Data is accepted as-is from Triangle Examples 1.xlsx with no financial reconciliation; this limitation is clearly stated. The formula-derived payroll exposure (2001 × 1.02^n) is documented. One item: the report does not describe what reasonableness checks were performed on the raw triangle values themselves (e.g., verification of non-negative diagonals, sign checks, monotonicity). For an internal analysis this is acceptable, but a sentence in Section 3.2 confirming basic data integrity checks were performed (even implicitly by the data validation step) would strengthen ASOP 23 compliance.
+**ASOP 23 (Data Quality).** The analysis accepts triangle data from Triangle Examples 1.xlsx with no reconciliation to an external source. The REPORT documents this appropriately ("Not reconciled — data accepted as provided"). No material anomalies were flagged in initial data review. The limitation is disclosed. Acceptable for a sample run; a production analysis should include a tie-out to financial records.
 
-**ASOP 25 (Credibility):** The BF ELR is labeled a "fallback approximation" — a 3-year rolling average of empirical incurred loss per dollar of payroll. This is disclosed, which is commendable. However, ASOP 25 requires the complement of credibility (the a priori) to be "related to" the subject experience and for the selection basis to be documented. The report acknowledges the fallback lacks forward-looking pricing grounding and flags it in Section 11. The reviewer would additionally suggest: (a) confirming the 3-year window is appropriate (rather than 5-year or all-year), and (b) adding a brief statement in Section 5.5 describing why this specific window was used. No underwriting ELRs are available, so the fallback is the only practical option; the documentation should say so explicitly.
+**ASOP 25 (Credibility).** The BF a priori is a 3-year rolling average of empirical incurred loss rates — a mechanical fallback rather than a pricing-derived ELR. The REPORT discloses this in Section 3.4. However, no discussion of the a priori's credibility or the sensitivity of recent-year ultimates to this assumption appears in Sections 5 or 8. Given that BF carries 50–80% weight for AY 2021–2024, the a priori source and reliability should be addressed. Additionally, as noted under the AY 2002 finding, blending paid CL at 30% weight at age 275 months is not credible weighting practice — it actively produces a floor violation.
 
-**ASOP 36 (Statements of Actuarial Opinion):** Not applicable — this is an internal working draft, not a SAO. The report appropriately states draft status and limits the intended audience.
+**ASOP 36 (SAO).** This is a working draft; no SAO has been issued. The REPORT carries appropriate draft caveats. Not applicable in the current form.
 
-**ASOP 41 (Communications):** The report is clearly labeled as a draft for internal peer review. Intended users are stated (Section 1.3). Methods, assumptions, and data sources are documented, albeit at a summary level. Two gaps to address before finalizing: (a) the actuary's professional qualifications are not stated (not required for a working draft, but should be added before the report becomes a final communication); (b) the information date (Section 10) notes "~November 30, 2024 (inferred)" — the approximate nature of the valuation date should be resolved or confirmed before the report is circulated as a final document.
+**ASOP 41 (Communications).** Sections 4.1, 4.2, 5.1, 7, 8.2, 9, 10, 11, and 14 contain template placeholders or unchecked boxes. In current state, the REPORT does not meet ASOP 41's requirement that a qualified actuary could understand and evaluate the methods, assumptions, and rationale from the communication. See §Documentation Quality.
 
-**ASOP 43 (Unpaid Claim Estimates):** Section 8.1 (Sensitivity) is noted as "not implemented." This is acceptable for a working draft but should be addressed before finalization — even a simple sensitivity table showing reserve impact of ±5% on tail factors and ±10% on ELRs would meet the standard's uncertainty disclosure requirement. The sources of uncertainty discussion in Section 8.2 is well-written and substantive.
-
-**ASOP 13 (Trending):** Not implemented; appropriately noted throughout the report.
+**ASOP 43 (Unpaid Claim Estimates).** Method selection logic is well-documented in the individual ultimate selection reasoning (Analysis.xlsx Loss Selection column). However, Section 8.2 (Sources of Uncertainty) is a template placeholder, and no aggregate reasonableness check is documented. ASOP 43 requires that the estimate be reviewed for reasonableness in aggregate — not only method-by-method. The loss rate progression table above provides a starting point; it should be added to the REPORT.
 
 ---
 
 ### Diagnostic Consistency
 
-**LDF selection framework is coherent.** The 14-criteria rules-based approach with open-ended AI cross-check is documented in REPLICATE.md and referenced in the report. The tail selection of `exp_dev_product` for all three measures is consistent with the diagnostics cited (gap compliance; Skurnick and exact-last variants produced unreasonable tails).
+All seven items in Section 7 of REPORT.md remain unchecked despite 7-tech-review.py having been run and producing results. The diagnostics checklist and the anomalies section need to be populated from the tech review output before the REPORT is distributed.
 
-**Method indications by AY are internally consistent** with the maturity-based weighting described in Section 4.2. No cases were found where the selected ultimate is outside the range of all method indications for the same year, which is a basic ASOP 43 coherence check.
+The LDF selections in the workbook are consistent with the selection reasoning in the JSON files — the AI selectors' rationale accurately describes the averages applied at each interval. No inconsistency between documented reasoning and actual selected values was observed.
 
-**AY 2013 appears low relative to peers.** Selected ultimate of $729,197 at 143 months implies a loss rate of 0.18%, the lowest in the entire series by a significant margin. This could reflect a genuinely benign year, a low-claim AY, or an averaging artifact in LDF selection. It warrants a brief comment in the report explaining why AY 2013 is materially lower than its neighbors (AY 2012 at $1.40M, AY 2014 at $1.44M).
+The Pre-Method Diagnostics and Post-Method Diagnostics sheets are present in Analysis.xlsx and provide the diagnostic exhibits. These are not populated into the REPORT narrative.
 
 ---
 
 ### Documentation Quality
 
-**REPORT.md is substantially complete** for a working draft. Sections 0–11 are populated with real content rather than boilerplate. The analyst's self-flagging in Section 11 is a positive practice.
+**REPORT.md.** Multiple sections require population before this can serve as an actuarial communication:
 
-**Two documentation inconsistencies to correct:**
+- Section 4.1 Methods Applied: All method rows show "[ ]" — not filled in from the analysis
+- Section 4.2 Method Weighting: Contains only the template placeholder "[Describe how methods were weighted...]"
+- Section 5.1 Development Patterns: Selection basis and tail source fields are template stubs
+- Section 5.2 Expected Loss Ratios: Contains incorrect ELR figures (states ~1.0% for AY 2020–2024; actual implied rates are ~0.2–0.3%)
+- Section 7 Diagnostics: All seven checklist items unchecked; "Anomalies to investigate" unpopulated
+- Section 8.2 Sources of Uncertainty: Template text only; no analysis-specific risk discussion
+- Section 9 Reliance on Others: Template placeholders not replaced
+- Section 10 Information Date: Blank
+- Section 11 Open Questions: Items 1–3 are template text (though the two appended findings at the bottom are well-written and useful)
+- Section 14 Version History: Dates not filled in
 
-1. **Section 7 — Tech Review WARN description for Loss:** The report states "AY 2007 selected ultimate of ~$1.54M flagged as outlier vs. median." The actual AY 2007 selected ultimate is **$4,878,544**, not ~$1.54M. The value $1,539,016 is AY 2006's selected ultimate (which is also shown in the Tech Review detail). This appears to be a copy error — the outlier being flagged by the Tech Review is AY 2007 at $4.88M (approximately 3.2× the median of ~$1.49M), not a ~$1.54M figure. The description should be corrected to reference AY 2007's actual selected value.
+The two substantive entries in Section 11 (AY 2002 negative IBNR and tail curve divergence) are well-framed. The Section 0 Reviewer Quick-Start is the best-populated section of the report and provides useful orientation.
 
-2. **Section 5.2 — ELR table uses approximate ranges rather than actual values.** The table shows "~0.007–0.010" etc. ASOP 43 requires disclosure of the assumptions used. The actual per-year ELR values are available in the processed data files — either including them directly in the table or providing a clearer reference to the specific output file (and column) would better satisfy ASOP 41/43 disclosure requirements.
-
-**REPLICATE.md is excellent.** The step-by-step replication log, the explicit notation of "No manual overrides — all selections from Rules-Based AI Selection row," and the "To replicate" instructions for each step are all good practice that would allow an independent actuary to reproduce the analysis. One small gap: the Notes section at the bottom is blank. A sentence noting that the tail JSON output files required renaming (which is already documented in Step 4) could be promoted to the Notes section for visibility.
+**REPLICATE.md.** Steps 2–9 read only "To be filled in as analysis progresses." A reviewer has no way to replicate the analysis from this document alone. It should document: all scripts run in order, the LDF and tail selection JSON files created, any manual selections or overrides (there were none per the PROGRESS log), and the full script execution sequence from 1a through 7.
 
 ---
 
 ### Technical Review Diagnostics
 
-**The Tech Review was run against `Analysis.xlsx` (values only), not the complete analysis workbook.** This is the root cause of 11 of the 16 WARNs, all of which report "Not in values file — see complete-analysis.xlsx (expected)." The following check groups were skipped entirely:
+The tech review produced one FAIL and several WARNs:
 
-- Paid-to-Incurred raw data checks (WARN: "One or both missing — skipping")
-- Case reserve reasonableness checks (WARN: "Incurred Loss and/or Paid Loss missing — skipping")
-- Closure rate checks (WARN: "Reported Count and/or Closed Count missing — skipping")
-- Severity/frequency trend checks (WARN: "Diagnostics sheet missing — skipping")
-- Development factor checks (WARN: "Not in values file")
+**FAIL — Loss Selection IBNR < 0 for AY 2002.** Discussed above. Requires a fix.
 
-These are among the most actuarially meaningful checks. It is recommended that `7-tech-review.py` be re-run against the complete analysis workbook (if it exists) or that `Analysis.xlsx` be supplemented with the Diagnostics and Sel- sheets before peer review is finalized. If the complete workbook was not created (the `output/` folder appears to be empty), the analyst may need to re-run `6-analysis-create-excel.py`.
+**WARN — Loss Selection extreme outlier (1 period > 10× median).** AY 2007's selected ultimate ($4,917,122) is an outlier relative to most years. This is expected given the documented large-loss event. No action needed, but the REPORT should explicitly confirm this is a known large-loss year rather than a data anomaly.
 
-**The three substantive WARNs are adequately addressed:**
-- AY 2007 loss ultimate outlier — explained as large-loss year (reasonable)
-- Count IBNR slight negatives in 7 mature periods — within tolerance for fully developed years (acceptable)
-- Count outlier at AY 2011 (selected = 346) — the 10× median check appears to flag this AY given the small denominator in some diagnostic calculation; the analyst's explanation for the analogous count flag is reasonable
+**WARN — Count Selection slight negatives** (AY 2005, 2006, 2007, 2012, 2014, 2017, 2022). These are rounding artifacts from integer-rounding the selected count ultimates for years with CDF = 1.000. The negatives range from -0.23 to -0.49 counts — immaterial. No action required, but the REPORT should note "minor rounding effects in fully developed count years."
+
+**WARN — Multiple structure checks not run against values-only file.** The tech review WARNs that diagnostics, Sel- sheets, CL triangle sheets, paid-to-incurred, case reserve, closure rate, and severity/frequency trend checks were skipped because those sheets are not in the values-only file (Analysis.xlsx). These checks would run against the full Complete Analysis.xlsx. The reviewer should confirm that 7-tech-review.py was also run against Complete Analysis.xlsx and those checks passed, or note that they were not performed.
 
 ---
 
 ## Proposed Alternatives
 
-The following are advisory alternatives where the reviewer would select differently. No changes have been applied.
+### 1. AY 2002 — Floor Ultimate at Actual Incurred
 
-### Alternative 1: AY 2022 — BF over CL
+**Analyst selection:** $2,297,495 (70% Incurred CL + 30% Paid CL)
+**Proposed alternative:** $2,327,734 (actual incurred, as floor) or $2,334,717 (100% Incurred CL)
 
-| | Incurred CL (Analyst) | Incurred BF (Proposed) | Difference |
-|---|---|---|---|
-| Selected Ultimate | $1,332,512 | $1,190,947 | –$141,565 (–10.6%) |
-| IBNR | $505,096 | $363,531 | –$141,565 |
+At 275 months maturity (99.7% developed), blending in paid CL serves no purpose other than to pull the selection below the current incurred balance. The incurred actual of $2,327,734 is the minimum defensible selection; the Incurred CL of $2,334,717 applies only a trivial remaining tail (1.003) and is the cleaner choice. Either eliminates the negative IBNR and produces a more defensible result. The open-ended selector independently chose $2,334,717 (Incurred CL), arriving at the same conclusion.
 
-**Rationale:** At 35 months (62% developed), ASOP 43 and standard practice favor BF as the primary method due to the material tail still to be developed. Both Incurred BF and Paid BF agree closely ($1,190,947 and $1,183,961), which provides method support for the BF range. The current CL selection is not unreasonable, but a BF alternative would be better supported by actuarial standards.
+### 2. Tail Curve — Explicit Resolution of Rules-Based vs. Open-Ended Divergence
 
----
+**Rules-based selection:** Bondy for Incurred Loss (tail ≈ 1.003), modified_bondy_double_dev for Paid Loss (tail ≈ 1.005)
+**Open-ended selection:** exp_dev_quick_exact_last for both (Incurred ≈ 1.072, Paid ≈ 1.066)
+**Reserve impact:** Approximately +6–7% to projected ultimates for the immature years if the open-ended tail is used; at a total reserve of $6.1M this could represent $300–$500K+ of additional IBNR.
 
-### Alternative 2: AY 2023 — Incurred BF over Paid BF
+The rules-based selector rejected all exponential forms due to gap_flag=True — the exponential curve at the starting age jumps discontinuously from the last empirical LDF. This is a legitimate concern: a sudden step-up at the cutoff age creates internally inconsistent CDFs. The open-ended selector acknowledged the gap but preferred the exponential form for its goodness-of-fit (R² = 0.865 for paid, LOO range 1.088–1.090) and the evidence of continued small-but-measurable late-age development in the empirical triangles.
 
-| | Paid BF (Analyst) | Incurred BF (Proposed) | Difference |
-|---|---|---|---|
-| Selected Ultimate | $1,771,456 | $2,128,807 | +$357,351 (+20.2%) |
-| IBNR | $119,699 | $477,050 | +$357,351 |
+The reviewer may want to consider whether the exp_dev_quick_exact_last tail factor, constrained to match the last empirical LDF at the cutoff (reducing the gap), provides a better balance than either a flat Bondy or an unconstrained exponential. The key question: do the empirical paid development factors at ages 203–275 months (1.008, 1.010, 1.002, 1.005, 1.007, 1.007) represent genuine residual development or random noise? If genuine, a tail of 1.005 (Bondy) likely under-reserves; if noise, 1.066 (exponential) likely over-reserves.
 
-**Rationale:** At 23 months, incurred data includes current case reserves set by claims adjusters and is typically more informative than paid emergence. Selecting Paid BF as "conservative" is not an ASOP 43-supported basis for method selection. Incurred BF better reflects the actual reserve obligation at this maturity. If the analyst is concerned about case adequacy drift, a disclosed blend of Incurred BF and Paid BF (e.g., 50/50) could be an intermediate position.
+Reviewer suggestion: examine whether using the exact_last variant specifically anchors the curve to last observed LDF ~1.0025 for paid, and evaluate whether a tail of ~1.020–1.030 (between the two extremes) would be supportable by a weighted-average of the empirical late factors.
 
----
+### 3. Recent Year BF A Priori — Consider Whether Fallback ELR Is Under-Stated
 
-### Alternative 3: AY 2024 — Blend of BF methods
+**Current approach:** 3-year rolling average of empirical incurred loss rates (producing ~0.20–0.25% pure premium for AY 2022–2024)
+**Proposed consideration:** Compare against industry WC pure premiums or company pricing indications for equivalent clerical classification to assess whether the recent experience is genuinely favorable or artificially low due to IBNR lag
 
-| Method | Ultimate | Difference vs. Analyst |
-|---|---|---|
-| Paid BF (Analyst) | $1,190,793 | — |
-| Incurred BF | $1,577,300 | +$386,507 (+32%) |
-| 50/50 Blend | $1,384,047 | +$193,254 (+16%) |
-
-**Rationale:** At 11 months (31% developed), uncertainty is extreme. The 32% spread between Incurred BF and Paid BF reflects this — neither should be treated with false precision. A disclosed 50/50 blend, with a stated uncertainty range bounded by both methods, would more transparently convey the estimation uncertainty at this maturity and better satisfy ASOP 43's uncertainty disclosure requirements.
-
----
-
-### Alternative 4: AY 2007 — Separate large-loss analysis
-
-No specific alternative ultimate is proposed here (would require claim-level data), but the reviewer recommends obtaining an open-claims listing for AY 2007 and, if any claims above a retention threshold remain open, performing a cap-and-excess analysis or at minimum a deterministic scenario for adverse development. This is consistent with the analyst's own recommendation in Section 11.
-
----
-
-*This peer review is advisory only. All selections remain the analyst's responsibility. The reviewer proposes alternatives to assist in evaluating the range of reasonable estimates; they are not recommendations to override any specific selection.*
+This is not a required change but a sensitivity worth documenting. If industry benchmarks suggest WC pure premiums for clerical at 0.30–0.40%, the current BF a priori may be anchoring AY 2022–2024 ultimates 15–30% below a more forward-looking indication. The IBNR impact would be $100–250K.

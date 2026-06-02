@@ -31,8 +31,8 @@ from modules.markdown_utils import df_to_markdown
 from modules.xl_writers import write_ultimates_sheet_xlw
 
 # Paths from modules/config.py — override here if needed:
-INPUT_ULTIMATES  = config.ULTIMATES + "projected-ultimates.parquet"
-INPUT_TRIANGLES = config.PROCESSED_DATA + "1_triangles.parquet"  # Triangle data including Exposure measure
+INPUT_ULTIMATES  = config.ULTIMATES + "projected-ultimates.csv"
+INPUT_TRIANGLES = config.PROCESSED_DATA + "1_triangles.csv"  # Triangle data including Exposure measure
 PRIOR_SELECTIONS_RB = config.SELECTIONS + "ultimates-prior.json"             # Optional, priority 1 — set to prior cycle's selected ultimates
 PRIOR_SELECTIONS_OE = config.SELECTIONS + "ultimates-prior-oe.json"          # Optional, priority 2 — fallback prior
 OUTPUT_FILE      = config.SELECTIONS + "Ultimates.xlsx"
@@ -195,7 +195,7 @@ def main():
     print("Creating Ultimates.xlsx...")
     
     try:
-        df_ult = pd.read_parquet(INPUT_ULTIMATES)
+        df_ult = pd.read_csv(INPUT_ULTIMATES)
         print(f"Loaded ultimates from {INPUT_ULTIMATES}")
     except Exception as e:
         print(f"Error loading ultimates: {e}")
@@ -263,7 +263,7 @@ def main():
     
     exp_md = "No Exposure data\n"
     try:
-        tri_df = pd.read_parquet(INPUT_TRIANGLES)
+        tri_df = pd.read_csv(INPUT_TRIANGLES)
         exp_sub = tri_df[(tri_df['measure'] == 'Exposure') & tri_df['value'].notna()]
         if not exp_sub.empty:
             # Format Exposure as simple 2-column table (period, value)

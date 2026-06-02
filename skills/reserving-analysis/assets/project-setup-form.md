@@ -1,31 +1,19 @@
-# Project Setup
+Please provide the following details. Leave fields blank to have the agent determine values based on your data. Confirm when ready to continue.
 
-Before we begin, please provide the following details. Fill in all five fields and confirm when ready.
-
----
-
-**Analysis Title**
+### Analysis Title
 What would you like to call this analysis? (e.g., "Q1 2025 Reserve Review — Commercial Auto")
 
-> _Your answer:_
+[Text input]
 
----
-
-**Triangle File(s)**
+### Triangle File(s)
 Use the file picker to attach your Excel triangle file(s).
 
-> _Select file(s):_
+[File picker]
 
----
-
-**Analysis Mode**
+### Analysis Mode
 How would you like to run the analysis?
 
+[Multiselect with options:
 - **Pause for Selections** — automated data prep and calculations; you review and confirm LDF and tail factor selections before projections run
 - **Fully Automatic** — end-to-end execution with no pauses; AI makes all selections
-
-> _Your answer:_
-
----
-
-Once you've filled in all five fields, reply with your answers and we'll get started.
+]

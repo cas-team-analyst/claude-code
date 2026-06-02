@@ -124,10 +124,6 @@ def calculate_ldf_averages(df_enhanced: pd.DataFrame) -> pd.DataFrame:
                   .apply(calculate_group_summary, include_groups=False)
                   .reset_index())
     
-    # Preserve categorical types
-    df_summary['measure'] = pd.Categorical(df_summary['measure'], categories=unique_measures)
-    df_summary['interval'] = pd.Categorical(df_summary['interval'], categories=interval_categories, ordered=True)
-    
     # Round all average columns to 4 decimal places
     avg_cols = ['weighted_all', 'simple_all', 'avg_exclude_high_low_all',
                 'min_all', 'max_all',
@@ -143,11 +139,19 @@ def calculate_ldf_averages(df_enhanced: pd.DataFrame) -> pd.DataFrame:
     return df_summary
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     """Test the calculate_ldf_averages function."""
     # Read enhanced data from step 2
-    input_file = OUTPUT_PATH + f"2_enhanced.parquet"
-    df_enhanced = pd.read_parquet(input_file)
+    input_file = OUTPUT_PATH + f"2_enhanced.csv"
+    df_enhanced = pd.read_csv(input_file, dtype={'age': str, 'period': str, 'interval': str, 'prior_age': str})
+    # Restore ordered categoricals from input file order (CSV drops dtype).
+    # interval order drives the column sequence in the output averages table.
+    _age_order = list(dict.fromkeys(df_enhanced['age'].dropna()))
+    _period_order = list(dict.fromkeys(df_enhanced['period'].dropna()))
+    _interval_order = list(dict.fromkeys(df_enhanced['interval'].dropna()))
+    df_enhanced['age'] = pd.Categorical(df_enhanced['age'], categories=_age_order, ordered=True)
+    df_enhanced['period'] = pd.Categorical(df_enhanced['period'], categories=_period_order, ordered=True)
+    df_enhanced['interval'] = pd.Categorical(df_enhanced['interval'], categories=_interval_order, ordered=True)
     print(f"Loaded {len(df_enhanced)} rows, {df_enhanced['ldf'].notna().sum()} with LDFs")
     print(f"Measures: {df_enhanced['measure'].unique().tolist()}")
     
@@ -160,10 +164,9 @@ if __name__ == "__main__":
     pd.set_option('display.width', None)
     pd.set_option('display.float_format', '{:.4f}'.format)
     
-    # Save output - parquet preserves categorical types, CSV for inspection
-    df_summary.to_parquet(OUTPUT_PATH + f"4_ldf_averages.parquet", index=False)
+    # Save output
     df_summary.to_csv(OUTPUT_PATH + f"4_ldf_averages.csv", index=False)
-    print(f"\nSaved to: {OUTPUT_PATH}4_ldf_averages.[parquet|csv]")
+    print(f"\nSaved to: {OUTPUT_PATH}4_ldf_averages.csv")
     
     # Check for prior selections
     prior_selections_path = Path(OUTPUT_PATH) / "../prior-selections.csv"

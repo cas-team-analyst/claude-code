@@ -34,145 +34,233 @@ def read_triangle_data(
     **kwargs
 ) -> pd.DataFrame:
     """
-    Reads a triangle from 'Triangle Examples 1.xlsx'.
-
-    Sheet layout (Paid 1 / Inc 1):
-      Row 1: "Age of Evaluation" label row (skipped)
-      Row 2: "Accident Year", 11, 23, 35, ... (age headers)
-      Row 3+: AY, values...
-
-    Sheet layout (Ct 1):
-      Row 1: "Accident Year", 11, 23, 35, ... (age headers, no extra label row)
-      Row 2+: AY, values...
+    *** IMPLEMENT THIS FUNCTION TO READ YOUR RAW TRIANGLE DATA ***
+    
+    This function must read triangle data from your source and return it in the
+    standardized long format required by the validation and downstream scripts.
+    
+    Required Output Format:
+    -----------------------
+    Returns a DataFrame with these EXACT columns:
+        - period (ordered categorical): Accident/policy periods (e.g., "2020", "2021 Q1")
+        - age (ordered categorical): Development ages (e.g., "12", "24", "36")
+        - value (float): Numeric values from the triangle
+        - measure (categorical): Data type - one of:
+            * "Incurred Loss"
+            * "Paid Loss"
+            * "Reported Count"
+            * "Closed Count"
+            * "Exposure"
+        - unit_type (categorical): Either "Count" or "Dollars"
+        - source (categorical): Source identifier for auditing
+        - details (object/str): Additional context (optional)
+    
+    Count Triangle Interpretation:
+    ------------------------------
+    **Default Assumption:** Count triangles should be assumed to represent 
+    "Reported Count" unless there is strong evidence otherwise.
+    
+    Common patterns that indicate Reported Count:
+    - Column headers like "Ct", "Count", "Claims", "# Claims"
+    - Generic count data without "Closed" qualifier
+    - Counts that increase or stabilize over development periods
+    
+    Only classify as "Closed Count" if you see explicit evidence:
+    - Column headers containing "Closed", "Settled", "Finalized"
+    - Source documentation clearly indicating closed/settled claims
+    - Counts that plateau at mature ages (closed cannot exceed reported)
+    
+    Special Handling for Exposure:
+    ------------------------------
+    **Recommended:** Provide Exposure in simple 2-column format (period, value)
+    - Set age=None for all Exposure rows
+    - One row per period
+    - Downstream scripts only use one value per period anyway
+    
+    If your raw data has Exposure as a triangle:
+    - Extract the LATEST DIAGONAL yourself (most mature age for each period)
+    - Do NOT pass the full triangle
+    
+    Example (recommended):
+        period="2020", age=None, value=1000, measure="Exposure", unit_type="Count"
+        period="2021", age=None, value=1200, measure="Exposure", unit_type="Count"
+    
+    Example Usage:
+    --------------
+    incurred = read_triangle_data(
+        file_path="my_data.xlsx",
+        sheet_name="Incurred",
+        measure="Incurred Loss",
+        unit_type="Dollars"
+    )
+    
+    Args:
+        file_path: Path to your data file
+        sheet_name: Sheet name if Excel file
+        **kwargs: Additional parameters you need (measure, unit_type, etc.)
+    
+    Returns:
+        DataFrame in the format described above
     """
-    measure   = kwargs.get("measure", "Paid Loss")
-    unit_type = kwargs.get("unit_type", "Dollars")
-    source    = kwargs.get("source", sheet_name or "unknown")
+    import openpyxl
+    sheet_name = kwargs.get('sheet_name', sheet_name)
+    measure = kwargs.get('measure', 'Paid Loss')
+    unit_type = kwargs.get('unit_type', 'Dollars')
+    source = kwargs.get('source', 'Triangle Examples 1.xlsx')
 
-    wb = pd.ExcelFile(file_path, engine="openpyxl")
-    raw = pd.read_excel(wb, sheet_name=sheet_name, header=None)
+    wb = openpyxl.load_workbook(file_path, data_only=True)
+    ws = wb[sheet_name]
+    rows = list(ws.iter_rows(values_only=True))
 
-    # Find the header row: the row whose first cell contains "Accident Year"
-    header_row = None
-    for i, row in raw.iterrows():
-        if str(row.iloc[0]).strip().lower() == "accident year":
-            header_row = i
-            break
-    if header_row is None:
-        raise ValueError(f"Could not find 'Accident Year' row in sheet '{sheet_name}'")
+    # Row 0: "Age of Evaluation" label row (Paid 1, Inc 1) or "Accident Year" + ages (Ct 1)
+    # Detect format: if first cell of row 0 is "Accident Year", ages are in row 0; data starts row 1
+    # Otherwise (Paid/Inc format): ages in row 1 col 1+; data starts row 2
+    if str(rows[0][0]).strip() == 'Accident Year':
+        age_row = rows[0]
+        data_start = 1
+    else:
+        age_row = rows[1]
+        data_start = 2
 
-    # Ages are columns 1+ in the header row
-    age_row  = raw.iloc[header_row]
-    ages     = [str(int(a)) for a in age_row.iloc[1:] if pd.notna(a) and isinstance(a, (int, float))]
-
-    # Data rows follow the header
-    data_rows = raw.iloc[header_row + 1:].reset_index(drop=True)
-
+    ages = [str(int(v)) for v in age_row[1:] if v is not None]
     records = []
-    for _, row in data_rows.iterrows():
-        ay = row.iloc[0]
-        if pd.isna(ay) or not isinstance(ay, (int, float)):
+    for row in rows[data_start:]:
+        ay = row[0]
+        if ay is None:
             continue
         period = str(int(ay))
-        for j, age_label in enumerate(ages):
-            val = row.iloc[j + 1]
-            if pd.notna(val) and isinstance(val, (int, float)):
+        for i, age in enumerate(ages):
+            v = row[i + 1]
+            if v is not None:
                 records.append({
-                    "period":    period,
-                    "age":       age_label,
-                    "value":     float(val),
-                    "measure":   measure,
-                    "unit_type": unit_type,
-                    "source":    source,
-                    "details":   "",
+                    'period': period,
+                    'age': age,
+                    'value': float(v),
+                    'measure': measure,
+                    'unit_type': unit_type,
+                    'source': source,
+                    'details': ''
                 })
 
     df = pd.DataFrame(records)
-
-    periods_ordered = sorted(df["period"].unique(), key=lambda x: int(x))
-    ages_ordered    = sorted(df["age"].unique(), key=lambda x: int(x))
-
-    df["period"]    = pd.Categorical(df["period"],    categories=periods_ordered, ordered=True)
-    df["age"]       = pd.Categorical(df["age"],       categories=ages_ordered,    ordered=True)
-    df["measure"]   = df["measure"].astype("category")
-    df["unit_type"] = df["unit_type"].astype("category")
-    df["source"]    = df["source"].astype("category")
-
+    periods_sorted = sorted(df['period'].unique(), key=lambda x: int(x))
+    ages_sorted = sorted(df['age'].unique(), key=lambda x: int(x))
+    df['period'] = pd.Categorical(df['period'], categories=periods_sorted, ordered=True)
+    df['age'] = pd.Categorical(df['age'], categories=ages_sorted, ordered=True)
+    df['measure'] = df['measure'].astype('category')
+    df['unit_type'] = df['unit_type'].astype('category')
+    df['source'] = df['source'].astype('category')
+    df = df.sort_values(['period', 'age']).reset_index(drop=True)
     return df
 
 
 def read_and_process_triangles():
     """
-    Reads Paid Loss, Incurred Loss, Reported Count, and Payroll Exposure
-    from 'Triangle Examples 1.xlsx' and writes combined parquet/csv.
+    *** IMPLEMENT THIS FUNCTION TO PROCESS YOUR TRIANGLES ***
+    
+    This function should:
+    1. Call read_triangle_data() for each triangle type you have
+    2. Combine them into a single DataFrame
+    3. Ensure proper categorical ordering (CRITICAL: age must be ordered categorical)
+    4. Pass validation
+    5. Save to CSV
 
-    Data file: raw-data/Triangle Examples 1.xlsx
-      Sheet 'Paid 1'    -> Paid Loss (Dollars)
-      Sheet 'Inc 1'     -> Incurred Loss (Dollars)
-      Sheet 'Ct 1'      -> Reported Count (Count) - generic count header, assumed reported
-      Sheet 'Exposure'  -> Payroll exposure per AY (Dollars)
-
-    Ages are in months: 11, 23, 35, ... 287 (annual development, non-standard start at 11).
-    Accident years: 2001-2024.
-    """
-    data_file = DATA_FILE_PATH + "Triangle Examples 1.xlsx"
-
-    print(f"  Reading Paid Loss from 'Paid 1'...")
-    paid = read_triangle_data(data_file, sheet_name="Paid 1",
-                              measure="Paid Loss", unit_type="Dollars", source="Paid 1")
-
-    print(f"  Reading Incurred Loss from 'Inc 1'...")
-    incurred = read_triangle_data(data_file, sheet_name="Inc 1",
-                                  measure="Incurred Loss", unit_type="Dollars", source="Inc 1")
-
-    print(f"  Reading Reported Count from 'Ct 1'...")
-    rpt_count = read_triangle_data(data_file, sheet_name="Ct 1",
-                                   measure="Reported Count", unit_type="Count", source="Ct 1")
-
-    print(f"  Reading Payroll Exposure from 'Exposure'...")
-    # Use data_only=True so Excel formulas return cached values
-    exp_raw = pd.read_excel(data_file, sheet_name="Exposure", header=0,
-                            engine="openpyxl", engine_kwargs={"data_only": True})
-    exp_raw.columns = ["period", "value"]
-    exp_raw = exp_raw.dropna(subset=["period", "value"])
-    exp_raw["period"] = exp_raw["period"].apply(lambda x: str(int(x)))
-
-    age_categories = paid["age"].cat.categories.tolist()
-    period_categories = paid["period"].cat.categories.tolist()
-
-    exposure_records = []
-    for _, row in exp_raw.iterrows():
-        if row["period"] in period_categories:
-            exposure_records.append({
-                "period":    row["period"],
-                "age":       None,
-                "value":     float(row["value"]),
-                "measure":   "Exposure",
-                "unit_type": "Dollars",
-                "source":    "Exposure",
-                "details":   "Payroll",
-            })
-    exposure = pd.DataFrame(exposure_records)
-
-    # Combine all measures
-    all_data = pd.concat([paid, incurred, rpt_count, exposure], ignore_index=True)
-
-    # Re-apply ordered categoricals after concat
-    all_data["period"] = pd.Categorical(
-        all_data["period"], categories=period_categories, ordered=True
+    Example Implementation:
+    -----------------------
+    # Read each triangle type
+    incurred = read_triangle_data(
+        file_path=DATA_FILE_PATH + "my_data.xlsx",
+        sheet_name="Incurred",
+        measure="Incurred Loss",
+        unit_type="Dollars"
     )
-    all_data["age"] = pd.Categorical(
-        all_data["age"], categories=age_categories, ordered=True
-    )
-    all_data["measure"]   = all_data["measure"].astype("category")
-    all_data["unit_type"] = all_data["unit_type"].astype("category")
-    all_data["source"]    = all_data["source"].astype("category")
 
+    paid = read_triangle_data(...)
+
+    # For Exposure: create with age=None, but define age categories from other triangles
+    exposure_data = []
+    for period in incurred['period'].cat.categories:
+        exposure_data.append({
+            'period': period,
+            'age': None,  # Exposure doesn't develop
+            'value': get_exposure_for_period(period),
+            'measure': 'Exposure',
+            'unit_type': 'Count',
+            'source': 'your_source',
+            'details': ''
+        })
+    exposure = pd.DataFrame(exposure_data)
+
+    # Combine
+    all_data = pd.concat([incurred, paid, exposure, ...], ignore_index=True)
+
+    # CRITICAL: Re-apply categorical ordering after concat
+    # The age column MUST be an ordered categorical even though Exposure rows have None values
+    all_data['period'] = pd.Categorical(
+        all_data['period'],
+        categories=incurred['period'].cat.categories,
+        ordered=True
+    )
+    all_data['age'] = pd.Categorical(
+        all_data['age'],  # This will have None values for Exposure rows
+        categories=incurred['age'].cat.categories,  # Use age categories from a non-Exposure triangle
+        ordered=True
+    )
+    all_data['measure'] = all_data['measure'].astype('category')
+    all_data['unit_type'] = all_data['unit_type'].astype('category')
+    all_data['source'] = all_data['source'].astype('category')
+
+    # Validate using the combined validator that handles both triangles and exposure
     validate_combined_data(all_data)
 
-    all_data.to_parquet(OUTPUT_PATH + "1_triangles.parquet", index=False)
+    # Save — row order matters. Downstream scripts reconstruct age/period sort order from
+    # first occurrence in this file, so write rows in chronological period / ascending age order.
     all_data.to_csv(OUTPUT_PATH + "1_triangles.csv", index=False)
-    print(f"  Saved {len(all_data)} rows to processed-data/")
+    """
+    excel_path = DATA_FILE_PATH + "Triangle Examples 1.xlsx"
+
+    paid = read_triangle_data(excel_path, sheet_name='Paid 1',
+        measure='Paid Loss', unit_type='Dollars', source='Triangle Examples 1.xlsx')
+    incurred = read_triangle_data(excel_path, sheet_name='Inc 1',
+        measure='Incurred Loss', unit_type='Dollars', source='Triangle Examples 1.xlsx')
+    counts = read_triangle_data(excel_path, sheet_name='Ct 1',
+        measure='Reported Count', unit_type='Count', source='Triangle Examples 1.xlsx')
+
+    # Exposure: read from Exposure sheet, one row per period
+    import openpyxl
+    wb = openpyxl.load_workbook(excel_path, data_only=True)
+    ws = wb['Exposure']
+    exp_rows = list(ws.iter_rows(min_row=2, values_only=True))
+    exp_data = []
+    for r in exp_rows:
+        if r[0] is not None and r[1] is not None:
+            exp_data.append({
+                'period': str(int(r[0])),
+                'age': None,
+                'value': float(r[1]),
+                'measure': 'Exposure',
+                'unit_type': 'Count',
+                'source': 'Triangle Examples 1.xlsx',
+                'details': ''
+            })
+    exposure = pd.DataFrame(exp_data)
+
+    all_data = pd.concat([paid, incurred, counts, exposure], ignore_index=True)
+
+    periods_sorted = list(paid['period'].cat.categories)
+    ages_sorted = list(paid['age'].cat.categories)
+
+    all_data['period'] = pd.Categorical(all_data['period'], categories=periods_sorted, ordered=True)
+    all_data['age'] = pd.Categorical(all_data['age'], categories=ages_sorted, ordered=True)
+    all_data['measure'] = all_data['measure'].astype('category')
+    all_data['unit_type'] = all_data['unit_type'].astype('category')
+    all_data['source'] = all_data['source'].astype('category')
+
+    all_data = all_data.sort_values(['measure', 'period', 'age']).reset_index(drop=True)
+
+    validate_combined_data(all_data)
+    all_data.to_csv(OUTPUT_PATH + "1_triangles.csv", index=False)
+    print(f"  Saved {len(all_data)} rows to {OUTPUT_PATH}1_triangles.csv")
 
 
 def read_and_process_prior_selections(triangle_data: pd.DataFrame) -> Optional[pd.DataFrame]:
@@ -240,6 +328,13 @@ def read_and_process_expected_loss_rates(triangle_data: pd.DataFrame, file_path:
     df['period'] = df['period'].astype(str).str.strip()
     df = df.dropna(subset=['expected_loss_rate', 'expected_freq'], how='all')
 
+    df['expected_loss_rate'] = pd.to_numeric(df['expected_loss_rate'], errors='coerce')
+    df['expected_freq'] = pd.to_numeric(df['expected_freq'], errors='coerce')
+
+    df.to_csv(OUTPUT_PATH + "1_expected_loss_rates.csv", index=False)
+    print(f"  Saved {len(df)} expected loss rate records")
+    return df
+
 if __name__ == "__main__":
     """Run the data preparation process."""
     print("="*70)
@@ -250,19 +345,16 @@ if __name__ == "__main__":
         # Process triangle data
         print("\n[1/3] Processing triangle data...")
         read_and_process_triangles()
-        print(f"✓ Triangle data complete: {OUTPUT_PATH}1_triangles.parquet/.csv")
-        
-        # Load triangles and validate
-        print("  Validating combined data...")
-        df_triangles = pd.read_parquet(OUTPUT_PATH + "1_triangles.parquet")
-        validate_combined_data(df_triangles)
-        print(f"  ✓ Validation passed: {len(df_triangles)} rows")
+        print(f"✓ Triangle data complete: {OUTPUT_PATH}1_triangles.csv")
+
+        # Load triangles (already validated in read_and_process_triangles)
+        df_triangles = pd.read_csv(OUTPUT_PATH + "1_triangles.csv")
+        print(f"  ✓ Loaded {len(df_triangles)} rows")
         
         # Process prior selections (optional)
         print("\n[2/3] Processing prior selections (if available)...")
         df_prior = read_and_process_prior_selections(df_triangles)
         if df_prior is not None:
-            validate_prior_selections(df_prior, df_triangles)
             output_file = OUTPUT_PATH + "../prior-selections.csv"
             df_prior.to_csv(output_file, index=False)
             print(f"✓ Prior selections validated and saved to: {output_file}")
@@ -272,7 +364,7 @@ if __name__ == "__main__":
         df_expected = read_and_process_expected_loss_rates(df_triangles)
         if df_expected is not None:
             validate_expected_loss_rates(df_expected, df_triangles)
-            print(f"✓ Expected loss rates validated and saved to: {OUTPUT_PATH}1_expected_loss_rates.parquet/.csv")
+            print(f"✓ Expected loss rates validated and saved to: {OUTPUT_PATH}1_expected_loss_rates.csv")
         
         print("\n" + "="*70)
         print("✓ DATA PREPARATION COMPLETE!")

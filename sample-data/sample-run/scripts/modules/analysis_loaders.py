@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 
 from modules.xl_values import UNPAID_PROXY
 
-# Preferred display order for method columns — discovered dynamically from parquet.
+# Preferred display order for method columns — discovered dynamically from projected-ultimates.csv.
 _METHOD_COLS = [
     ("ultimate_cl", "Chain Ladder"),
     ("ultimate_ie", "Initial Expected"),
@@ -14,7 +14,7 @@ _METHOD_COLS = [
 ]
 
 # Map individual measure names to Ultimates.xlsx selection category sheets.
-# projected-ultimates.parquet has per-measure data (Incurred Loss, Paid Loss, etc.)
+# projected-ultimates.csv has per-measure data (Incurred Loss, Paid Loss, etc.)
 # but Ultimates.xlsx has category sheets (Losses, Counts) where one ultimate is
 # selected per category. This mapping converts measure → category for lookups.
 MEASURE_TO_CATEGORY = {
@@ -133,11 +133,11 @@ def load_selection_reasoning(excel_path):
 def load_combined(ultimates_path, sel_lookup):
     """
     Load projected ultimates, apply final selections, compute IBNR and Unpaid.
-    Methods (CL/IE/BF) are discovered dynamically from non-empty parquet columns.
+    Methods (CL/IE/BF) are discovered dynamically from non-empty CSV columns.
     Raises ValueError for any non-Exposure (measure, period) missing from sel_lookup.
     Returns (df, available_methods) where available_methods = [(col, label), ...].
     """
-    df = pd.read_parquet(ultimates_path)
+    df = pd.read_csv(ultimates_path)
     df["period"]  = df["period"].astype(str)
     df["measure"] = df["measure"].astype(str)
 
@@ -188,7 +188,7 @@ def get_exposure(triangles_path):
     """Latest Exposure value per period from triangles. Returns {} if absent."""
     if not pathlib.Path(triangles_path).exists():
         return {}
-    tri = pd.read_parquet(triangles_path)
+    tri = pd.read_csv(triangles_path)
     exp = tri[tri["measure"].astype(str) == "Exposure"].copy()
     if exp.empty:
         return {}
@@ -202,7 +202,7 @@ def get_triangles(triangles_path):
     """Load triangle data. Returns empty DataFrame when file is absent."""
     if not pathlib.Path(triangles_path).exists():
         return pd.DataFrame()
-    tri = pd.read_parquet(triangles_path)
+    tri = pd.read_csv(triangles_path)
     tri["period"]  = tri["period"].astype(str)
     tri["measure"] = tri["measure"].astype(str)
     return tri

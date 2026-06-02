@@ -28,7 +28,7 @@ METHOD_ID = "tail-curve"
 SELECTIONS_PATTERN    = config.SELECTIONS + f"{METHOD_ID}-ai-rules-based-*.json"
 AI_SELECTIONS_PATTERN = config.SELECTIONS + f"{METHOD_ID}-ai-open-ended-*.json"
 EXCEL_FILE            = config.SELECTIONS + "Chain Ladder Selections - Tail.xlsx"
-DIAGNOSTICS_FILE      = config.PROCESSED_DATA + "tail-scenarios.parquet"
+DIAGNOSTICS_FILE      = config.PROCESSED_DATA + "tail-scenarios.csv"
 
 
 def find_selection_rows(ws):
@@ -195,7 +195,7 @@ def main():
 
     # Load diagnostics to lookup tail factors
     try:
-        df_scenarios = pd.read_parquet(DIAGNOSTICS_FILE)
+        df_scenarios = pd.read_csv(DIAGNOSTICS_FILE)
     except Exception as e:
         print(f"Warning: Could not load diagnostics to lookup tail factors: {e}")
         df_scenarios = None

@@ -2,121 +2,121 @@
   {
     "period": 2001,
     "selection": 3163774,
-    "reasoning": "Incurred CL ultimate 3,163,774. Fully developed tail year (287 months, CDF 1.0). Incurred and Paid measurements converge; Incurred CL selected as primary method at full maturity. No meaningful IBNR. Reasonability: Loss ratio ~0.01 (extremely low, consistent with tail settlement pattern)."
+    "reasoning": "Selected 3,163,774. Tail maturity (age 287 months, CDF=1.00). Period is fully developed per both incurred and paid CDFs. Incurred CL equals the actual incurred value with zero IBNR, representing a fully closed book. Paid CL is slightly lower (3,042,295), consistent with some remaining case reserves on open claims. Incurred CL preferred as the more complete measure. IE and BF are irrelevant at 100% development. No prior selections available."
   },
   {
     "period": 2002,
-    "selection": 2327911,
-    "reasoning": "Incurred CL ultimate 2,327,911. Nearly fully developed (275 months, CDF 1.0001, 99.99% developed). Incurred CL stable and credible. Paid CL shows similar development (1.0004). No material IBNR. Selected over IE (2,904,344) due to negative IBNR signal and stale a priori assumptions."
+    "selection": 2297495,
+    "reasoning": "Selected 2,297,495. Tail maturity (age 275 months). Weighted 70% Incurred CL (2,334,717) + 30% Paid CL (2,210,644). IE disqualified (highly divergent from CL with implausible IBNR). BF near-identical to CL at this maturity. No prior selections."
   },
   {
     "period": 2003,
-    "selection": 1778420,
-    "reasoning": "Incurred CL ultimate 1,778,420. Fully developed (263 months, CDF 1.0002, 99.98%). Incurred CL primary method at tail maturity. IE method shows 855k IBNR (stale a priori). Paid CL (1,779,826) shows convergence; Incurred selected for consistency. Loss ratio ~0.0054."
+    "selection": 1792346,
+    "reasoning": "Selected 1,792,346. Tail maturity (age 263 months). Incurred CL (1,788,776) and Paid CL (1,795,917) converge within 0.4% \u2014 convergence rule applied, selecting midpoint. BF near-identical to CL at this maturity. No prior selections."
   },
   {
     "period": 2004,
-    "selection": 1138429,
-    "reasoning": "Incurred CL ultimate 1,138,429. Late maturity (251 months, CDF 1.0141, 98.61% developed). Incurred CL primary. Paid CL (1,132,250) shows convergence within 0.5%. IE method inflated at 1,678,711 (negative IBNR indicates assumption stale). CL methods strongly preferred. Loss ratio ~0.0034."
+    "selection": 1136144,
+    "reasoning": "Selected 1,136,144. Tail maturity (age 251 months). Incurred CL (1,132,749) and Paid CL (1,139,538) converge within 0.6% \u2014 convergence rule applied, selecting midpoint. BF near-identical to CL at this maturity. No prior selections."
   },
   {
     "period": 2005,
-    "selection": 2273734,
-    "reasoning": "Incurred CL ultimate 2,273,734. Late maturity (239 months, CDF 1.0141, 98.61%). Incurred CL primary method selected. Paid CL convergence at 2,278,128 (0.2% difference). IE method fails fitness (negative 529k IBNR indicates a priori stale or unsupported). CL methods credible. Loss ratio ~0.0066."
+    "selection": 2278253,
+    "reasoning": "Selected 2,278,253. Late maturity (age 239 months). Incurred CL (2,269,176) and Paid CL (2,287,330) converge within 0.8% \u2014 midpoint selected. IE disqualified (negative IBNR, stale a priori). BF (2,262,543) is secondary and confirms the CL range. No prior selections."
   },
   {
     "period": 2006,
-    "selection": 1539016,
-    "reasoning": "Incurred CL ultimate 1,539,016. Late maturity (227 months, CDF 1.0141, 98.61%). Incurred CL primary; Paid CL convergence at 1,491,100 (0.9% difference suggests data quality split). Incurred selected for consistency with prior periods. IE method shows divergence (1,746,531) with 229k IBNR; a priori fitness concerns. Loss ratio ~0.0044."
+    "selection": 1523948,
+    "reasoning": "Selected 1,523,948. Late maturity (age 227 months). Weighted 60% Incurred CL (1,540,538) + 40% Paid CL (1,499,062). IE methods disqualified for implausible IBNR at this maturity. BF (1,543,601) secondary and consistent with CL range. No prior selections."
   },
   {
     "period": 2007,
-    "selection": 4878544,
-    "reasoning": "Incurred CL ultimate 4,878,544. Late maturity (215 months, CDF 1.0141, 98.61%). Incurred CL primary method selected. Paid CL convergence at 4,885,577 (<0.2% difference). IE method fails fitness severely (negative 1.96M IBNR indicates gross a priori mismatch). CL methods credible and stable. Loss ratio ~0.0139."
+    "selection": 4917122,
+    "reasoning": "Selected 4,917,122. Late maturity (age 215 months). Incurred CL (4,898,021) and Paid CL (4,936,222) converge within 0.8% \u2014 midpoint selected. IE disqualified (negative IBNR, stale a priori). BF (4,861,546) is secondary and confirms the CL range. No prior selections."
   },
   {
     "period": 2008,
-    "selection": 1398964,
-    "reasoning": "Incurred CL ultimate 1,398,964. Late maturity (203 months, CDF 1.0149, 98.53%). Incurred CL primary. Paid CL convergence at 1,408,259 (0.7%). IE method shows divergence (2,543,927) and positive IBNR (1.16M) indicating a priori overstates; fitness concern. CL methods more credible. Loss ratio ~0.0038."
+    "selection": 1417520,
+    "reasoning": "Selected 1,417,520. Late maturity (age 203 months). Incurred CL (1,407,637) and Paid CL (1,427,403) converge within 1.4% \u2014 midpoint selected. BF (1,431,215) is secondary and confirms the CL range. No prior selections."
   },
   {
     "period": 2009,
-    "selection": 1195671,
-    "reasoning": "Incurred CL ultimate 1,195,671. Late maturity (191 months, CDF 1.0223, 97.82%). Incurred CL primary method. Paid CL convergence at 1,196,326 (<0.1%). IE method divergent (2,594,806) with positive 1.43M IBNR; a priori credibility low. CL methods strongly preferred. Loss ratio ~0.0032."
+    "selection": 1207570,
+    "reasoning": "Selected 1,207,570. Late maturity (age 191 months). Incurred CL (1,197,948) and Paid CL (1,217,191) converge within 1.6% \u2014 midpoint selected. BF (1,231,024) is secondary and confirms the CL range. No prior selections."
   },
   {
     "period": 2010,
-    "selection": 1311398,
-    "reasoning": "Incurred CL ultimate 1,311,398. Late maturity (179 months, CDF 1.0264, 97.43%). Incurred CL primary at this maturity. Paid CL convergence at 1,323,095 (0.9%). IE method shows negative IBNR (143k) indicating a priori over-compensates. CL methods credible. Loss ratio ~0.0035."
+    "selection": 1322796,
+    "reasoning": "Selected 1,322,796. Mid maturity (age 179 months). Incurred CL (1,312,586) and Paid CL (1,333,007) converge within 1.5% \u2014 midpoint selected. Incurred IE disqualified (negative IBNR). BF (1,307,844) consistent with selection. No prior selections."
   },
   {
     "period": 2011,
-    "selection": 1970986,
-    "reasoning": "Incurred CL ultimate 1,970,986. Late maturity (167 months, CDF 1.0287, 97.21%). Incurred CL primary. Paid CL shows convergence at 1,972,292 (<0.1%). IE method fails fitness (negative 373k IBNR). CL methods stable and credible. Incurred preferred for consistency. Loss ratio ~0.0051."
+    "selection": 1988781,
+    "reasoning": "Selected 1,988,781. Mid maturity (age 167 months). Incurred CL (1,988,125) and Paid CL (1,989,437) converge within 0.1% \u2014 midpoint selected. Incurred IE disqualified (negative IBNR). BF (1,971,983) consistent with selection. No prior selections."
   },
   {
     "period": 2012,
-    "selection": 1402971,
-    "reasoning": "Incurred CL ultimate 1,402,971. Late maturity (155 months, CDF 1.0288, 97.20%). Incurred CL primary. Paid CL convergence at 1,250,085 (0.4% divergence suggests minor data timing). Incurred selected for stability. IE method shows positive 209k IBNR but a priori credibility wanes at this maturity. Loss ratio ~0.0036."
+    "selection": 1368118,
+    "reasoning": "Selected 1,368,118. Mid maturity (age 155 months). Weighted 65% Incurred CL (1,422,105) + 35% Paid CL (1,267,856). Incurred BF (1,428,317) within 4% of selection, confirming range. No prior selections."
   },
   {
     "period": 2013,
-    "selection": 729197,
-    "reasoning": "Incurred CL ultimate 729,197. Late-Mid maturity (143 months, CDF 1.0292, 97.17%). Incurred CL primary. Paid CL convergence at 742,925 (1.9% divergence). IE method shows large positive IBNR (495k) indicating a priori overstates; credibility low. CL methods preferred. Loss ratio ~0.0018."
+    "selection": 749872,
+    "reasoning": "Selected 749,872. Mid maturity (age 143 months). Weighted 65% Incurred CL (742,540) + 35% Paid CL (763,490). Incurred BF (763,664) within 2% of selection, confirming range. No prior selections."
   },
   {
     "period": 2014,
-    "selection": 1436572,
-    "reasoning": "Incurred CL ultimate 1,436,572. Late-Mid maturity (131 months, CDF 1.0338, 96.73%). Incurred CL primary. Paid CL shows convergence at 1,476,876 (2.8% divergence). IE method fails fitness (negative 161k IBNR). Incurred CL selected for data stability. Loss ratio ~0.0035."
+    "selection": 1506182,
+    "reasoning": "Selected 1,506,182. Mid maturity (age 131 months). Incurred CL (1,499,996) and Paid CL (1,512,369) converge within 0.8% \u2014 midpoint selected. Incurred IE disqualified (negative IBNR). BF (1,479,964) consistent with selection. No prior selections."
   },
   {
     "period": 2015,
-    "selection": 3507100,
-    "reasoning": "Incurred CL ultimate 3,507,100. Late-Mid maturity (119 months, CDF 1.0367, 96.46%). Incurred CL primary method selected. Paid CL shows convergence at 3,591,251 (2.4%). IE method fails fitness severely (negative 1.71M IBNR indicating gross a priori mismatch). CL methods credible. Loss ratio ~0.0084."
+    "selection": 3688580,
+    "reasoning": "Selected 3,688,580. Early-mid maturity (age 119 months). Incurred CL (3,679,099) and Paid CL (3,698,060) converge within 0.5%. Incurred IE disqualified (negative IBNR). BF (3,517,369) and IE (1,669,813 if credible) consistent. No prior selections."
   },
   {
     "period": 2016,
-    "selection": 2668446,
-    "reasoning": "Incurred CL ultimate 2,668,446. Mid maturity (107 months, CDF 1.0647, 93.92%). Incurred CL primary; Paid CL shows elevated CDF (1.0937) and higher ultimate (2,693,017) suggesting paid data showing earlier volatility. Incurred selected for relative stability. BF (2,661,542) convergence near 99%. Loss ratio ~0.0063."
+    "selection": 2842344,
+    "reasoning": "Selected 2,842,344. Early-mid maturity (age 107 months). Incurred CL (2,829,298) and Paid CL (2,855,390) converge within 0.9%. BF (2,797,965) and IE (2,554,814 if credible) consistent. No prior selections."
   },
   {
     "period": 2017,
-    "selection": 1303581,
-    "reasoning": "Incurred CL ultimate 1,303,581. Mid maturity (95 months, CDF 1.0811, 92.50%). Incurred CL primary method selected. Paid CL higher at 1,332,825 (2.2%) with elevated CDF (1.1053) indicating paid data volatility. Incurred more credible. BF shows 1,401,256 (7% higher); CL preferred given maturity. Loss ratio ~0.0029."
+    "selection": 1421504,
+    "reasoning": "Selected 1,421,504. Early-mid maturity (age 95 months). Weighted 55% Incurred CL (1,381,615) + 25% Paid CL (1,416,542) + 20% Incurred BF (1,537,400). Incurred CL is primary at this maturity; BF provides a credibility check. No prior selections."
   },
   {
     "period": 2018,
-    "selection": 2595631,
-    "reasoning": "Incurred CL ultimate 2,595,631. Mid maturity (83 months, CDF 1.0836, 92.29%). Incurred CL primary; Paid CL higher at 2,704,433 (4.2%) with elevated tail factor (1.129). Incurred shows more stable development. IE shows negative IBNR (-180k); fitness concern. CL methods preferred. Loss ratio ~0.0058."
+    "selection": 2785760,
+    "reasoning": "Selected 2,785,760. Early-mid maturity (age 83 months). Weighted 55% Incurred CL (2,768,027) + 25% Paid CL (2,898,505) + 20% Incurred BF (2,693,592). Incurred IE disqualified (negative IBNR, stale a priori). Paid IE disqualified (negative IBNR). Incurred CL is primary at this maturity; BF provides a credibility check. No prior selections."
   },
   {
     "period": 2019,
-    "selection": 3093231,
-    "reasoning": "Incurred CL ultimate 3,093,231. Mid maturity (71 months, CDF 1.1898, 84.05% developed). Incurred CL selected. Paid CL elevated at 2,983,479 with lower CDF (1.2456); paid data shows earlier settlement activity. Incurred CL (1.19 CDF) more stable. BF at 2,960,229 convergence (95%). Incurred CL primary method. Loss ratio ~0.0069."
+    "selection": 3113619,
+    "reasoning": "Selected 3,113,619. Green-to-early maturity (age 71 months). Weighted 35% Incurred BF (3,040,400) + 35% Incurred CL (3,229,578) + 20% Paid BF (2,979,893) + 10% Paid CL (3,231,484). Incurred IE disqualified (negative IBNR). Paid IE disqualified (negative IBNR). BF methods are primary at this maturity; CL provides a secondary check. No prior selections."
   },
   {
     "period": 2020,
-    "selection": 1414067,
-    "reasoning": "Paid BF ultimate 1,414,067. Early-Green maturity (59 months, 76.4% developed). Paid CL shows elevated CDF (1.3798) with potential closure/settlement volatility. Incurred CL (1,281,352) lower; Paid CL (1,346,721) higher both with material tail extrapolation required. BF methods more credible at this maturity (exposure base stable). Paid BF selected for pragmatic development profile."
+    "selection": 1439104,
+    "reasoning": "Selected 1,439,104. Green-to-early maturity (age 59 months). Weighted 35% Incurred BF (1,460,906) + 35% Incurred CL (1,325,429) + 20% Paid BF (1,588,587) + 10% Paid CL (1,461,698). BF methods are primary at this maturity; CL provides a secondary check. No prior selections."
   },
   {
     "period": 2021,
-    "selection": 1394937,
-    "reasoning": "Incurred BF ultimate 1,394,937. Green maturity (47 months, 72.8% developed). BF methods primary weight at this immaturity. Incurred BF (1,394,937) vs. Paid BF (1,433,063) show close convergence (2.7%). Incurred CL (1,389,175) also converges. Incurred BF selected for consistency with a priori assumptions and stable development. Loss ratio ~0.0030."
+    "selection": 1469786,
+    "reasoning": "Selected 1,469,786. Green maturity (age 47 months). Weighted 40% Incurred BF (1,428,704) + 25% Incurred CL (1,436,414) + 20% Paid BF (1,513,330) + 15% Paid CL (1,576,900). BF is primary at this early maturity; CL is heavily discounted due to high CDFs and volatile link ratios. No prior selections."
   },
   {
     "period": 2022,
-    "selection": 1332512,
-    "reasoning": "Incurred CL ultimate 1,332,512. Very Green-Early maturity (35 months, 62.09% developed). CL entering primary weight as development accrues. Incurred CL (1,332,512) vs. Paid CL (1,340,023) show convergence (0.6%); Incurred selected for consistency. BF methods (1,190,947) show lower estimates; CL credibility higher at 62% development. Loss ratio ~0.0028."
+    "selection": 1301030,
+    "reasoning": "Selected 1,301,030. Green maturity (age 35 months). Weighted 40% Incurred BF (1,206,873) + 25% Incurred CL (1,369,127) + 20% Paid BF (1,247,635) + 15% Paid CL (1,509,817). BF is primary at this early maturity; CL is heavily discounted due to high CDFs and volatile link ratios. No prior selections."
   },
   {
     "period": 2023,
-    "selection": 1771456,
-    "reasoning": "Paid BF ultimate 1,771,456. Very Green maturity (23 months, 51.23% developed). Paid CL CDF extremely elevated at 2.4094 (gross tail extrapolation risk). Incurred CL (3,224,005) shows even higher tail with CDF 1.9519 (1.57M IBNR emerging). BF methods more pragmatic: Incurred BF (2,128,807) vs. Paid BF (1,771,456). Paid BF selected for conservative positioning given excessive CL tail factors and potential case adequacy drift."
+    "selection": 1806125,
+    "reasoning": "Selected 1,806,125. Very green maturity (age 23 months). Weighted 50% Incurred BF (2,137,333) + 30% Paid BF (1,806,045) + 20% Incurred IE (978,226). CL methods disqualified: Incurred CDF=1.986 and Paid CDF=2.634 are too volatile for CL reliance at 11 months. BF methods are primary; IE is secondary and shows positive IBNR (credible). No prior selections."
   },
   {
     "period": 2024,
-    "selection": 1190793,
-    "reasoning": "Paid BF ultimate 1,190,793. Extreme immaturity (11 months, 31.13% developed). Paid CL CDF 6.1499 is unmanageable without explicit tail study (extreme settlement/closure rate assumption embedded). Incurred CL shows CDF 3.212 with 1.97M IBNR (75% of current). Paid BF (1,190,793) vs. Incurred BF (1,577,300) show 33% spread. Paid BF selected as most conservative and pragmatic given massive development ahead and CL tail unreliability at extreme immaturity."
+    "selection": 1355317,
+    "reasoning": "Selected 1,355,317. Very green maturity (age 11 months). Weighted 50% Incurred BF (1,588,837) + 30% Paid BF (1,204,469) + 20% Incurred IE (997,790). CL methods disqualified: Incurred CDF=3.336 and Paid CDF=6.716 are too volatile for CL reliance at 11 months. BF methods are primary; IE is secondary and shows positive IBNR (credible). No prior selections."
   }
 ]

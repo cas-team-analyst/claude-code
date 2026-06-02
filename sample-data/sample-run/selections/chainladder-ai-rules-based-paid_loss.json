@@ -1,111 +1,81 @@
 [
   {
     "interval": "11-23",
-    "selection": 2.5525,
-    "reasoning": "Exclude high/low from 5-year (CV=0.1774, within 0.10-0.20 range). 5-year avg_exclude_high_low=2.5525 balances outlier risk (max=3.3152, min=1.7371) with recent volatility (3-year=2.6286, 5-year=2.5525). Early maturity: apply downward asymmetric conservatism to 5-year avg, move 40% of gap to prior (implicit baseline 2.60). Selection 2.5525 is closest match without excessive recent outlier influence."
+    "selection": 2.5500,
+    "reasoning": "2.5500 selected. High variance (CV_5yr=0.18, CV_3yr=0.25), 24 data points. 3yr VW=2.629, 5yr VW=2.623, 10yr VW=2.482, all VW=2.457. Notably, 3yr and 5yr VW are nearly identical (within 0.3%), providing a strong convergence signal at the recent range. This near-convergence at the 3yr/5yr level takes priority over the lower all-year average (which is pulled down by older, lower-severity AYs from 2007-2013). Recent AYs: 2022=2.429, 2021=1.998, 2020=2.554, 2019=2.675, 2018=2.875. Incurred severity trending strongly upward in the 2022-2024 period (age-11 severity: 2022=2659, 2023=3569, 2024=3477), supporting elevated early-age paid LDFs. Paid-to-incurred at age 11 is low and declining (2023: 0.377, 2024: 0.399), indicating large remaining case reserves and substantial future paid development. 3yr/5yr convergence override applies: midpoint ~2.626 selected, then modest Asymmetric Conservatism applied (AY2021's 1.998 is an outlier pulling 3yr down slightly). Selection of 2.550 represents the convergence midpoint dampened by ~3% to account for the variance in the recent window and one potentially anomalous low point (2021=1.998)."
   },
   {
     "interval": "23-35",
-    "selection": 1.4224,
-    "reasoning": "5-year volume-weighted average (CV=0.2103, within exclusion zone). High CV triggers outlier analysis: max=1.7497, min=1.0595. Weighted 5-year (1.4224) balances volume exposure better than simple average (1.4280). Recent 3-year (1.3021) shows acceleration downward, but 5-year weighted captures stability. Apply Bayesian anchoring with 50% credibility on recent trend."
+    "selection": 1.3800,
+    "reasoning": "1.3800 selected. CV_5yr=0.21, CV_3yr=0.25 (high). 3yr VW=1.267, 5yr VW=1.422, 10yr VW=1.391, all VW=1.344. Wide divergence between 3yr and 5yr (>15%). Recent AYs: 2020=1.180, 2021=1.666, 2022=1.060. AY2022 (1.060) and AY2020 (1.180) are anomalously low, pulling the 3yr average down. AY2019 (1.750) is the highest recent observation and may represent a large-loss AY. Incurred severity at age 23 rising sharply (2023: 5419). The 5yr and 10yr averages (1.422 and 1.391) are more credible than the 3yr. CV>0.20 triggers outlier exclusion: the 5yr ex-hi/lo = 1.444. With the recent 3yr average suppressed by COVID-era and post-COVID anomalies, and the 5yr/10yr converging near 1.39-1.44, select near 1.380. This is the midpoint between 10yr VW (1.391) and all VW (1.344), reflecting a modest downward adjustment from the 5yr for the spike in 2019 while staying well above the 3yr anomaly."
   },
   {
     "interval": "35-47",
-    "selection": 1.1437,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.1004, outlier caution applied). Exclude single high/low per protocol. Max=1.4653 shows outlier influence; trimmed average 1.1437 removes this. Recent trend 3-year (1.1244) very close, within ±2% confirms convergence. Hold at 1.1437 for early-maturity stability."
+    "selection": 1.1800,
+    "reasoning": "1.1800 selected. CV_5yr=0.10, CV_3yr=0.050 (low to moderate). 3yr VW=1.133, 5yr VW=1.200, 10yr VW=1.225, all VW=1.180. Moderate divergence between 3yr and 5yr (~5.6%). Recent AYs: 2020=1.121, 2021=1.070, with 2019=1.183 and 2018=1.374. AY2018 (1.374) is notably high (large case reserve emergence). 5yr includes the 2018 spike while 3yr does not. The all-year VW (1.180) falls squarely between 3yr and 5yr and is the most balanced estimate. At mid-early maturity, Bayesian anchoring to the all-year central estimate is appropriate. Selection of 1.180 equals the all-year VW, reflecting a stable central tendency that is consistent with the 10yr VW (1.225) discounted slightly for the likelihood that 2018 was an outlier AY."
   },
   {
     "interval": "47-59",
-    "selection": 1.0734,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0759, below 0.10 threshold). Averages converge: 5-yr excl h/l=1.0734, 10-yr excl h/l=1.0800, within ±1%. No evidence of trending. Simple average 1.0924 vs trimmed 1.0734; trimmed is more credible given max=1.2312. Select 1.0734."
+    "selection": 1.0800,
+    "reasoning": "1.0800 selected. CV_5yr=0.076 (moderate). 3yr VW=1.108, 5yr VW=1.098, 10yr VW=1.087, all VW=1.104. Recent AYs: 2020=1.011, 2019=1.231, 2018=1.058 — the 3yr is partially elevated by 2019's high factor. The 5yr and 10yr converge near 1.087-1.098. All-year VW = 1.104. Slope over 3yr is negative (-0.024) suggesting recent softening. Selection of 1.080 is slightly below the converging 5yr/10yr range, reflecting the recent declining trend in this column (2020: 1.011) while recognizing that 2020 may be partially COVID-suppressed. The all-year at 1.104 provides an upper bound; the 3yr at 1.108 is modestly inflated by the 2019 spike."
   },
   {
     "interval": "59-71",
-    "selection": 1.1077,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0522). Convergence check: 5-yr excl h/l=1.1077, 10-yr excl h/l=1.0640 diverge by >3%, indicating recent uptick. 3-year=1.1264 > 5-year, 3yr vs 5yr divergence ~3.5% triggers use of 5-year (1.1077) with downward caution. Data quality: slope_5yr=0.0158 (modest positive trend), slope_3yr=0.0539 (stronger). Mix signals; hold 5-year."
+    "selection": 1.1100,
+    "reasoning": "1.1100 selected. CV_5yr=0.052, CV_3yr=0.072 (low). 3yr VW=1.129, 5yr VW=1.119, 10yr VW=1.086, all VW=1.077. 3yr and 5yr converge tightly (within 0.9%), both materially above the 10yr (gap ~3.3%). This constitutes partial convergence of the recent windows. The 3yr/5yr convergence at 1.12-1.13 suggests a level shift upward in recent paid development at 59-71 months, consistent with rising incurred severity in recent AYs. Incurred severity at age 59 in 2019 was ~5927, 2018 ~7067 — confirming elevated loss environment. Convergence override of the 3yr/5yr midpoint (1.124) applies; partial discount toward 5yr VW for conservatism yields 1.110."
   },
   {
     "interval": "71-83",
-    "selection": 1.1033,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0961, within caution range but trending evaluation needed). Slope_3yr=-0.04, slope_5yr=0.0287 indicate oscillation around trend. Incurred severity diagnostic shows rising (+2-5% p.a. trend), consistent with modest LDF increase. Select trimmed 5-year (1.1033) for conservatism; paid severity growth supports this."
+    "selection": 1.1150,
+    "reasoning": "1.1150 selected. CV_5yr=0.096, CV_3yr=0.101 (moderate). 3yr VW=1.130, 5yr VW=1.107, 10yr VW=1.085, all VW=1.059. Notable upward trend in recent years: 2019 not yet visible at 71-83, 2018: 1.060, 2017: 1.291, 2016: 1.140. The 3yr is elevated by the 2017 spike (1.291); the 5yr VW (1.107) is more balanced. At mid maturity (71-83 months), paid LDFs should be converging with incurred. The corresponding incurred 71-83 selection is 1.075. Paid being higher than incurred here is consistent with the paid-to-incurred ratios still below 1.0 in recent AYs (2019: 0.921, 2018: 0.969 at age 71). Selection of 1.115 is between 5yr VW (1.107) and 3yr VW (1.130), reflecting credible ongoing development. CV>0.10 triggers outlier exclusion consideration — 5yr ex-hi/lo = 1.103 confirms the 5yr VW is reasonable."
   },
   {
     "interval": "83-95",
-    "selection": 1.0214,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0391, low volatility). Tight convergence: weighted_5yr=1.0328, 10yr=1.0205, within ±1%. Trimmed 5-yr (1.0214) is midpoint of convergence band. No outliers (max=1.0911, min=1.0). Maturity 83-95 months: use standard 5-year average."
+    "selection": 1.0300,
+    "reasoning": "1.0300 selected. CV_5yr=0.039, CV_3yr=0.040 (low). 3yr VW=1.043, 5yr VW=1.033, 10yr VW=1.026, all VW=1.026. 3yr and 5yr are consistent. All averages converge within ~1.7%, with the 5yr and 10yr/all bracketed around 1.026-1.043. Selection of 1.030 follows the 5yr VW as the primary reference, reflecting stable mid-maturity development. The corresponding incurred 83-95 selection (1.009) being lower than paid (1.030) is consistent with ongoing paid development exceeding incurred at this stage."
   },
   {
     "interval": "95-107",
-    "selection": 1.0106,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0112, very tight). All averages cluster: 5-yr simple=1.0130, 5-yr trim=1.0106, within ±0.2%. Convergence override applies; select at lower end (1.0106) for conservatism, reflecting mid-maturity behavior where paid stabilizes."
+    "selection": 1.0130,
+    "reasoning": "1.0130 selected. CV_5yr=0.011, CV_3yr=0.004 (very low). All averages converge tightly: 3yr=1.011, 5yr VW=1.013, 10yr VW=1.025, all VW=1.021. The 3yr and 5yr are near-identical (convergence override applies). Selection follows the 5yr VW of 1.013, reflecting stable, low paid development at this late maturity. The 10yr and all-year are slightly higher due to older AYs. No trend signal."
   },
   {
     "interval": "107-119",
-    "selection": 1.0246,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0566). Slope_5yr=0.0317 (positive) indicates modest trend. Paid_severity diagnostic and paid_to_incurred behavior support stable mid-range development. 5-yr trim (1.0246) > 10-yr (1.0286), but 3-yr high (1.0665) suggests recent environment shift upward. Blend 75% 5yr + 25% 3yr effect: ~1.032. Conservative selection 1.0246."
+    "selection": 1.0550,
+    "reasoning": "1.0550 selected. CV_5yr=0.057, CV_3yr=0.065 (low). 3yr VW=1.098, 5yr VW=1.065, 10yr VW=1.055, all VW=1.039. Recent AYs: 2015 had a very high factor (1.138) and 2014 had 1.062 — the 3yr is elevated by 2015's spike which reflects large case reserve emergence visible in the diagnostics (2015 case reserves at age 107 = 129K). 5yr and 10yr converge around 1.055-1.065. All-year at 1.039 may be slightly low due to older well-reserved AYs. Selection of 1.055 follows the 10yr VW as a balanced estimate that discounts the 2015 spike while staying above the all-year."
   },
   {
     "interval": "119-131",
-    "selection": 1.0044,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0121, convergence zone). All averages within ±1%: weighted_5yr=1.0083, simple_5yr=1.0086, trim_5yr=1.0044. Lower end of tight band selected for mature development. Minimal slope (0.0009) confirms stability."
+    "selection": 1.0100,
+    "reasoning": "1.0100 selected. CV_5yr=0.012, CV_3yr=0.015 (very low). All averages converge tightly: 3yr=1.012, 5yr VW=1.008, 10yr VW=1.035, all VW=1.028. The 3yr and 5yr converge at 1.008-1.012. The 10yr and all-year are higher due to older AYs with more material development. Selection of 1.010 follows the midpoint of 3yr and 5yr convergence zone, reflecting stable low development at this maturity. AY2015's factor at 119-131 is not yet visible but prior factors support this range."
   },
   {
     "interval": "131-143",
-    "selection": 1.0136,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0237). Slight elevation vs prior columns. Slope_5yr=-0.0005 (flat), slope_3yr=-0.0051 (slight decline). 5-yr trim=1.0136 vs 10yr=1.0184; 3yr=1.0220. Recent uptick in 3yr suggests case reserve movement or severity increase. Select 1.0136 for baseline, monitoring case reserve behavior."
+    "selection": 1.0100,
+    "reasoning": "1.0100 selected. CV_5yr=0.024 (low). 3yr=1.022, 5yr VW=1.019, 10yr VW=1.025, all VW=1.023. All averages converge tightly within 0.6pp. Convergence override applies — select midpoint of converged band (~1.021). Slight downward adjustment to 1.010 for the observation that the most recent AYs with data at this maturity (2013: 1.000, 2012: 1.057, 2011: 1.010) show declining development. The 5yr ex-hi/lo = 1.014 confirms the moderate level."
   },
   {
     "interval": "143-155",
-    "selection": 1.0017,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0235). Very low LDFs indicate tail approach. 5-yr trim=1.0017, simple=1.0068, within convergence. Slope_5yr=-0.0052 confirms modest decline toward 1.0. At 143-155 months (late maturity), apply sparse-data caution: limit to 5-year, weight toward lower end. Select 1.0017."
+    "selection": 1.0150,
+    "reasoning": "1.0150 selected. CV_5yr=0.024 (low). 3yr=1.016, 5yr VW=1.018, 10yr VW=1.022, all VW=1.021. Near-full convergence across all windows (within 0.6pp). Convergence override applies: select midpoint of converged band = 1.015-1.022. Selection of 1.015 reflects the lower end of the convergence zone consistent with the recent 3yr average, which has the most recent information."
   },
   {
     "interval": "155-167",
-    "selection": 1.0045,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0108, tight). Converged: all averages 1.0045-1.0143. Slope flat. This interval shows monotonic decay beginning; LDFs stabilizing near 1.0. Select convergence midpoint (1.0045) for tail stability."
+    "selection": 1.0100,
+    "reasoning": "1.0100 selected. CV very low (3yr=0.002, 5yr=0.012). All averages converge: 3yr=1.001, 5yr VW=1.013, 10yr VW=1.010, all VW=1.015. The 10yr and all-year converge at 1.010-1.015. The 3yr is near-zero reflecting recent zero-development AYs. Selection at 1.010 follows the 10yr VW, which best captures the central long-run development level at this mature age, acknowledging that near-term zero factors may understate long-run tail."
   },
   {
     "interval": "167-179",
-    "selection": 1.0063,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0114). Convergence: 5yr trim=1.0063, all within ±1%. Slope_5yr=-0.0022 confirms gentle decline. At 167-179 months, continuing late-stage development; CVs remain low. Select 1.0063."
+    "selection": 1.0075,
+    "reasoning": "1.0075 selected. CV_5yr=0.011 (very low). All averages converge tightly: 3yr=1.002, 5yr VW=1.014, 10yr VW=1.016, all VW=1.016. The 5yr/10yr/all converge around 1.014-1.016. The 3yr is lower due to recent zero-development AYs. Selection of 1.0075 is below the 5yr to reflect recent declining activity while acknowledging the structural development in the all-year average."
   },
   {
     "interval": "179-191",
-    "selection": 1.0124,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0103). Slight uptick vs prior, 5yr trim=1.0124 > previous. Slope_5yr=0.0040 (positive). Incurred severity may show case strengthening. All 5-year averages (weighted, simple, trim) converge within ±1% at 1.0063-1.0156. Select 1.0124 as midpoint."
+    "selection": 1.0025,
+    "reasoning": "1.0025 selected. CV very low. All averages near 1.000-1.020. 3yr=1.019, 5yr VW=1.016, 10yr VW=1.016, all VW=1.016. Most recent AYs showing 1.000 factors. Selection of 1.003 reflects modest residual development, acknowledging that several recent AYs have reached finality at this maturity while older AYs showed more development."
   },
   {
     "interval": "191-203",
-    "selection": 1.0012,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0031, very low). Tight convergence: trim=1.0012, weighted=1.0021, simple=1.0023. Slope_5yr=0.0040 minimal positive. Late tail development; sparse data caution applies (very few recent diagonals). Select 1.0012 as lower bound of tight cluster."
-  },
-  {
-    "interval": "203-215",
-    "selection": 1.0018,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0069, low). Averages cluster: trim=1.0018, weighted=1.0047, simple=1.0043. Slope negative (-0.0021). Late-maturity sparse data zone; most diagonal diagonals have <5 points. Use 5-year trim (1.0012) conservatively, though recent (2-3 years) show 1.0018-1.0054 range. Select 1.0018."
-  },
-  {
-    "interval": "215-227",
-    "selection": 1.0000,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0054). Lowest values in tail approach; trim=1.0000, weighted=1.0025. Many diagonals converge to exactly 1.0 (min=1.0, max=1.0121). At 215-227 months (19 years), very limited development expected. Select 1.0000 reflecting paid claims closure."
-  },
-  {
-    "interval": "227-239",
-    "selection": 1.0037,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0054, essentially flat). All averages 1.0 or near-1.0. Trim=1.0000, weighted=1.0054. Sparse recent data (3-4 diagonals only). Select 1.0037 (simple 5yr) as slight hedge for ongoing development in sparse tail."
-  },
-  {
-    "interval": "239-251",
-    "selection": 1.0074,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0050). Very sparse tail data; only 2-3 diagonals. Averages: trim=1.0074, simple=1.0057, weighted=1.0062. Slope_5yr=-0.0032 (flat). Select 1.0074 as upper bound to reflect uncertainty in ultra-sparse data; tail factor stabilizes here."
-  },
-  {
-    "interval": "251-263",
-    "selection": 1.0076,
-    "reasoning": "5-year avg_exclude_high_low (CV=0.0019, near-zero variance). Extremely sparse: only 2 recent diagonals. All averages 1.0074-1.0076. Slope zero. This is the effective cutoff for credible paid LDF selection; beyond this, curve fitting is required. Select 1.0076 as final explicit selection."
-  },
-  {
-    "interval": "263-275",
-    "reasoning": "CUTOFF at 263 months: Only 1-2 final diagonals with LDF data (cv=0.0019, essentially zero). Beyond this point, CV=NaN indicates insufficient data. Tail curve should begin here with standard tail assumptions (e.g., exponential decay or constant LDF 1.00). Paid triangle shows complete development by 250+ months; ultimate factors applied via tail curve. No explicit LDF selected; curve fitting initiated."
+    "reasoning": "CUTOFF at 191 months: is_monotone_from_here=True for paid loss. CV at 191+ months is near-zero throughout (3yr=0.010, 5yr=0.010). Factors are stable at 1.000-1.010 range with only a few observations per column. Fewer than 5 credible data points remain in each interval beyond 191 months. Paid loss minimum cutoff is 60 months — this is well exceeded at 191 months. Tail curve fitting commences from 191 months. The sparse data caution (fewer observations per column increasing, near-zero development) combined with the convergence of all averages to 1.000 confirms this as the appropriate cutoff."
   }
 ]

@@ -1,96 +1,116 @@
 [
   {
     "interval": "11-23",
-    "selection": 1.65,
-    "reasoning": "Early case reserve development dominates. Range 1.09-2.76 with CV 16%. Weighted_all 1.61; 3-year weighted 1.49 shows recent moderation. Selected 1.65 to balance broader history (which reflects typical WC case reserve emergence) with recent experience showing slightly lower factors."
+    "selection": 1.7000,
+    "reasoning": "1.7000. The all-period weighted average is 1.614 and simple average is 1.744. The 3-year average (1.489) reflects a recent dip but the 5-year (1.784) and 10-year (1.774) simple averages support higher values. The data is highly variable (CV_10yr = 0.269) with individual factors ranging from 1.089 to 2.757. Recent years 2019-2023 show elevated factors (2.757, 1.785, 1.458, 1.226, 1.694), suggesting the book has periods of very high early reporting. The 3-year low reflects 2022 (1.226) and 2021 (1.458) which appear to be low outlier years relative to the broader pattern. A selection of 1.70 is modestly below the simple-all average of 1.74 but above the weighted-all of 1.61, reflecting the high dispersion and the tendency for older years to have more low factors that pull down the weighted average."
   },
   {
     "interval": "23-35",
-    "selection": 1.19,
-    "reasoning": "Major development phase continuing. Range 0.87-1.55 with CV 13%. Weighted_all 1.19. Recent 5-year average 1.26 vs. all-years 1.19; selected weighted_all to reflect broader credibility and avoid over-weighting recent favorable development."
+    "selection": 1.2000,
+    "reasoning": "1.2000. The weighted-all average is 1.189 and simple-all is 1.193. The 3-year simple average is 1.060 and 5-year is 1.231. The 10-year averages cluster around 1.25-1.29. Recent years show very low factors: 2022 (0.9715), 2021 (1.224), 2020 (0.983), 2023 (N/A). The 2022 factor below 1.0 is unusual and likely reflects timing. The 2006 factor of 0.869 also shows downward outliers. Most middle-period years show factors in 1.05-1.50 range. A selection of 1.20 is near the weighted-all average, acknowledging that the recent low 3-year period may be anomalous while the overall pattern centers around 1.19-1.19. The 10-year weighted average of 1.288 would also be defensible, but 1.20 appropriately weights recent experience."
   },
   {
     "interval": "35-47",
-    "selection": 1.15,
-    "reasoning": "Development entering sustained mode. CV 5.7%, range 0.98-1.39. Weighted_all 1.15. Recent years show 1.07-1.39 with good consistency. Selected baseline weighted average to reflect stable pattern."
+    "selection": 1.1200,
+    "reasoning": "1.1200. Weighted-all is 1.153, simple-all is 1.154. The 3-year average is 1.080 and 5-year is 1.187. The 10-year averages are around 1.181-1.188. Recent years are more moderate: 2021 (1.032), 2020 (1.058), 2022 (N/A). The 2008 factor of 1.391 and 2018 (1.388) are high outliers. Excluding those, the central tendency is in the 1.07-1.16 range. A selection of 1.12 is slightly below the all-period averages but reflects the modest downward drift in recent years and the concentration of factors in a credible range."
   },
   {
     "interval": "47-59",
-    "selection": 1.05,
-    "reasoning": "Development moderating. CV 3.6%, range 0.91-1.14. Weighted_all 1.049. Recent experience clustered 1.02-1.06. Selected 1.05 reflecting both weighted average and recent consistency."
+    "selection": 1.0500,
+    "reasoning": "1.0500. The weighted-all is 1.049 and simple-all is 1.049. The 3-year average is 1.023, 5-year is 1.057. Most years cluster tightly in the 1.00-1.08 range, with 2003 (0.908) and 2005 (0.975) as low outliers from early years. Recent factors are 1.010 (2020), 1.063 (2019). The CV drops to 0.047-0.056, indicating reasonable stability. A selection of 1.050 aligns well with both the weighted-all and simple-all averages, consistent across multiple time windows."
   },
   {
     "interval": "59-71",
-    "selection": 1.07,
-    "reasoning": "Elevated development continues. CV 9.3%, range 0.99-1.22. Weighted_all 1.074. More volatility than adjacent intervals; 5-year weighted 1.10 vs. all-years 1.07. Selected weighted_all to balance recent upside with longer-term pattern."
+    "selection": 1.0800,
+    "reasoning": "1.0800. This interval shows notable volatility with a wide range (0.989-1.222) and a 5yr CV of 0.077. The 3-year average (1.117) is elevated relative to the longer-term averages (weighted-all 1.074, simple-all 1.062). Recent years show higher development: 2019 (1.222), 2018 (1.013), 2017 (1.133), reflecting an upward shift in this interval in recent years. The 2007 year had a very high factor of 1.194 that contributed to long-run averages. The slope shows a modest upward trend in the 3-year window. A selection of 1.080 is above the longer-term weighted-all (1.074) but below the 3-year average, giving credit to the recent elevated pattern while acknowledging some regression to the mean."
   },
   {
     "interval": "71-83",
-    "selection": 1.05,
-    "reasoning": "Moderating development. CV 6%, range 0.97-1.15. Weighted_all 1.046. Recent 3-year average 1.09 vs. all-years 1.05; selected weighted_all to reflect broader experience and avoid over-reactivity to recent small-sample results."
+    "selection": 1.0600,
+    "reasoning": "1.0600. The weighted-all is 1.046, simple-all is 1.040, but the 3-year average is 1.090 and the 5-year average is 1.087. Recent years (2019: N/A, 2018: 1.027, 2017: 1.153, 2016: 1.128, 2015: 1.140) show a distinct upward shift since 2015, with several years in the 1.10-1.15 range — well above the historical average. This recent severity increase appears genuine and driven by the same pattern seen at earlier ages. The 5-year weighted average of 1.087 and the 3-year of 1.090 dominate here. A selection of 1.060 balances the longer-term pattern against recent emergence, falling between the long-run average and recent elevated experience."
   },
   {
     "interval": "83-95",
-    "selection": 1.018,
-    "reasoning": "Development becoming minimal. CV 1.6%, range 0.98-1.14. Weighted_all 1.022. Recent years show tighter 1.00-1.03. Selected 1.018 as conservative midpoint reflecting increasing stability."
+    "selection": 1.0200,
+    "reasoning": "1.0200. The weighted-all is 1.022, simple-all is 1.021. The 3-year average is 1.013 and 5-year is 1.008. CV is low (0.016-0.044). Most factors are in a tight 1.00-1.05 range, with 2009 (1.144) as a notable outlier driven by a reserve strengthening event. Excluding the 2009 outlier, the remaining factors are 0.98-1.11. The all-period average captures this well. A selection of 1.020 is consistent with the weighted-all and recognizes this interval has modest but real residual development."
   },
   {
     "interval": "95-107",
-    "selection": 1.018,
-    "reasoning": "Tail development stabilizing. CV 2.2%, range 0.995-1.072. Weighted_all 1.019. Selected 1.018 for consistency with 83-95 interval and reflecting very tight recent experience."
+    "selection": 1.0200,
+    "reasoning": "1.0200. The weighted-all is 1.020, simple-all is 1.018. The 3-year average is 1.010 and 5-year is 1.015. CV is low (0.022-0.027). Factors range from 0.995 to 1.072. The weighted average across all years (1.020) is the most credible anchor here. Selected at 1.020 consistent with all-period weighted average and stable pattern."
   },
   {
     "interval": "107-119",
-    "selection": 1.037,
-    "reasoning": "Late-stage development spike. CV 4.9%, range 0.991-1.102. Weighted_all 1.037. Recent 5-year weighted 1.049 shows sustained elevation. Selected weighted average to capture credible late development."
+    "selection": 1.0350,
+    "reasoning": "1.0350. The weighted-all is 1.037, simple-all is 1.026. The 5-year average is 1.049 and 10-year weighted is 1.052. Notable outlier is 2007 (1.102) — a large loss year driving the weighted average up. Recent years: 2015 (1.096), 2016 (N/A). The 3-year simple average is 1.039. Data becomes sparse at this age. Selecting 1.035 is between the simple-all and weighted-all, acknowledging some positive development in this interval historically, noting the 2007 outlier effect on the weighted average."
   },
   {
     "interval": "119-131",
-    "selection": 1.017,
-    "reasoning": "Returning to baseline. CV 0.7%, range 0.993-1.083. Weighted_all 1.017. Extremely tight distribution despite spike in prior interval. Selected weighted average reflecting strong consistency."
+    "selection": 1.0150,
+    "reasoning": "1.0150. The weighted-all is 1.017, simple-all is 1.015. The 3-year average is essentially 1.000, 5-year is 1.008. CV is low (0.007-0.026). Most factors are very close to 1.000-1.010, with 2006 (1.083) and 2007 (1.031) as higher outliers from specialty years. Recent experience suggests factors near 1.0. A selection of 1.015 gives modest credit for the historical positive development pattern while reflecting recent near-flat experience."
   },
   {
     "interval": "131-143",
-    "selection": 1.033,
-    "reasoning": "Modest development continues. CV 9.8%, range 0.99-1.18. More volatile than adjacent intervals. Weighted_all 1.033. 3-year weighted 1.053 vs. all-years 1.033; selected all-years to reflect broader credibility given high CV."
+    "selection": 1.0300,
+    "reasoning": "1.0300. The weighted-all is 1.033, simple-all is 1.033, but with notable dispersion (CV ~0.07-0.10). The 5-year average is 1.038 and 3-year is 1.053. The 2012 factor (1.179) is a large outlier. Recent years 2011 (0.997), 2010 (0.000 flagged), 2009 (1.014) show variability. The weighted average is pulled up by 2005 (1.119) and 2012 (1.179). A selection of 1.030 is near the all-period averages, representing reasonable development at this age."
   },
   {
     "interval": "143-155",
-    "selection": 1.005,
-    "reasoning": "Tail development minimal. CV 0.08%, range 0.985-1.030. Exceptional stability. Weighted_all 1.0053. Selected 1.005 reflecting consensus of very tight data."
+    "selection": 1.0050,
+    "reasoning": "1.0050. The weighted-all is 1.005, simple-all is 1.005. CV is very low (0.001-0.016). Factors cluster tightly around 1.000-1.030. The 2009 factor (1.030) is highest. Recent years show nearly 1.000. A selection of 1.005 aligns with the central tendency."
   },
   {
     "interval": "155-167",
-    "selection": 1.005,
-    "reasoning": "Sustaining tail baseline. CV 0.01%, range 0.982-1.040. Remarkable consistency. Weighted_all 1.0054. Selected 1.005 to maintain smooth tail progression."
+    "selection": 1.0050,
+    "reasoning": "1.0050. The weighted-all is 1.005, simple-all is 1.005. Very stable — most factors within 1.000-1.040. CV is 0.001-0.015. A selection of 1.005 is appropriate."
   },
   {
     "interval": "167-179",
-    "selection": 1.017,
-    "reasoning": "Late-stage development resuming. CV 0.28%, range 1.0-1.044. Weighted_all 1.017. More development than adjacent 143-167 region; recent experience 1.0-1.044 supports selection."
+    "selection": 1.0100,
+    "reasoning": "1.0100. Weighted-all is 1.017, simple-all is 1.010. The 5-year average is 1.021. Some residual development persists — 2001 (1.017), 2002 (1.026), 2007 (1.044). CV is moderate (0.015-0.019). A selection of 1.010 reflects the simple-all average, appropriate for this age."
   },
   {
     "interval": "179-191",
-    "selection": 1.011,
-    "reasoning": "Tail development modest. CV 0.28%, range 1.0-1.053. Weighted_all 1.012. Recent years show factors at 1.0-1.03. Selected 1.011 reflecting conservative tail estimate."
+    "selection": 1.0100,
+    "reasoning": "1.0100. Weighted-all and simple-all both show 1.011-1.012. The 5-year average is 1.004. Factors range 1.000-1.053, with 2001 (1.053) as an outlier. Most years are at or near 1.000. A selection of 1.010 is consistent with the historical average."
   },
   {
     "interval": "191-203",
-    "selection": 1.015,
-    "reasoning": "Late-tail development. CV 1%, range 1.0-1.053. Weighted_all 1.015. Selected to reflect observed pattern and maintain tail smoothing."
+    "selection": 1.0100,
+    "reasoning": "1.0100. Weighted-all is 1.015, simple-all is 1.015. The 3-year average is 1.007 and 5-year is 1.008. Factors range 1.000-1.053. A selection of 1.010 reflects the pattern with modest positive development at this age."
   },
   {
     "interval": "203-215",
-    "selection": 1.007,
-    "reasoning": "Extreme tail with minimal data. CV 0.37%, range 1.0-1.031. Most periods at 1.0. Selected 1.007 as conservative continuation respecting sparse observations."
+    "selection": 1.0050,
+    "reasoning": "1.0050. Weighted-all and simple-all are both around 1.006-1.007. Recent 3-year and 5-year averages are 1.002-1.003. Very stable with nearly all factors at 1.000. A selection of 1.005 captures residual development."
   },
   {
     "interval": "215-227",
-    "selection": 1.004,
-    "reasoning": "Very late tail. CV 0%, weighted_all 1.0045. All observations at or near 1.0. Selected 1.004 reflecting consensus of minimal development."
+    "selection": 1.0030,
+    "reasoning": "1.0030. All averages show 1.003-1.005. Nearly all individual factors are 1.000. The simple/weighted averages across all periods are 1.003-1.005. Selected at 1.003."
   },
   {
     "interval": "227-239",
-    "reasoning": "Cutoff: Beyond 227 months (18.9 years), sample size becomes inadequate for reliable age-to-age estimation. Observed factors mostly 1.0; tail curve methodology more appropriate than individual factor selection for remaining development."
+    "selection": 1.0050,
+    "reasoning": "1.0050. Weighted-all is 1.009, simple-all is 1.009. The 3-year averages are 1.000. Several years show 1.000 and a few show 1.042 (2002). The weighted average gives more weight to larger observations. A conservative selection of 1.005 reflects modest development."
+  },
+  {
+    "interval": "239-251",
+    "selection": 1.0050,
+    "reasoning": "1.0050. Weighted-all is 1.007, simple-all is 1.004. Some factors at 1.000 and some at 1.023 (2001). A selection of 1.005 is consistent."
+  },
+  {
+    "interval": "251-263",
+    "selection": 1.0150,
+    "reasoning": "1.0150. The weighted-all and simple-all are both 1.017. The only observation is 2001 (1.014) and 2002 (1.036). With limited data at this age, 1.015 is reasonable, reflecting the central tendency of available factors."
+  },
+  {
+    "interval": "263-275",
+    "selection": 1.0000,
+    "reasoning": "1.0000. All averages show 1.000. Both available years (2001, 2002) show 1.000. Selected at 1.000."
+  },
+  {
+    "interval": "275-287",
+    "reasoning": "Cutoff at 275 months. Only one observation available (2001: 1.012). With a single data point at this age, the tail curve fitting is more appropriate than a direct LDF selection. Development beyond 275 months is sparse and a tail factor from an actuarial tail curve (e.g., inverse power or exponential) should be applied from 275 months to ultimate."
   }
 ]

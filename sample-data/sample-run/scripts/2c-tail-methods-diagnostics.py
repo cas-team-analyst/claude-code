@@ -1,17 +1,17 @@
 # Computes tail factor scenarios for all measures using multiple methods and starting ages.
-# Produces tail-scenarios.parquet with diagnostics for selector agents and actuary review.
+# Produces tail-scenarios.csv with diagnostics for selector agents and actuary review.
 
 """
 goal: Compute tail factor scenarios (all methods × starting ages × measures).
 
 inputs:
-    ../processed-data/1_triangles.parquet   - Cumulative triangle data
-    ../processed-data/2_enhanced.parquet    - Age-to-age factors with weights
-    ../processed-data/4_ldf_averages.parquet - Weighted avg LDFs per interval
+    ../processed-data/1_triangles.csv   - Cumulative triangle data
+    ../processed-data/2_enhanced.csv    - Age-to-age factors with weights
+    ../processed-data/4_ldf_averages.csv - Weighted avg LDFs per interval
     ../selections/Chain Ladder Selections - LDFs.xlsx - Selected LDFs
 
 outputs:
-    ../processed-data/tail-scenarios.parquet
+    ../processed-data/tail-scenarios.csv
 
 run-note: When copied to a project, run from the scripts/ directory:
     cd scripts/
@@ -27,11 +27,11 @@ from pathlib import Path
 from modules import config
 
 # Paths from modules/config.py — override here if needed:
-INPUT_TRIANGLES = config.PROCESSED_DATA + "1_triangles.parquet"
-INPUT_ENHANCED  = config.PROCESSED_DATA + "2_enhanced.parquet"
-INPUT_AVERAGES  = config.PROCESSED_DATA + "4_ldf_averages.parquet"
+INPUT_TRIANGLES = config.PROCESSED_DATA + "1_triangles.csv"
+INPUT_ENHANCED  = config.PROCESSED_DATA + "2_enhanced.csv"
+INPUT_AVERAGES  = config.PROCESSED_DATA + "4_ldf_averages.csv"
 INPUT_EXCEL     = config.SELECTIONS + "Chain Ladder Selections - LDFs.xlsx"
-OUTPUT_PATH     = config.PROCESSED_DATA + "tail-scenarios.parquet"
+OUTPUT_PATH     = config.PROCESSED_DATA + "tail-scenarios.csv"
 
 # Minimum starting age by triangle type
 AGE_MINIMUMS = {
@@ -155,24 +155,6 @@ def get_cutoff_age(selections):
         if start == max_start:
             return end
     return None
-
-
-def get_all_ata_stats(df_enhanced, measure):
-    """Compute min, max, avg, slope, CV over all empirical ATAs for context."""
-    df_m = df_enhanced[df_enhanced['measure'].astype(str) == measure]
-    if df_m.empty:
-        return {'min': None, 'max': None, 'avg': None, 'slope': None, 'cv': None}
-    
-    # We want these stats per interval, or across all intervals?
-    # "we should restate the averages slope and cv as context for sleection (add to excel and md) and also add min/max becuse the fitted values would ideally stauy within the min and max of the age to age factors"
-    # Wait, the min and max of the age-to-age factors.
-    # The LDF selector sees averages for each interval. The tail selector should probably see the min/max of the averages?
-    # Or the min/max of ALL individual ATAs? "min and max of the age to age factors"
-    
-    # Just return overall min/max of the ATAs? Or min/max of the averages?
-    # Usually "min and max of the age to age factors" means the min and max of the *averages* so the fitted curve doesn't go crazy. Let's just calculate the min/max of the weighted averages since that's what's modeled.
-    return {}
-
 
 
 # ── WLS curve fitting ─────────────────────────────────────────────────────────
@@ -914,9 +896,9 @@ def process_measure(measure, selections, df_enhanced, df_averages, df_triangles)
 
 def main():
     print("Loading data...")
-    df_triangles = pd.read_parquet(INPUT_TRIANGLES)
-    df_enhanced  = pd.read_parquet(INPUT_ENHANCED)
-    df_averages  = pd.read_parquet(INPUT_AVERAGES)
+    df_triangles = pd.read_csv(INPUT_TRIANGLES)
+    df_enhanced  = pd.read_csv(INPUT_ENHANCED)
+    df_averages  = pd.read_csv(INPUT_AVERAGES)
 
     if not Path(INPUT_EXCEL).exists():
         raise FileNotFoundError(
@@ -958,10 +940,8 @@ def main():
     for col in ['n_factors_in_fit', 'n_ay_contributing', 'slope_sign_changes', 'starting_age']:
         df_out[col] = pd.to_numeric(df_out[col], errors='coerce').astype('Int64')
 
-    df_out.to_parquet(OUTPUT_PATH, index=False)
-    df_out.to_csv(OUTPUT_PATH.replace('.parquet', '.csv'), index=False)
-    print(f"\nSaved {len(df_out)} scenarios to {OUTPUT_PATH.replace('.parquet', '.[parquet|csv]')}")
-    print("parquet preserves categorical types, CSV for inspection")
+    df_out.to_csv(OUTPUT_PATH, index=False)
+    print(f"\nSaved {len(df_out)} scenarios to {OUTPUT_PATH}")
     print("\nSummary by measure and method:")
     print(df_out.groupby(['measure', 'method'])['tail_factor']
           .agg(['count', 'min', 'max']).to_string())
