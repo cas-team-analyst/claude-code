@@ -1,17 +1,14 @@
 # AI Data Privacy Guide for Actuarial Professionals
 
-**[TLDR](#tldr)** | **[Why This Matters](#why-this-matters-for-actuaries)** | **[Consumer vs Enterprise](#the-critical-distinction-consumer-vs-enterpriseapi)** | **[Provider Policies](#provider-by-provider-policy-summary)** | **[How to Protect Yourself](#how-to-protect-yourself-five-rules)** | **[FAQ](#faq)** | **[Local AI](#running-ai-on-your-own-machine)** | **[Quick Reference](#quick-reference-card)**
+**[TLDR](#tldr)** | **[Why This Matters](#why-this-matters-for-actuaries)** | **[Consumer vs Enterprise](#the-critical-distinction-consumer-vs-enterpriseapi)** | **[Provider Policies](#provider-by-provider-policy-summary)** | **[How to Protect Yourself](#how-to-protect-yourself-four-rules)** | **[FAQ](#faq)** | **[Local AI](#running-ai-on-your-own-machine)** | **[Quick Reference](#quick-reference-card)**
 
 ---
 
 ## TLDR
 
-1. **Consumer accounts train by default** — ChatGPT, Claude, and Gemini (including paid Pro/Plus subscriptions) use your conversations for training unless you opt out.
+1. **Consumer accounts train by default** — ChatGPT, Claude, Gemini, Perplexity, DeepSeek, GitHub Copilot, and Cursor (including paid subscriptions) use your conversations or code for training unless you opt out.
 
-2. **How to opt out:** Each provider offers a straightforward opt-out mechanism:
-   - **ChatGPT:** Settings → Data Controls → disable "Improve the model for everyone"
-   - **Claude:** Settings → Privacy → disable "Improve Claude for everyone"  
-   - **Gemini:** Google Account → Data & Privacy → disable "Gemini Apps Activity"
+2. **How to opt out:** Most consumer tiers require manual settings adjustments (e.g., disabling history/model improvement or enabling Privacy Mode). See [Provider Policies](#provider-by-provider-policy-summary) for details.
 
 3. **Enterprise/API tiers are protected by default** — All major providers contractually exclude business data from training.
 
@@ -27,8 +24,8 @@ AI subscriptions can be classified into two categories, each with different defa
 
 | Tier | Examples | Default | Can opt out? |
 |---|---|---|---|
-| **Consumer** | ChatGPT Free/Plus/Pro, Claude Free/Pro/Max, Gemini (web) | Training ON | ✓ Manual opt-out available |
-| **API / Enterprise** | OpenAI API, Claude for Work/Enterprise, Google Vertex AI, Azure OpenAI, M365 Copilot | No training | N/A — protected |
+| **Consumer** | ChatGPT Free/Plus/Pro, Claude Free/Pro/Max, Gemini (web), Perplexity Free/Pro, DeepSeek, GitHub Copilot Individual, Cursor Free/Pro | Training ON | ✓ Manual opt-out available |
+| **API / Enterprise** | OpenAI API, Claude for Work/Enterprise, Google Vertex AI, Azure OpenAI, M365 Copilot, Perplexity Enterprise, DeepSeek API, GitHub Copilot Business/Enterprise, Cursor Business/Enterprise | No training | N/A — protected |
 
 > **Important to understand:** Every provider offers a no-training option. The key difference is that Enterprise/API tiers provide this protection by default, while Consumer tiers require manual configuration. Even paid "Pro" or "Plus" subscriptions don't automatically protect your data from training.
 
@@ -36,68 +33,32 @@ AI subscriptions can be classified into two categories, each with different defa
 
 ## Provider-by-provider policy summary
 
-### OpenAI / ChatGPT
-
-**Consumer accounts (Free, Plus, Pro):**
-Training is enabled by default. **To disable:** Navigate to Settings → Data Controls → "Improve the model for everyone" and toggle it off. You can also use **Temporary Chat** mode for one-off private conversations that won't be saved or used for training.
-
-**API and Enterprise accounts (ChatGPT Business, Enterprise):**
-Your data is not used for training by default. OpenAI also offers a **Zero Data Retention (ZDR)** option for API customers, which means no prompts or responses are stored at all.
-
-- [OpenAI data training policy](https://openai.com/policies/how-your-data-is-used-to-improve-model-performance/)
-- [OpenAI enterprise privacy](https://openai.com/enterprise-privacy/)
-
----
-
-### Anthropic / Claude
-
-**Consumer accounts (Free, Pro, Max):**
-Following a September 2025 policy update, users who opted in (or did not opt out by the deadline) now have conversations retained for up to 5 years and used for model training. **You can disable this at any time:** Navigate to Claude.ai → Settings → Privacy → "Improve Claude for everyone" and toggle it off. Once disabled, your conversations are retained for only 30 days and are not used for training. You can also use **Incognito Chat** mode for conversations that are never stored or used for training, regardless of your account settings.
-
-**API and Enterprise accounts (Claude for Work, Team, Enterprise, Bedrock, Vertex AI):**
-Commercial customer data is not used for training. These accounts are governed by Anthropic's Commercial Terms rather than consumer privacy policies.
-
-- [Anthropic consumer terms update (August 2025)](https://www.anthropic.com/news/updates-to-our-consumer-terms)
-- [Anthropic privacy centre — model training](https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training)
-- [Anthropic privacy centre — data retention](https://privacy.claude.com/en/articles/10023548-how-long-do-you-store-my-data)
+| Provider | Consumer Tier (Default: Training ON) | Enterprise / API Tier (Default: Training OFF) | Policy & Privacy Documents |
+| :--- | :--- | :--- | :--- |
+| **OpenAI / ChatGPT** | **Opt-out instructions:**<br>1. Log in to [ChatGPT](https://chatgpt.com).<br>2. Navigate to **Settings** &rarr; **Data Controls**.<br>3. Toggle off **"Improve the model for everyone"**.<br><br>*Alternative:* Use **Temporary Chat** mode for one-off private sessions, or submit a request via the [OpenAI Privacy Portal](https://privacy.openai.com). | **Data is not used for training** for ChatGPT Business, Enterprise, and API tiers.<br><br>*Zero Data Retention (ZDR):* Available for API customers (no prompts or responses stored). | &bull; [OpenAI data training policy](https://openai.com/policies/how-your-data-is-used-to-improve-model-performance/)<br>&bull; [OpenAI enterprise privacy](https://openai.com/enterprise-privacy/) |
+| **Anthropic / Claude** | **Opt-out instructions:**<br>1. Log in to [Claude.ai](https://claude.ai/settings).<br>2. Go to **Settings** &rarr; **Privacy**.<br>3. Toggle off **"Improve Claude for everyone"**.<br><br>*Note:* Once disabled, data is retained for only 30 days and not used for training. You can also use **Incognito Chat** (conversations are never stored or trained). | **Data is not used for training** under Anthropic Commercial Terms.<br><br>*Applicable tiers:* Claude for Work, Team, Enterprise, Bedrock, and Vertex AI. | &bull; [Anthropic consumer terms update](https://www.anthropic.com/news/updates-to-our-consumer-terms)<br>&bull; [Anthropic privacy centre — model training](https://privacy.claude.com/en/articles/10023580-is-my-data-used-for-model-training)<br>&bull; [Anthropic privacy centre — data retention](https://privacy.claude.com/en/articles/10023548-how-long-do-you-store-my-data) |
+| **Google Gemini** | **Opt-out instructions:**<br>1. Visit your [Gemini Apps Activity](https://myactivity.google.com/product/gemini) page.<br>2. Toggle off **"Gemini Apps Activity"**.<br><br>*Note:* Disabling this will also turn off your conversation history. | **Contractual no-training guarantee** for business data.<br><br>*Applicable tiers:* Google Workspace with Gemini, and Vertex AI. | &bull; [Google Gemini Apps Privacy Hub](https://support.google.com/gemini/answer/13594961)<br>&bull; [Google Cloud / Vertex AI data governance](https://cloud.google.com/vertex-ai/docs/general/data-governance) |
+| **Microsoft Copilot** | **Opt-out instructions:**<br>1. Go to [Microsoft Account Privacy Settings](https://account.microsoft.com/privacy).<br>2. Select **Activity data** and review/configure history settings.<br><br>*Note:* Settings are less transparent. We advise using enterprise tiers for sensitive work. | **Enterprise-grade privacy protection**. No training on foundation models. Inherits SOC 2, ISO 27001, HIPAA, and FedRAMP compliance.<br><br>*Applicable tiers:* Microsoft 365 Copilot, Azure OpenAI. | &bull; [Microsoft Copilot data privacy](https://privacy.microsoft.com/en-us/privacystatement)<br>&bull; [Azure OpenAI data, privacy, and security](https://learn.microsoft.com/en-us/legal/cognitive-services/openai/data-privacy) |
+| **Perplexity AI** | **Opt-out instructions:**<br>1. Log in to [Perplexity](https://www.perplexity.ai/).<br>2. Click your account name &rarr; **All settings** &rarr; **Preferences**.<br>3. Toggle off **"AI data retention"**.<br><br>*Note:* Cannot opt out if using Perplexity without logging in. | **Data is not used for training** for Perplexity Enterprise customers. | &bull; [Perplexity Privacy Policy](https://www.perplexity.ai/hub/legal/privacy-policy) |
+| **DeepSeek** | **Opt-out instructions:**<br>1. Log in to [DeepSeek](https://chat.deepseek.com).<br>2. Navigate to Settings &rarr; Data Controls.<br>3. Toggle off **"Improve the model for everyone"**.<br><br>*Alternative:* Send an objection email to [privacy@deepseek.com](mailto:privacy@deepseek.com). | **Data is not used for training** for DeepSeek API and enterprise customers. | &bull; [DeepSeek Privacy Policy](https://www.deepseek.com/privacy_policy)<br>&bull; [DeepSeek Terms of Use](https://www.deepseek.com/terms_of_use) |
+| **GitHub Copilot** | **Opt-out instructions:**<br>1. Log in to [GitHub](https://github.com).<br>2. Go to **Settings** &rarr; [Copilot Settings](https://github.com/settings/copilot).<br>3. Set **"Allow GitHub to use my data for AI model training"** to **Disabled**. | **Data is not used for training** under contractual agreements for Copilot Business and Copilot Enterprise. | &bull; [GitHub General Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)<br>&bull; [GitHub Copilot Trust Center (FAQ)](https://copilot.github.trust.page/faq)<br>&bull; [GitHub Copilot Individual Documentation](https://docs.github.com/copilot/copilot-individual/about-github-copilot-individual) |
+| **Cursor AI** | **Opt-out instructions:**<br>1. Open Cursor and go to **Settings** (`Cmd/Ctrl + Shift + J`).<br>2. Select the **General** tab.<br>3. Scroll down and enable **"Privacy Mode"**.<br><br>*Note:* You can also configure [Cursor Account Settings](https://cursor.com/settings) to toggle Privacy Mode online, or use a `.cursorignore` file. | **Privacy Mode is enabled by default** and enforced for Cursor Business and Cursor Enterprise accounts (Zero Data Retention). | &bull; [Cursor Privacy Policy](https://www.cursor.com/privacy) |
 
 ---
 
-### Google Gemini
-
-**Consumer accounts (Gemini.google.com):**
-Google states that Gemini interactions may be used to improve its products and services, including AI models. **To disable:** Navigate to Google Account → Data & Privacy → Gemini Apps Activity and toggle it off. Note that doing so also disables your conversation history. The opt-out mechanism is less prominently displayed than other providers, but it is available and effective.
-
-**Enterprise accounts (Google Workspace with Gemini, Vertex AI):**
-Google provides a contractual no-training guarantee for business data processed through these services.
-
-- [Google Gemini Apps Privacy Hub](https://support.google.com/gemini/answer/13594961)
-- [Google Cloud / Vertex AI data governance](https://cloud.google.com/vertex-ai/docs/general/data-governance)
-
----
-
-### Microsoft Copilot / Azure OpenAI
-
-**Consumer Copilot (copilot.microsoft.com):**
-The consumer version has weaker privacy defaults compared to the enterprise version. **To review your settings:** Navigate to account.microsoft.com → Privacy → Activity data. Microsoft's privacy controls are less transparent than some competitors, so for sensitive actuarial work, we recommend using the enterprise tier.
-
-**Microsoft 365 Copilot and Azure OpenAI Service:**
-Both products provide enterprise-grade privacy protection. Microsoft does not use data from M365 Copilot conversations or Azure OpenAI prompts to train foundation models. Azure OpenAI also inherits Microsoft's compliance certifications, including SOC 2, ISO 27001, HIPAA, and FedRAMP.
-
-- [Microsoft Copilot data privacy](https://privacy.microsoft.com/en-us/privacystatement)
-- [Azure OpenAI data, privacy, and security](https://learn.microsoft.com/en-us/legal/cognitive-services/openai/data-privacy)
-
----
-
-## How to protect yourself: five rules
+## How to protect yourself: four rules
 
 ### 1. Configure privacy settings immediately
 If using consumer accounts professionally:
 
-- **ChatGPT:** Settings → Data Controls → disable "Improve the model for everyone"
-- **Claude:** Settings → Privacy → disable "Improve Claude for everyone"
-- **Gemini:** Google Account → Data & Privacy → disable "Gemini Apps Activity"
-- **Microsoft Copilot:** Microsoft Account → Privacy → review Activity data
+- **ChatGPT:** Settings &rarr; Data Controls &rarr; disable "Improve the model for everyone"
+- **Claude:** Settings &rarr; Privacy &rarr; disable "Improve Claude for everyone"
+- **Gemini:** Google Account &rarr; Data & Privacy &rarr; disable "Gemini Apps Activity"
+- **Microsoft Copilot:** Microsoft Account &rarr; Privacy &rarr; review Activity data
+- **Perplexity:** Settings &rarr; Preferences &rarr; disable "AI data retention"
+- **DeepSeek:** Settings &rarr; Data Controls &rarr; disable "Improve the model for everyone"
+- **GitHub Copilot:** GitHub Settings &rarr; Copilot &rarr; disable "Allow GitHub to use my data for AI model training"
+- **Cursor:** Settings &rarr; General &rarr; enable "Privacy Mode"
 
 Please note that these settings only protect future conversations, not past ones.
 
@@ -115,31 +76,16 @@ Abstract or anonymize sensitive inputs before querying any AI tool, regardless o
 
 Remember: AI almost never needs actual numbers to help with methodology questions.
 
-### 4. Treat AI outputs as drafts, not conclusions
-Your professional judgment is irreplaceable. AI can assist with structure, language, and calculations, but actuarial sign-off must remain human. This is also good regulatory practice under most actuarial standards of practice.
-
-### 5. For the highest-sensitivity work, use zero-retention options
+### 4. For the highest-sensitivity work, use zero-retention options
 OpenAI's Zero Data Retention (ZDR) API option means no prompts or responses are stored after the request completes. Claude offers Incognito Chat mode for consumers with the same guarantee. Similar arrangements are available at the enterprise level from other providers. If your organization handles particularly sensitive client data, ask whether a zero-retention agreement is in place.
 
 ---
 
 ## FAQ
 
-**Q: Can AI actually learn my proprietary methods and replace me?**
-
-Not in the way you might think. Training on conversational data teaches a model how to communicate more effectively, but it doesn't replicate your specific judgment, experience, or professional accountability. Your expertise isn't just about the facts you know—it's about how you weigh uncertainty, interpret ambiguous data, and take responsibility for your conclusions. That dimension of professional work isn't what training pipelines capture.
-
-**Q: I use ChatGPT Plus for work. Am I at risk?**
-
-Only if you haven't configured your privacy settings. ChatGPT Plus is a consumer product, and training is enabled by default. You should navigate to Settings → Data Controls and disable "Improve the model for everyone" right away. Once you do this, your new conversations will not be used to train OpenAI's models. For immediate privacy on specific conversations, you can also use Temporary Chat mode.
-
 **Q: Does using a VPN or incognito browser mode change anything?**
 
 No, it doesn't. Data handling is governed by your account terms and privacy settings, not by your network connection or browser mode.
-
-**Q: What about free trials of enterprise products?**
-
-Enterprise trial accounts typically inherit the same enterprise data protection terms as paid accounts. However, you should confirm this with the provider before inputting any sensitive data.
 
 **Q: Are there any AI providers that never train on user data at all?**
 
@@ -200,7 +146,7 @@ You can also use **4-bit quantization** (the Q4_K_M format) to roughly halve the
 
 ### GUI alternatives to the command line
 
-If command-line tools aren't comfortable for you or your team, there are two GUI applications that provide the same local inference capabilities in a more familiar interface:
+If command-line tools aren't comfortable for you or your team, there are GUI applications that provide the same local inference capabilities in a more familiar interface. For example:
 
 - **[LM Studio](https://lmstudio.ai)** — A desktop application available for macOS, Windows, and Linux. It provides model management, a chat interface, and a local API server without requiring any terminal work. It exposes an OpenAI-compatible API that your actuarial tools can connect to directly.
 - **[Jan](https://jan.ai)** — An open-source offline desktop assistant with a similar approach to LM Studio. This is particularly useful if you want a ChatGPT-style experience with complete local control.
