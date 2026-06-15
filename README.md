@@ -55,7 +55,7 @@ See [guides](https://github.com/cas-team-analyst/team-analyst/tree/main/guides) 
 
 # Make a Contribution
 
-The CAS has generously funded this program. Now it is up to the community to expand and maintain it. 
+The CAS has generously funded this initial version. Now it is up to the community to expand it. 
 
 Contributions are welcome via [Issues](https://github.com/cas-team-analyst/team-analyst/issues) (the community may both add and resolve them) and [Pull Requests](https://github.com/cas-team-analyst/team-analyst/pulls).
 
