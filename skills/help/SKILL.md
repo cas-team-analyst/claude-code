@@ -43,5 +43,7 @@ Ask what the user is working on and guide them to the right skill. Explain that 
 
 If the user asks about specific topics, read the relevant file to answer accurately:
 
-- **ASOP standards** (13, 23, 25, 36, 41, 43) — see `skills/peer-review/SKILL.md`
-- **Tail curve methods** (Bondy, Exponential Decay, McClenahan, Skurnick, etc.) — see `skills/reserving-analysis/agents/selector-tail-factor-ai-rules-based.agent.md`
+- **ASOP standards** (13, 23, 25, 36, 41, 43) — see the `peer-review` skill
+- **Tail curve methods** (Bondy, Exponential Decay, McClenahan, Skurnick, etc.) — see the tail curve selector agents in the `reserving-analysis` skill
+
+If the referenced skill isn't installed/available, tell the user it's needed for that information rather than guessing at its content.

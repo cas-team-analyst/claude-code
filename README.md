@@ -37,7 +37,19 @@ If you want to just see what the output looks like, a sample workflow run with e
 7. Open Claude Desktop in Cowork mode and click "New task"
 8. Type `/reserving-analysis` (it will auto-complete and you can press enter to select it) in the chat box and press enter to get started!
 
-Additional skills are also available:
+**Alternative: no Cowork, no paid account needed**
+
+If you don't want to use Cowork (e.g. you don't have a paid Claude account), you can instead upload the skill zips directly into Claude Chat (desktop app or https://claude.ai/), one at a time:
+
+1. Download the skill zip files from https://github.com/cas-team-analyst/team-analyst/tree/main/skills-import — `help.zip`, `reserving-analysis.zip`, `selection-logic.zip`, `peer-review.zip`.
+2. In Claude Chat, go to Customize > Skills > Add > Upload a skill, and upload each zip.
+3. Continue with the rest of the instructions above (steps 7 onward) using `/reserving-analysis` in a normal chat instead of a Cowork task.
+
+> **Beware**: this approach works on Claude's free tier, but free/consumer accounts don't get the same data privacy protections as paid accounts — by default your conversations may be used to train models unless you turn that off in Settings > Privacy. See the [AI Training & Data Privacy Policies guide](https://github.com/cas-team-analyst/team-analyst/blob/main/guides/AI_TRAINING_POLICIES.md) before uploading any real client data.
+
+> Use one or the other across all of Claude (desktop/app/web) to avoid confusing the agent with multiple versions of the same skill. If you upload the skills to Claude Chat, do not upload the plugin to Cowork, and vice versa.
+
+These skills are available:
 
 - `/help` for orientation and help using the workflow
 - `/reserving-analysis` for the full reserving workflow
@@ -76,12 +88,13 @@ This is to protect our time and limit it to reviewing high quality contributions
 - `skills/reserving-analysis/agents/` custom selection subagents
 - `.claude-plugin/` Claude marketplace plugin and metadata
 - `GEMINI.md` and `gemini-extension.json` Gemini extension context and manifest metadata
-- `plugins/create_plugin_cowork.py` script to package skills into `plugins/teamanalyst-Cowork.zip` for upload into Cowork
+- `plugins/create_plugin_zip_cowork.py` script to package skills into `plugins/teamanalyst-cowork.zip` for upload into Cowork
 - `plugins/` generated plugin artifacts for download
+- `skills-import/create_skills_zips.py` script to package each skill folder into its own zip (e.g. `skills-import/reserving-analysis.zip`) for upload as individual Skills in Claude Chat
+- `skills-import/` generated per-skill zip artifacts for download
 - `sample-data/` example input data and a sample run with representative outputs
 - `guides/` supplementary notes for developers and advanced users and the [Executive Summary](https://github.com/cas-team-analyst/team-analyst/tree/main/guides/EXECUTIVE_SUMMARY.md)  providing more detail and context
 - `AGENTS.md, CLAUDE.md, .claude/, .agents/` instructions for AI agents working on this repository (not the workflow itself)
--  folders contain skills for AI 
 
 
 ## How It Works

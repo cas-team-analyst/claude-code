@@ -44,7 +44,7 @@ Then use the AskUserQuestion tool with exactly these four options and no others:
 
 ## A. View LDF Selection Framework
 
-**Authoritative Source:** `./agents/selector-chain-ladder-ldf-ai-rules-based.md`
+**Authoritative Source:** the rules-based chain-ladder LDF selector agent, in the `reserving-analysis` skill's `agents/` folder.
 
 Read the agent file and present a summary with this structure:
 
@@ -59,7 +59,7 @@ Once done, remind: "When you're ready to see this logic in action on your data, 
 
 ## B. View Tail Factor Selection Framework
 
-**Authoritative Source:** `./agents/selector-tail-factor-ai-rules-based.md`
+**Authoritative Source:** the rules-based tail curve selector agent, in the `reserving-analysis` skill's `agents/` folder.
 
 Read the agent file and present a summary with this structure:
 
@@ -75,7 +75,7 @@ Once done, remind: "When you're ready to see this logic in action on your data, 
 
 ## C. View Diagnostic Rules
 
-**Authoritative Source:** `./agents/selector-chain-ladder-ldf-ai-rules-based.md` (Section 10)
+**Authoritative Source:** the rules-based chain-ladder LDF selector agent (Section 10), in the `reserving-analysis` skill's `agents/` folder.
 
 Read Section 10 from the agent file and present a summary with this structure:
 
@@ -91,13 +91,7 @@ Once done, remind: "When you're ready to see this logic in action on your data, 
 
 ## D. View AI Selector Approach
 
-**Authoritative Sources:**
-- `./agents/selector-chain-ladder-ldf-ai-rules-based.md` (LDF selections, rules-based)
-- `./agents/selector-chain-ladder-ldf-ai-open-ended.md` (LDF selections, open-ended)
-- `./agents/selector-tail-factor-ai-rules-based.md` (Tail selections, rules-based)
-- `./agents/selector-tail-factor-ai-open-ended.md` (Tail selections, open-ended)
-- `./agents/selector-ultimates-ai-rules-based.md` (Ultimate selections, rules-based)
-- `./agents/selector-ultimates-ai-open-ended.md` (Ultimate selections, open-ended)
+**Authoritative Sources:** all selector agents in the `reserving-analysis` skill's `agents/` folder — LDF, tail curve, and ultimates selectors, each with a rules-based and an open-ended variant.
 
 Read all AI agent files and present a summary with this structure:
 
@@ -116,14 +110,9 @@ Once done, remind: "When you're ready to see both selectors in action on your da
 ## Guardrails
 
 - This is a **read-only** skill. It does not create, modify, or save any files.
-- It reads from these authoritative sources only:
-  - `./agents/selector-chain-ladder-ldf-ai-rules-based.md` (LDF rules-based framework)
-  - `./agents/selector-chain-ladder-ldf-ai-open-ended.md` (LDF open-ended AI framework)
-  - `./agents/selector-tail-factor-ai-rules-based.md` (Tail rules-based framework)
-  - `./agents/selector-tail-factor-ai-open-ended.md` (Tail open-ended AI framework)
-  - `./agents/selector-ultimates-ai-rules-based.md` (Ultimate selection rules-based framework)
-  - `./agents/selector-ultimates-ai-open-ended.md` (Ultimate selection open-ended AI framework)
+- It reads from these authoritative sources only: the LDF, tail curve, and ultimates selector agents (rules-based and open-ended variants) in the `reserving-analysis` skill's `agents/` folder.
+- If the `reserving-analysis` skill isn't installed/available, tell the user this skill's content depends on it rather than inventing an answer.
 - Do NOT invent, assume, or present any selection logic that is not in these reference files.
 - Do NOT offer to create or modify custom logic files.
 - Do NOT suggest other skills, plugin customizers, or workarounds for modifying selection logic.
-- If the user asks how to modify, adjust, or customize the selection logic, read `skills/selection-logic/assets/selection-logic-adjustment-guide.md` and present the relevant sections to the user. If the file cannot be found, respond with: "Selection logic can be modified in Claude Code, where you have write access to the plugin files. These changes cannot be made from within Cowork, as plugin files are read-only here."
+- If the user asks how to modify, adjust, or customize the selection logic, read `assets/selection-logic-adjustment-guide.md` (in this skill) and present the relevant sections to the user. If the file cannot be found, respond with: "Selection logic can be modified in Claude Code, where you have write access to the plugin files. These changes cannot be made from within Cowork, as plugin files are read-only here."
