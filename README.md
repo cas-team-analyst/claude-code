@@ -13,42 +13,40 @@ _These files can be downloaded via `git clone` or Code (green button at the top 
 
 ## Quick Start
 
-These files can be used with many different agentic tools. For most users, we suggest Claude Cowork. 
+These files can be used with many different agentic tools. For most users, we suggest **Claude Chat** on the web. It is the easiest way to get started and does not require a paid account or software install.
 
 _Instructions for other tools can be found [here](#installation-for-other-agentic-tools)._
 
-_The video from our CAS presentation can be found at https://www.youtube.com/watch?v=8JZz2zYrim0. It is an edited screen recording of the plugin setup and workflow in Claude Cowork. It does not have audio but will give you a feel for the workflow._
+_The video from our CAS presentation can be found at https://www.youtube.com/watch?v=8JZz2zYrim0. It is an edited screen recording of the workflow in Claude CoWork. It does not have audio but will give you a feel for the workflow. A walkthrough using Chat is pending._
+
+1. Sign up for a Claude account at https://claude.ai/
+   - **Important Note**: While this approach works on Claude's free tier, free/consumer accounts don't get the same data privacy protections as paid accounts — by default your conversations may be used to train models unless you turn that off in Settings > Privacy. See the [AI Training & Data Privacy Policies guide](https://github.com/cas-team-analyst/team-analyst/blob/main/guides/AI_TRAINING_POLICIES.md) before uploading any real client data.
+
+2. Select the **Sonnet** model for your chat, **Medium** effort. Opus will quickly hit limits, and Haiku can lose focus during long workflows.
+
+3. Download the skill zip files from https://github.com/cas-team-analyst/team-analyst/tree/main/skills-import — `reserving-analysis.zip`, `peer-review.zip`, `selection-logic.zip` (optional), `help.zip` (optional).
+4. In Claude Chat, go to Customize > Skills > Add > Upload a skill, and upload each zip.
+5. Prepare your data. At least one loss or claim count triangle is required. Optionally, you can also provide exposures, prior selections, and initial expected loss rate and/or frequency. You can also download a file from https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data to use.
+
+Now you are ready to run the workflow! It may take some time to complete, so you may want to review the sample outputs first. If you want to just see what the output looks like, a sample workflow run with example output files is available at https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data/sample-run.
+
+6. Start a new chat, upload your data files, and type `/reserving-analysis` in the chat box and press enter to get started!
+
+**Alternative: Claude Cowork (Desktop App)**
+
+If you have a paid Claude Pro account and prefer using the desktop app's Cowork mode (which can call subagents and work on files on your computer), you can use the Cowork plugin instead:
 
 _These instructions are for Windows only. Mac/Linux is probably similar, if you find different steps please submit a PR to get them added._
 
-1. Sign up for a Claude Pro account (~$20/month) at https://claude.ai/ and follow installation instructions at https://support.claude.com/en/articles/10065433-installing-claude-desktop
+1. Follow installation instructions for Claude Desktop at https://support.claude.com/en/articles/10065433-installing-claude-desktop
 2. Enable long paths in Windows (Cowork sometimes creates these long paths): Settings > System > Advanced > Enable Long Paths (slide to "On").
-3. Open Claude Desktop and select **Cowork** on the top left (default is "Chat").
-    - It is likely you'll need to enable virtualization. If you see Cowork greyed out, click it anyway and you will see a button to enable virtualization. It will run, take a few minutes, and then will require a restart.
-4. Select the **Sonnet** model with **Medium** effort on the bottom right below the chat widget. Opus will quickly hit limits. Haiku loses focus during long workflows.
+3. Open Claude Desktop and select **Cowork** on the top left. (You may need to enable virtualization if prompted and restart).
+4. Select the **Sonnet** model with **Medium** effort on the bottom right.
 5. Download `teamanalyst-cowork.zip` from https://github.com/cas-team-analyst/team-analyst/blob/main/plugins/teamanalyst-cowork.zip
 6. Import the plugin: Customize > Personal plugins > + > Create plugin > Upload plugin > Browse files > Select `teamanalyst-cowork.zip`
-7. Prepare your data. At least one loss or claim count triangle is required. Optionally, you can also provide exposures, prior selections, and initial expected loss rate and/or frequency. You can also download a file from https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data to use.
+7. Click "New task", upload your data, and type `/reserving-analysis` to start.
 
-Now you are ready to run the workflow! It may take 20-40 minutes to complete the workflow, so you may want to wait until you have about 40 minutes of free time.
-
-If you want to just see what the output looks like, a sample workflow run with example output files is available at https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data/sample-run.
-
-7. Open Claude Desktop in Cowork mode and click "New task"
-8. Type `/reserving-analysis` (it will auto-complete and you can press enter to select it) in the chat box and press enter to get started!
-
-**Alternative: no Cowork, no paid account needed**
-
-If you don't want to use Cowork (e.g. you don't have a paid Claude account), you can instead upload the skill zips directly into Claude Chat (desktop app or https://claude.ai/), one at a time:
-
-1. Download the skill zip files from https://github.com/cas-team-analyst/team-analyst/tree/main/skills-import — `help.zip`, `reserving-analysis.zip`, `selection-logic.zip`, `peer-review.zip`.
-2. In Claude Chat, go to Customize > Skills > Add > Upload a skill, and upload each zip.
-3. Continue with the rest of the instructions above (steps 7 onward) using `/reserving-analysis` in a normal chat instead of a Cowork task.
-
-> **Beware**: this approach works on Claude's free tier, but free/consumer accounts don't get the same data privacy protections as paid accounts — by default your conversations may be used to train models unless you turn that off in Settings > Privacy. See the [AI Training & Data Privacy Policies guide](https://github.com/cas-team-analyst/team-analyst/blob/main/guides/AI_TRAINING_POLICIES.md) before uploading any real client data.
-
-- Use one or the other across all of Claude (desktop/app/web) to avoid confusing the agent with multiple versions of the same skill. If you upload the skills to Claude Chat, do not upload the plugin to Cowork, and vice versa.
-- Chat cannot call subagents so rules-based and open-ended selections will not be independent.
+> **Note:** Use one approach or the other across all of Claude (desktop/app/web) to avoid confusing the agent with multiple versions of the same skill. If you upload the skills to Claude Chat, do not upload the plugin to Cowork, and vice versa. Note that Chat cannot call subagents, so rules-based and open-ended selections will not be run as fully independent sub-tasks.
 
 These skills are available:
 
