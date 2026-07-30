@@ -50,6 +50,9 @@ def collect_files():
                 # Skip agent files (already added to agents/ folder)
                 if "agents" in relative_path.parts and child.suffix == ".md" and child.stem.endswith(".agent"):
                     continue
+                # Skip generated Python artifacts
+                if "__pycache__" in relative_path.parts or child.suffix == ".pyc":
+                    continue
                 arcname = "skills/" + relative_path.as_posix()
                 files.append((child, arcname))
     else:

@@ -3,7 +3,7 @@ def df_to_markdown(df, index=False):
         return "No data\n"
     if index:
         df = df.reset_index()
-    str_df = df.astype(str)
+    str_df = df.astype(object).where(df.notna(), "").astype(str)
     headers = [str(col) for col in str_df.columns]
     header_str = "| " + " | ".join(headers) + " |"
     sep_str = "|" + "|".join(["---"] * len(headers)) + "|"

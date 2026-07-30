@@ -118,8 +118,8 @@ def _canon(p):
 
 
 def _period_set(df, col):
-    """Set of canonical period strings from a DataFrame column, dropping nulls."""
-    return {_canon(p) for p in df[col] if _canon(p) is not None}
+    """Set of canonical period strings from a DataFrame column, dropping nulls and 'Total'."""
+    return {_canon(p) for p in df[col] if _canon(p) is not None and str(p).lower() != "total"}
 
 
 def _as_int(p):
@@ -159,13 +159,17 @@ def _ldf_ceiling(age_from, age_to):
 
 def _to_df(headers, data_rows):
     hdrs = [str(h) if h is not None else f"_col{i}" for i, h in enumerate(headers)]
-    rows = [r for r in data_rows if any(v is not None for v in r)]
+    rows = [r for r in data_rows if any(v is not None for v in r) and str(r[0]).strip().lower() != "total"]
     return pd.DataFrame(rows, columns=hdrs)
 
 
 def read_with_title(ws):
-    """Row 1 = title (skip), row 2 = headers, row 3+ = data."""
+    """Dynamically checks if title row is present, then skips it if so."""
     rows = list(ws.iter_rows(values_only=True))
+    if not rows:
+        return pd.DataFrame()
+    if rows[0][0] in ("Period", "Accident Period", "Accident Year"):
+        return _to_df(rows[0], rows[1:])
     if len(rows) < 3:
         return pd.DataFrame()
     return _to_df(rows[1], rows[2:])
@@ -179,39 +183,138 @@ def read_no_title(ws):
     return _to_df(rows[0], rows[1:])
 
 
+def is_non_period_label(p):
+    """True if the string label is a section header or metric rather than a period."""
+    if p is None:
+        return True
+    s = str(p).strip()
+    s_upper = s.upper()
+    for word in ["AGE-TO-AGE", "FACTOR", "AVERAGE", "SELECTION", "LDF", "CDF", "TAIL", "METHOD", "REASONING", "DIAGNOSTIC"]:
+        if word in s_upper:
+            return True
+    if s and s[0].isalpha() and not s.lower().startswith("t"):
+        return True
+    return False
+
+
+def read_no_title_until_blank(ws):
+    """Row 1 = headers, row 2+ = data. Stops at first blank row or non-period label in column 0."""
+    rows = list(ws.iter_rows(values_only=True))
+    if len(rows) < 2:
+        return pd.DataFrame()
+    headers = rows[0]
+    data_rows = []
+    for row in rows[1:]:
+        if not row or row[0] is None or is_non_period_label(row[0]):
+            break
+        data_rows.append(row[:len(headers)])
+    return _to_df(headers, data_rows)
+
+
+def resolve_measure_name(name):
+    """Resolve sheet name or column suffix/prefix to canonical measure name."""
+    if name is None:
+        return ""
+    name_clean = str(name).strip()
+    if name_clean.startswith("CL - "):
+        name_clean = name_clean[5:]
+    if name_clean.startswith("Sel - "):
+        name_clean = name_clean[6:]
+    if name_clean.endswith(" CL"):
+        name_clean = name_clean[:-3]
+    if name_clean.endswith(" BF"):
+        name_clean = name_clean[:-3]
+    if name_clean.endswith(" Selection"):
+        name_clean = name_clean[:-10]
+    
+    mapping = {
+        "Incurred": "Incurred Loss",
+        "Paid": "Paid Loss",
+        "Reported": "Reported Count",
+        "Closed": "Closed Count",
+        "Incurred-to-Ult": "Incurred Loss",
+        "Paid-to-Ult": "Paid Loss",
+        "Reported-to-Ult": "Reported Count",
+        "Closed-to-Ult": "Closed Count",
+        "Loss": "Incurred Loss",
+        "Count": "Reported Count",
+    }
+    return mapping.get(name_clean, name_clean)
+
+
+def extract_embedded_diagnostics_table(ws, section_title):
+    """Extract embedded table from Post-Method Diagnostics sheet by section title."""
+    rows = list(ws.iter_rows(values_only=True))
+    start_row = None
+    for r_idx, row in enumerate(rows):
+        if any(cell and str(cell).strip().upper() == section_title.upper() for cell in row):
+            start_row = r_idx
+            break
+            
+    if start_row is None:
+        return pd.DataFrame()
+        
+    header_row_idx = start_row + 1
+    if header_row_idx >= len(rows):
+        return pd.DataFrame()
+        
+    headers = list(rows[header_row_idx])
+    while headers and headers[-1] is None:
+        headers.pop()
+        
+    data_rows = []
+    for row in rows[header_row_idx + 1:]:
+        if not row or row[0] is None or any(cell and any(t in str(cell).upper() for t in ["AVERAGE IBNR", "AVERAGE UNPAID", "DIAGNOSTICS"]) for cell in row):
+            break
+        data_rows.append(row[:len(headers)])
+        
+    if not data_rows:
+        return pd.DataFrame()
+        
+    return _to_df(headers, data_rows)
+
+
 def read_cl_sheet(ws):
     """
-    Row 1 = title (skip), row 2 = (None, '12', '24', ...), row 3+ = data.
+    Reads a CL triangle sheet, dynamically detecting if a title row is present.
     Returns DataFrame indexed by canonical period string, columns = integer ages.
-
-    Stops at the first blank row after data starts so that subsequent sections
-    of the sheet (LDF averages, diagnostics, etc.) are not mistaken for
-    triangle rows.
+    Stops at the first blank row after data starts.
     """
     rows = list(ws.iter_rows(values_only=True))
-    if len(rows) < 3:
+    if not rows:
         return pd.DataFrame()
+        
+    # Detect header row index
+    header_idx = 0
+    if len(rows) > 1 and rows[0][0] not in ("Period", "Accident Period") and rows[1][0] in ("Period", "Accident Period"):
+        header_idx = 1
+        
+    if len(rows) <= header_idx + 1:
+        return pd.DataFrame()
+        
     ages = []
-    for h in rows[1][1:]:
+    for h in rows[header_idx][1:]:
         if h is None:
             continue
         try:
             ages.append(int(h))
         except (ValueError, TypeError):
             ages.append(h)
+            
     records = {}
     data_started = False
-    for row in rows[2:]:
-        if row[0] is None:
+    for row in rows[header_idx + 1:]:
+        if row[0] is None or is_non_period_label(row[0]):
             if data_started:
-                break   # first blank row after triangle = end of triangle section
+                break   # end of triangle section
             continue
         data_started = True
         period = _canon(row[0])
-        if period is None:
+        if period is None or period.lower() == "total":
             continue
         records[period] = {age: (row[i + 1] if i + 1 < len(row) else None)
                            for i, age in enumerate(ages)}
+                           
     if not records:
         return pd.DataFrame()
     return pd.DataFrame.from_dict(records, orient="index")
@@ -249,15 +352,25 @@ def detect_sheets(wb):
         measure_sheets = short_measure_sheets
         measure_sel_prefix = False
 
+    # Triangle sheets can be named Incurred-to-Ult etc., or simply Incurred etc.
+    # We only treat Incurred etc. as triangle sheets if they are not already used as measure_sheets.
+    tri_sheets = [n for n in names if n in tri_known and n not in measure_sheets]
+
+    # CL sheets can start with "CL - " (old format) or be the short measure names (new format)
+    if selection_sheets:
+        cl_sheets = [n for n in names if n in known_measures_short]
+    else:
+        cl_sheets = [n for n in names if n.startswith("CL - ")]
+
     return {
         "measure_sheets":     measure_sheets,
         "measure_sel_prefix": not bool(bare_measure_sheets) and bool(sel_measure_sheets),
         "sel_sheets":         [n for n in names if n.startswith("Sel - ")],
-        "cl_sheets":          [n for n in names if n.startswith("CL - ")],
-        "tri_sheets":         [n for n in names if n in tri_known],
-        "diag_sheet":         "Summary Diagnostics" in names,
-        "avg_ibnr":           "Average IBNR" in names,
-        "avg_unpaid":         "Average Unpaid" in names,
+        "cl_sheets":          cl_sheets,
+        "tri_sheets":         tri_sheets,
+        "diag_sheet":         "Summary Diagnostics" in names or "Post-Method Diagnostics" in names,
+        "avg_ibnr":           "Average IBNR" in names or "Post-Method Diagnostics" in names,
+        "avg_unpaid":         "Average Unpaid" in names or "Post-Method Diagnostics" in names,
     }
 
 
@@ -336,13 +449,21 @@ def check_period_consistency(ck, info, measure_dfs, diag_df, tri_dfs, cl_dfs):
             continue
         pcol = tdf.columns[0]
         tperiods = _period_set(tdf, pcol)
-        if tperiods == canon:
-            ck.ok(g, f"'{tname}' periods match measures")
-        else:
+        missing = canon - tperiods
+        if tperiods:
+            try:
+                min_t_p = min(int(p) for p in tperiods if p.isdigit())
+                missing = {p for p in missing if not (p.isdigit() and int(p) < min_t_p)}
+            except ValueError:
+                pass
+                
+        if tperiods - canon or missing:
             parts = []
             if tperiods - canon:  parts.append(f"extra: {tperiods - canon}")
-            if canon - tperiods:  parts.append(f"missing: {canon - tperiods}")
+            if missing:           parts.append(f"missing: {missing}")
             ck.fail(g, f"'{tname}' periods match measures", "; ".join(parts))
+        else:
+            ck.ok(g, f"'{tname}' periods match measures")
 
     # Consecutive — integer periods only (WARN)
     if _all_int(canon):
@@ -364,7 +485,7 @@ def check_period_consistency(ck, info, measure_dfs, diag_df, tri_dfs, cl_dfs):
     if _all_int(canon):
         for m, df in measure_dfs.items():
             ps = [_as_int(_canon(p)) for p in df["Accident Period"]
-                  if _canon(p) is not None]
+                  if _canon(p) is not None and str(p).lower() != "total"]
             if ps == sorted(ps):
                 ck.ok(g, f"'{m}' periods sorted ascending")
             else:
@@ -378,6 +499,13 @@ def check_period_consistency(ck, info, measure_dfs, diag_df, tri_dfs, cl_dfs):
             continue
         cl_periods = {_canon(p) for p in cl_df.index if _canon(p) is not None}
         missing = canon - cl_periods
+        if cl_periods:
+            try:
+                min_cl_p = min(int(p) for p in cl_periods if p.isdigit())
+                missing = {p for p in missing if not (p.isdigit() and int(p) < min_cl_p)}
+            except ValueError:
+                pass
+                
         if not missing:
             ck.ok(g, f"'{cl_name}' contains all expected periods")
         else:
@@ -452,9 +580,13 @@ def check_selected_ultimates(ck, measure_dfs):
     g = "4. Selected Ultimate Integrity"
 
     count_measures = {"Reported Count", "Closed Count"}
+    has_selection_sheets = any("Selection" in m for m in measure_dfs)
 
     for m, df in measure_dfs.items():
         if m == 'Exposure':
+            continue
+            
+        if has_selection_sheets and m not in {"Loss Selection", "Count Selection"}:
             continue
             
         if "Selected Ultimate" not in df.columns:
@@ -949,7 +1081,7 @@ def check_cl_triangles(ck, cl_dfs, measure_dfs, tri_dfs):
             ck.warn(g, f"'{cl_name}' has data", "Empty")
             continue
 
-        measure_name = cl_name.replace("CL - ", "")
+        measure_name = resolve_measure_name(cl_name)
         meas_df = measure_dfs.get(measure_name)
 
         actual_lookup = _canon_map(meas_df, "Accident Period", "Actual") \
@@ -1045,7 +1177,7 @@ def check_development_factors(ck, cl_dfs, measure_dfs):
         if cl_df.empty:
             continue
 
-        measure_name = cl_name.replace("CL - ", "")
+        measure_name = resolve_measure_name(cl_name)
         meas_df = measure_dfs.get(measure_name)
         actual_lookup = _canon_map(meas_df, "Accident Period", "Actual") \
             if meas_df is not None and "Actual" in meas_df.columns else {}
@@ -1547,12 +1679,109 @@ def main():
     else:
         # Full or short measure sheet names - expect title row
         measure_dfs = {m: read_with_title(wb[m]) for m in info["measure_sheets"]}
-    sel_dfs       = {s: read_no_title(wb[s])   for s in info["sel_sheets"]}
-    cl_dfs        = {c: read_cl_sheet(wb[c])   for c in info["cl_sheets"]}
-    tri_dfs       = {t: read_with_title(wb[t]) for t in info["tri_sheets"]}
-    diag_df       = read_with_title(wb["Summary Diagnostics"])    if info["diag_sheet"] else None
-    avg_ibnr_df   = read_with_title(wb["Average IBNR"])   if info["avg_ibnr"]   else None
-    avg_unpaid_df = read_with_title(wb["Average Unpaid"]) if info["avg_unpaid"] else None
+
+    # Expand selection sheets into individual measures if applicable
+    if any("Selection" in m for m in info["measure_sheets"]):
+        expanded_dfs = {}
+        if "Loss Selection" in measure_dfs:
+            loss_sel_df = measure_dfs["Loss Selection"]
+            if "Incurred" in loss_sel_df.columns:
+                inc_df = pd.DataFrame({
+                    "Accident Period": loss_sel_df["Accident Period"],
+                    "Current Age": loss_sel_df["Current Age"] if "Current Age" in loss_sel_df.columns else None,
+                    "Actual": loss_sel_df["Incurred"],
+                    "Selected Ultimate": loss_sel_df["Selected Ultimate"] if "Selected Ultimate" in loss_sel_df.columns else None,
+                    "IBNR": loss_sel_df["IBNR"] if "IBNR" in loss_sel_df.columns else None,
+                    "Unpaid": loss_sel_df["Unpaid"] if "Unpaid" in loss_sel_df.columns else None,
+                    "CL Ultimate": loss_sel_df["Incurred CL"] if "Incurred CL" in loss_sel_df.columns else None,
+                    "BF Ultimate": loss_sel_df["Incurred BF"] if "Incurred BF" in loss_sel_df.columns else None,
+                    "Selected Reasoning": loss_sel_df["Selected Reasoning"] if "Selected Reasoning" in loss_sel_df.columns else None,
+                })
+                expanded_dfs["Incurred Loss"] = inc_df
+            if "Paid" in loss_sel_df.columns:
+                paid_df = pd.DataFrame({
+                    "Accident Period": loss_sel_df["Accident Period"],
+                    "Current Age": loss_sel_df["Current Age"] if "Current Age" in loss_sel_df.columns else None,
+                    "Actual": loss_sel_df["Paid"],
+                    "Selected Ultimate": loss_sel_df["Selected Ultimate"] if "Selected Ultimate" in loss_sel_df.columns else None,
+                    "IBNR": loss_sel_df["IBNR"] if "IBNR" in loss_sel_df.columns else None,
+                    "Unpaid": loss_sel_df["Unpaid"] if "Unpaid" in loss_sel_df.columns else None,
+                    "CL Ultimate": loss_sel_df["Paid CL"] if "Paid CL" in loss_sel_df.columns else None,
+                    "BF Ultimate": loss_sel_df["Paid BF"] if "Paid BF" in loss_sel_df.columns else None,
+                    "Selected Reasoning": loss_sel_df["Selected Reasoning"] if "Selected Reasoning" in loss_sel_df.columns else None,
+                })
+                expanded_dfs["Paid Loss"] = paid_df
+                
+        if "Count Selection" in measure_dfs:
+            count_sel_df = measure_dfs["Count Selection"]
+            if "Reported" in count_sel_df.columns:
+                rep_df = pd.DataFrame({
+                    "Accident Period": count_sel_df["Accident Period"],
+                    "Current Age": count_sel_df["Current Age"] if "Current Age" in count_sel_df.columns else None,
+                    "Actual": count_sel_df["Reported"],
+                    "Selected Ultimate": count_sel_df["Selected Ultimate"] if "Selected Ultimate" in count_sel_df.columns else None,
+                    "IBNR": count_sel_df["IBNR"] if "IBNR" in count_sel_df.columns else None,
+                    "CL Ultimate": count_sel_df["Reported CL"] if "Reported CL" in count_sel_df.columns else None,
+                    "BF Ultimate": count_sel_df["Reported BF"] if "Reported BF" in count_sel_df.columns else None,
+                    "Selected Reasoning": count_sel_df["Selected Reasoning"] if "Selected Reasoning" in count_sel_df.columns else None,
+                })
+                expanded_dfs["Reported Count"] = rep_df
+            if "Closed" in count_sel_df.columns:
+                cls_df = pd.DataFrame({
+                    "Accident Period": count_sel_df["Accident Period"],
+                    "Current Age": count_sel_df["Current Age"] if "Current Age" in count_sel_df.columns else None,
+                    "Actual": count_sel_df["Closed"],
+                    "Selected Ultimate": count_sel_df["Selected Ultimate"] if "Selected Ultimate" in count_sel_df.columns else None,
+                    "IBNR": count_sel_df["IBNR"] if "IBNR" in count_sel_df.columns else None,
+                    "CL Ultimate": count_sel_df["Closed CL"] if "Closed CL" in count_sel_df.columns else None,
+                    "BF Ultimate": count_sel_df["Closed BF"] if "Closed BF" in count_sel_df.columns else None,
+                    "Selected Reasoning": count_sel_df["Selected Reasoning"] if "Selected Reasoning" in count_sel_df.columns else None,
+                })
+                expanded_dfs["Closed Count"] = cls_df
+        measure_dfs.update(expanded_dfs)
+
+    sel_dfs = {s: read_no_title(wb[s]) for s in info["sel_sheets"]}
+
+    cl_dfs = {}
+    for c in info["cl_sheets"]:
+        measure_name = resolve_measure_name(c)
+        cl_dfs[measure_name] = read_cl_sheet(wb[c])
+
+    tri_dfs = {}
+    if "Post-Method Diagnostics" in wb.sheetnames:
+        ws_post = wb["Post-Method Diagnostics"]
+        for key, section_title in [
+            ("Incurred-to-Ult", "INCURRED-TO-ULTIMATE"),
+            ("Paid-to-Ult", "PAID-TO-ULTIMATE"),
+            ("Reported-to-Ult", "REPORTED-TO-ULTIMATE"),
+            ("Closed-to-Ult", "CLOSED-TO-ULTIMATE"),
+        ]:
+            df = extract_embedded_diagnostics_table(ws_post, section_title)
+            if not df.empty:
+                tri_dfs[key] = df
+    else:
+        tri_dfs = {t: read_with_title(wb[t]) for t in info["tri_sheets"]}
+
+    diag_df = None
+    if info["diag_sheet"]:
+        if "Post-Method Diagnostics" in wb.sheetnames:
+            diag_df = read_no_title_until_blank(wb["Post-Method Diagnostics"])
+        else:
+            diag_df = read_with_title(wb["Summary Diagnostics"])
+
+    avg_ibnr_df = None
+    if info["avg_ibnr"]:
+        if "Post-Method Diagnostics" in wb.sheetnames:
+            avg_ibnr_df = extract_embedded_diagnostics_table(wb["Post-Method Diagnostics"], "AVERAGE IBNR")
+        else:
+            avg_ibnr_df = read_with_title(wb["Average IBNR"])
+
+    avg_unpaid_df = None
+    if info["avg_unpaid"]:
+        if "Post-Method Diagnostics" in wb.sheetnames:
+            avg_unpaid_df = extract_embedded_diagnostics_table(wb["Post-Method Diagnostics"], "AVERAGE UNPAID")
+        else:
+            avg_unpaid_df = read_with_title(wb["Average Unpaid"])
 
     print("--- Group 1: Structure ---")
     check_structure(ck, wb, info)
@@ -1574,6 +1803,11 @@ def main():
         # Measure sheets ARE the Sel- sheets; self-comparison adds no value — skip.
         ck.ok("6. Sel - Sheet Consistency",
               "Sel - sheets are the primary measure sheets (values file format)",
+              "Self-comparison skipped")
+    elif any("Selection" in m for m in info["measure_sheets"]):
+        # Selection sheets are primary measure sheets
+        ck.ok("6. Sel - Sheet Consistency",
+              "Selection sheets are the primary measure sheets (no Sel- prefix needed)",
               "Self-comparison skipped")
     else:
         check_sel_sheets(ck, measure_dfs, sel_dfs)

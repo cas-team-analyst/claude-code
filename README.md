@@ -47,7 +47,8 @@ If you don't want to use Cowork (e.g. you don't have a paid Claude account), you
 
 > **Beware**: this approach works on Claude's free tier, but free/consumer accounts don't get the same data privacy protections as paid accounts — by default your conversations may be used to train models unless you turn that off in Settings > Privacy. See the [AI Training & Data Privacy Policies guide](https://github.com/cas-team-analyst/team-analyst/blob/main/guides/AI_TRAINING_POLICIES.md) before uploading any real client data.
 
-> Use one or the other across all of Claude (desktop/app/web) to avoid confusing the agent with multiple versions of the same skill. If you upload the skills to Claude Chat, do not upload the plugin to Cowork, and vice versa.
+- Use one or the other across all of Claude (desktop/app/web) to avoid confusing the agent with multiple versions of the same skill. If you upload the skills to Claude Chat, do not upload the plugin to Cowork, and vice versa.
+- Chat cannot call subagents so rules-based and open-ended selections will not be independent.
 
 These skills are available:
 
