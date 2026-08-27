@@ -25,21 +25,21 @@ from modules.xl_styles import SELECTION_FILL, AI_FILL, USER_FILL, LABEL_FONT, DA
 
 # Paths from modules/config.py — override here if needed:
 METHOD_ID = "tail-curve"
-SELECTIONS_PATTERN    = config.SELECTIONS + f"{METHOD_ID}-ai-rules-based-*.json"
+SELECTIONS_PATTERN    = config.SELECTIONS + f"{METHOD_ID}-ai-framework-*.json"
 AI_SELECTIONS_PATTERN = config.SELECTIONS + f"{METHOD_ID}-ai-open-ended-*.json"
 EXCEL_FILE            = config.SELECTIONS + "Chain Ladder Selections - Tail.xlsx"
 DIAGNOSTICS_FILE      = config.PROCESSED_DATA + "tail-scenarios.csv"
 
 
 def find_selection_rows(ws):
-    """Find the row numbers for Rules-Based AI Selection, Open-Ended AI Selection, and User Selection rows."""
+    """Find the row numbers for Framework AI Selection, Open-Ended AI Selection, and User Selection rows."""
     rules_row = None
     ai_row = None
     user_row = None
     
     for row in ws.iter_rows():
         for cell in row:
-            if cell.value == "Rules-Based AI Selection":
+            if cell.value == "Framework AI Selection":
                 rules_row = cell.row
             elif cell.value == "Open-Ended AI Selection":
                 ai_row = cell.row
@@ -60,8 +60,8 @@ def has_existing_final_selection(ws):
     return False
 
 
-def has_existing_rules_selection(ws):
-    """Return True if the Rules-Based AI Selection row already has values."""
+def has_existing_framework_selection(ws):
+    """Return True if the Framework AI Selection row already has values."""
     rules_row, _, _ = find_selection_rows(ws)
     if rules_row is None:
         return False
@@ -82,11 +82,11 @@ def has_existing_ai_selection(ws):
     return False
 
 
-def update_rules_based_selection(ws, selection):
-    """Update the Rules-Based AI Selection row with data from JSON."""
+def update_framework_selection(ws, selection):
+    """Update the Framework AI Selection row with data from JSON."""
     rules_row, _, _ = find_selection_rows(ws)
     if rules_row is None:
-        print(f"  WARNING: Could not find 'Rules-Based AI Selection' row in sheet '{ws.title}'")
+        print(f"  WARNING: Could not find 'Framework AI Selection' row in sheet '{ws.title}'")
         return False
     
     # Column mapping (based on Section C in 2d-tail-create-excel.py)
@@ -140,7 +140,7 @@ def update_ai_selection(ws, selection):
 def load_per_measure_json_files(pattern, selection_type):
     """Load and combine all per-measure JSON files matching the pattern.
     
-    Extracts measure name from filename (e.g., 'tail-ai-rules-based-paid_loss.json' -> 'Paid Loss')
+    Extracts measure name from filename (e.g., 'tail-ai-framework-paid_loss.json' -> 'Paid Loss')
     and adds it to each selection object.
     """
     combined = []
@@ -151,7 +151,7 @@ def load_per_measure_json_files(pattern, selection_type):
     
     for filepath in sorted(files):
         try:
-            # Extract measure from filename: tail-curve-ai-rules-based-paid_loss.json -> paid_loss
+            # Extract measure from filename: tail-curve-ai-framework-paid_loss.json -> paid_loss
             filename = os.path.basename(filepath)
             # Remove extension
             name_no_ext = os.path.splitext(filename)[0]
@@ -181,7 +181,7 @@ def load_per_measure_json_files(pattern, selection_type):
 def main():
     """Update Tail Factor Selections Excel file with selections from per-measure JSON files."""
     # Load selections from per-measure JSON files
-    selections = load_per_measure_json_files(SELECTIONS_PATTERN, "rules-based")
+    selections = load_per_measure_json_files(SELECTIONS_PATTERN, "framework")
     
     if not selections:
         print(f"No selections found matching pattern: {SELECTIONS_PATTERN}")
@@ -225,12 +225,12 @@ def main():
             "Clear user selections manually before re-running to avoid overwriting actuary edits."
         )
 
-    # Abort if rules-based rows already have values
-    sheets_with_rules = [s for s in wb.sheetnames if has_existing_rules_selection(wb[s])]
-    if sheets_with_rules:
+    # Abort if framework rows already have values
+    sheets_with_framework = [s for s in wb.sheetnames if has_existing_framework_selection(wb[s])]
+    if sheets_with_framework:
         raise ValueError(
-            f"Existing rules-based selections found in sheet(s): {sheets_with_rules}\n"
-            "Clear rules-based selections manually before re-running."
+            f"Existing framework selections found in sheet(s): {sheets_with_framework}\n"
+            "Clear framework selections manually before re-running."
         )
 
     # Abort if AI rows already have values
@@ -266,9 +266,9 @@ def main():
                 break
 
         if matched:
-            # Update rules-based selection
-            if update_rules_based_selection(wb[sheet_name], by_measure[matched]):
-                print(f"  Updated rules-based selection in '{sheet_name}'")
+            # Update framework selection
+            if update_framework_selection(wb[sheet_name], by_measure[matched]):
+                print(f"  Updated framework selection in '{sheet_name}'")
                 updated_count += 1
 
             # Also write AI selection for this measure if available
@@ -280,7 +280,7 @@ def main():
             print(f"No selections found for sheet '{sheet_name}' - skipping")
 
     wb.save(EXCEL_FILE)
-    print(f"\nUpdated {updated_count} rules-based selections and {ai_updated_count} AI selections")
+    print(f"\nUpdated {updated_count} framework selections and {ai_updated_count} AI selections")
     print(f"Saved: {EXCEL_FILE}")
 
 

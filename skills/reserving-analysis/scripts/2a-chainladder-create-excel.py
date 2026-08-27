@@ -40,7 +40,7 @@ METHOD_ID = "chainladder"
 OUTPUT_FILE_NAME = "Chain Ladder Selections - LDFs.xlsx"
 
 def write_selections_section(ws, start_row, col_labels, fmt, prior_selections=None, measure=None):
-    """Write selection rows for Rules-Based AI, Open-Ended AI, and User."""
+    """Write selection rows for Framework AI, Open-Ended AI, and User."""
     # Header row
     ws.write(start_row, 0, "", fmt['subheader_left'])
     for c_idx, col in enumerate(col_labels):
@@ -78,14 +78,14 @@ def write_selections_section(ws, start_row, col_labels, fmt, prior_selections=No
             
             start_row += 1  # Blank row
     
-    # Rules-Based AI Selection
-    ws.write(start_row, 0, "Rules-Based AI Selection", fmt['selection'])
+    # Framework AI Selection
+    ws.write(start_row, 0, "Framework AI Selection", fmt['selection'])
     for c_idx in range(len(col_labels)):
         ws.write(start_row, c_idx + 1, "", fmt['selection_data'])
     start_row += 1
     
-    # Rules-Based AI Reasoning
-    ws.write(start_row, 0, "Rules-Based AI Reasoning", fmt['selection'])
+    # Framework AI Reasoning
+    ws.write(start_row, 0, "Framework AI Reasoning", fmt['selection'])
     for c_idx in range(len(col_labels)):
         ws.write(start_row, c_idx + 1, "", fmt['selection_text'])
     start_row += 1

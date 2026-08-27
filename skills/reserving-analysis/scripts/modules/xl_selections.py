@@ -12,50 +12,50 @@ from openpyxl.styles import Alignment
 # Rows in the selection section that are never shown in the output.
 SKIP_ROW_LABELS = frozenset({
     "Prior Selection", "Prior Reasoning", "Prior Delta",
-    "Rules-Based AI Reasoning",
+    "Framework AI Reasoning",
     "Open-Ended AI Selection", "Open-Ended AI Reasoning",
     "User Reasoning",
 })
 
 # Rows that each contain one selection option -- collapsed into a single "Selected" row.
-SELECTION_LABELS = frozenset({"Rules-Based AI Selection", "User Selection"})
+SELECTION_LABELS = frozenset({"Framework AI Selection", "User Selection"})
 
 
 def find_selected_values(ws):
     """
     Return the priority-correct selected row values (cols 2+) from a worksheet.
-    Priority: User Selection (if populated) > Rules-Based AI Selection.
+    Priority: User Selection (if populated) > Framework AI Selection.
     Returns list of values or None if neither row has data.
     """
-    user_vals = rb_vals = None
+    user_vals = fw_vals = None
     for src_cells in ws.iter_rows():
         col1 = src_cells[0].value if src_cells else None
-        if col1 in ("User Selection", "Rules-Based AI Selection"):
+        if col1 in ("User Selection", "Framework AI Selection"):
             vals = [c.value for c in src_cells[1:]]
             has_data = any(v not in (None, "") for v in vals)
             if not has_data:
                 continue
             if col1 == "User Selection":
                 user_vals = vals
-            elif col1 == "Rules-Based AI Selection" and rb_vals is None:
-                rb_vals = vals
-    return user_vals if user_vals is not None else rb_vals
+            elif col1 == "Framework AI Selection" and fw_vals is None:
+                fw_vals = vals
+    return user_vals if user_vals is not None else fw_vals
 
 
 def find_selected_reasoning(ws):
     """
     Return the reasoning text values (cols 2+) for the priority selection.
-    Priority: User Selection (if populated) -> User Reasoning; else RB-AI Reasoning.
+    Priority: User Selection (if populated) -> User Reasoning; else Framework AI Reasoning.
     Returns list of values or None if no reasoning found.
     """
     user_sel_has_data = False
     rb_sel_has_data   = False
     user_reason = None
-    rb_reason   = None
+    fw_reason   = None
 
     for src_cells in ws.iter_rows():
         col1 = src_cells[0].value if src_cells else None
-        if col1 in ("User Selection", "Rules-Based AI Selection"):
+        if col1 in ("User Selection", "Framework AI Selection"):
             vals = [c.value for c in src_cells[1:]]
             if any(v not in (None, "") for v in vals):
                 if col1 == "User Selection":
@@ -64,13 +64,13 @@ def find_selected_reasoning(ws):
                     rb_sel_has_data = True
         elif col1 == "User Reasoning":
             user_reason = [c.value for c in src_cells[1:]]
-        elif col1 == "Rules-Based AI Reasoning":
-            rb_reason = [c.value for c in src_cells[1:]]
+        elif col1 == "Framework AI Reasoning":
+            fw_reason = [c.value for c in src_cells[1:]]
 
     if user_sel_has_data:
         return user_reason
     elif rb_sel_has_data:
-        return rb_reason
+        return fw_reason
     return None
 
 

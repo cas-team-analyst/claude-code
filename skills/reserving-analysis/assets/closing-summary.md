@@ -29,17 +29,17 @@
   - `6-analysis-create-excel.py` — Create final consolidated output files
   - `7-tech-review.py` — Run technical reasonableness checks
   - `modules/` — Shared utility functions
-- `selections/Chain Ladder Selections - LDFs.xlsx` — Workbook with age-to-age factors, averages, Rules-Based AI Selection row, Open-Ended AI Selection row, and User Selection row (if manually overridden). This is the record of LDF selections and reasoning (excluding tail).
-- `selections/chainladder-ai-rules-based-<measure>.json` — Per-measure machine-readable LDF selections from rules-based framework with per-selection reasoning (e.g., `chainladder-ai-rules-based-paid_loss.json`).
+- `selections/Chain Ladder Selections - LDFs.xlsx` — Workbook with age-to-age factors, averages, Framework AI Selection row, Open-Ended AI Selection row, and User Selection row (if manually overridden). This is the record of LDF selections and reasoning (excluding tail).
+- `selections/chainladder-ai-framework-<measure>.json` — Per-measure machine-readable LDF selections from the framework selector with per-selection reasoning (e.g., `chainladder-ai-framework-paid_loss.json`).
 - `selections/chainladder-ai-open-ended-<measure>.json` — Per-measure machine-readable LDF selections from open-ended AI judgment with per-selection reasoning.
 - `selections/chainladder-context-<measure>.md` — Per-measure context files exported by `2a-chainladder-create-excel.py` (used by AI selectors).
-- `selections/Chain Ladder Selections - Tail.xlsx` — Workbook with tail curve fits (Bondy, Exponential Decay, McClenahan, Skurnick, etc.), leave-one-out diagnostics, Rules-Based AI Selection row, Open-Ended AI Selection row, and User Selection row (if manually overridden). This is the record of tail factor selections and reasoning.
-- `selections/tail-ai-rules-based-<measure>.json` — Per-measure machine-readable tail factor selections from rules-based framework with per-selection reasoning and decision points.
+- `selections/Chain Ladder Selections - Tail.xlsx` — Workbook with tail curve fits (Bondy, Exponential Decay, McClenahan, Skurnick, etc.), leave-one-out diagnostics, Framework AI Selection row, Open-Ended AI Selection row, and User Selection row (if manually overridden). This is the record of tail factor selections and reasoning.
+- `selections/tail-ai-framework-<measure>.json` — Per-measure machine-readable tail factor selections from the framework selector with per-selection reasoning and decision points.
 - `selections/tail-ai-open-ended-<measure>.json` — Per-measure machine-readable tail factor selections from open-ended AI judgment with per-selection reasoning.
 - `selections/tail-context-<measure>.md` — Per-measure context files exported by `2d-tail-create-excel.py` (used by AI selectors).
 - `selections/tail-factor-prior.csv` — Prior tail factor selections from previous analysis (if provided by user).
-- `selections/Ultimates.xlsx` — Workbook with method indications (Chain Ladder, Initial Expected, BF where applicable), Rules-Based AI Selection columns, Open-Ended AI Selection columns, and User Selection column (if manually overridden). This is the record of selected ultimates by measure and period.
-- `selections/ultimates-ai-rules-based-<measure>.json` — Per-measure machine-readable ultimate selections from rules-based method weighting framework with per-selection reasoning.
+- `selections/Ultimates.xlsx` — Workbook with method indications (Chain Ladder, Initial Expected, BF where applicable), Framework AI Selection columns, Open-Ended AI Selection columns, and User Selection column (if manually overridden). This is the record of selected ultimates by measure and period.
+- `selections/ultimates-ai-framework-<measure>.json` — Per-measure machine-readable ultimate selections from the framework selector's method weighting with per-selection reasoning.
 - `selections/ultimates-ai-open-ended-<measure>.json` — Per-measure machine-readable ultimate selections from open-ended AI judgment with per-selection reasoning.
 - `selections/ultimates-context-<measure>.md` — Per-measure context files exported by `5a-ultimates-create-excel.py` (used by AI selectors).
 - `ultimates/` — Per-method ultimate outputs from scripts 2f, 3, and 4 (Chain Ladder, Initial Expected, Bornhuetter-Ferguson). Note any methods that were skipped and why.

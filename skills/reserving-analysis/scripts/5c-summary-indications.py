@@ -9,7 +9,7 @@ Usage (run from scripts/ directory):
     python 5c-summary-indications.py
 
 Inputs:
-    ../selections/Ultimates.xlsx          - Selected ultimates (User Selection → Rules-Based AI)
+    ../selections/Ultimates.xlsx          - Selected ultimates (User Selection → Framework AI)
     ../ultimates/projected-ultimates.csv - Projected ultimates with actual values
     ../processed-data/1_triangles.csv    - Triangle data (for paid/case reserves calculation)
 

@@ -37,4 +37,4 @@ Applies only when running as a Cowork agent (see Startup Steps).
 
 - `assets/` - Templates (PROGRESS.md, REPORT.md, REPLICATE.md, welcome message, etc.).
 - `scripts/` - Numbered Python workflow scripts and modules/ subdirectory with shared utilities.
-- `agents/` - Selector subagents for LDF, tail curve, and ultimate selections, each with rules-based and open-ended variants.
+- `agents/` - Selector subagents for LDF, tail curve, and ultimate selections, each with framework and open-ended variants.

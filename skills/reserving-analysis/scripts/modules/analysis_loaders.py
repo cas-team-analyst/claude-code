@@ -28,7 +28,7 @@ MEASURE_TO_CATEGORY = {
 def load_selections(excel_path):
     """
     Load final selections from Ultimates.xlsx.
-    Priority per (measure, period): User Selection > Rules-Based AI Selection.
+    Priority per (measure, period): User Selection > Framework AI Selection.
     Open-Ended AI is intentionally excluded — it is not a trusted final selection source.
     Columns are located by header name — adapts to layout changes automatically.
     Returns dict {(measure, period): float}.  Returns {} when file is absent.
@@ -44,15 +44,15 @@ def load_selections(excel_path):
 
     for sheet_name in wb.sheetnames:
         ws = wb[sheet_name]
-        period_col = user_col = rb_col = None
+        period_col = user_col = fw_col = None
         for cell in ws[1]:
             v = cell.value
             if v == "Accident Period":
                 period_col = cell.column
             elif v == "User Selection":
                 user_col = cell.column
-            elif v == "Rules-Based AI Selection":
-                rb_col = cell.column
+            elif v == "Framework AI Selection":
+                fw_col = cell.column
 
         if period_col is None:
             continue
@@ -66,7 +66,7 @@ def load_selections(excel_path):
             key = (measure, period)
             if key in sel_lookup:
                 continue
-            for col_idx in [user_col, rb_col]:
+            for col_idx in [user_col, fw_col]:
                 if col_idx is None:
                     continue
                 v = ws.cell(row=row, column=col_idx).value
@@ -83,7 +83,7 @@ def load_selections(excel_path):
 def load_selection_reasoning(excel_path):
     """
     Load reasoning text for each (measure, period) from Ultimates.xlsx.
-    Priority matches load_selections: User Selection reasoning first, then RB-AI.
+    Priority matches load_selections: User Selection reasoning first, then Framework AI.
     Returns {(measure, period): str}.  Returns {} when file is absent.
     """
     path = pathlib.Path(excel_path)
@@ -95,14 +95,14 @@ def load_selection_reasoning(excel_path):
 
     for sheet_name in wb.sheetnames:
         ws = wb[sheet_name]
-        period_col = user_col = rb_col = user_r_col = rb_r_col = None
+        period_col = user_col = fw_col = user_r_col = rb_r_col = None
         for cell in ws[1]:
             v = cell.value
             if v == "Accident Period":            period_col = cell.column
             elif v == "User Selection":           user_col   = cell.column
-            elif v == "Rules-Based AI Selection": rb_col     = cell.column
+            elif v == "Framework AI Selection": fw_col     = cell.column
             elif v == "User Reasoning":           user_r_col = cell.column
-            elif v == "Rules-Based AI Reasoning": rb_r_col   = cell.column
+            elif v == "Framework AI Reasoning": rb_r_col   = cell.column
 
         if period_col is None:
             continue
@@ -118,7 +118,7 @@ def load_selection_reasoning(excel_path):
                 continue
 
             user_v = ws.cell(row=row, column=user_col).value if user_col else None
-            rb_v   = ws.cell(row=row, column=rb_col).value   if rb_col   else None
+            rb_v   = ws.cell(row=row, column=fw_col).value   if fw_col   else None
             is_num = lambda v: isinstance(v, (int, float)) and not (isinstance(v, float) and v != v)
 
             if is_num(user_v) and user_r_col:
@@ -156,8 +156,8 @@ def load_combined(ultimates_path, sel_lookup):
         lines = "\n  ".join(f"{m} / {p}" for m, p in missing)
         raise ValueError(
             f"{len(missing)} (measure, period) pair(s) have no User Selection or "
-            f"Rules-Based AI Selection in Ultimates.xlsx:\n  {lines}\n"
-            "Populate Rules-Based AI Selection (run 5b) or add a User Selection."
+            f"Framework AI Selection in Ultimates.xlsx:\n  {lines}\n"
+            "Populate Framework AI Selection (run 5b) or add a User Selection."
         )
 
     actual_lookup = df.set_index(["period", "measure"])["actual"].to_dict()

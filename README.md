@@ -48,7 +48,7 @@ _These instructions are for Windows only. Mac/Linux is probably similar, if you 
 6. Import the plugin: Customize > Personal plugins > + > Create plugin > Upload plugin > Browse files > Select `teamanalyst-cowork.zip`
 7. Click "New task", upload your data, and type `/reserving-analysis` to start.
 
-> **Note:** Use one approach or the other across all of Claude (desktop/app/web) to avoid confusing the agent with multiple versions of the same skill. If you upload the skills to Claude Chat, do not upload the plugin to Cowork, and vice versa. Note that Chat cannot call subagents, so rules-based and open-ended selections will not be run as fully independent sub-tasks.
+> **Note:** Use one approach or the other across all of Claude (desktop/app/web) to avoid confusing the agent with multiple versions of the same skill. If you upload the skills to Claude Chat, do not upload the plugin to Cowork, and vice versa. Note that Chat cannot call subagents, so framework and open-ended selections will not be run as fully independent sub-tasks.
 
 These skills are available:
 
@@ -118,11 +118,11 @@ These files control the workflow and provide resources the agent can use to comp
 
 **Selection Logic**
 
-Instructions that rules-based (as opposed to open-ended) selector subagents use to make selections.
+Instructions that framework (as opposed to open-ended) selector subagents use to make selections.
 
-- [LDFs & Tail Cutoff](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/agents/selector-chain-ladder-ldf-ai-rules-based.agent.md)
-- [Tail Fit Curve](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/agents/selector-tail-factor-ai-rules-based.agent.md)
-- [Ultimates](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/agents/selector-ultimates-ai-rules-based.agent.md)
+- [LDFs & Tail Cutoff](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/agents/selector-chain-ladder-ldf-ai-framework.agent.md)
+- [Tail Fit Curve](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/agents/selector-tail-curve-ai-framework.agent.md)
+- [Ultimates](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/agents/selector-ultimates-ai-framework.agent.md)
 
 **Sample Workflow Run**
 

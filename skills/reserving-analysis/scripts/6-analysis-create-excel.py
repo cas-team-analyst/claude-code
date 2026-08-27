@@ -108,7 +108,7 @@ def load_ldf_cdf_detail(detail_path):
 def load_tail_selections(tail_excel_path):
     """
     Load tail curve selections (method and reasoning) from Tail Excel file.
-    Priority: User Selection → Rules-Based AI Selection → Open-Ended AI Selection.
+    Priority: User Selection → Framework AI Selection → Open-Ended AI Selection.
     Returns {measure: {'method': str, 'reasoning': str, 'params': str or None}}.
     Returns {} if file absent.
     """
@@ -126,7 +126,7 @@ def load_tail_selections(tail_excel_path):
         # Find the Tail Curve Selection section
         in_tail_section = False
         method_col = reason_col = params_col = None
-        user_row = rb_row = oe_row = None
+        user_row = fw_row = oe_row = None
         
         for row_idx, row_cells in enumerate(ws.iter_rows(), start=1):
             col1 = row_cells[0].value if row_cells else None
@@ -153,15 +153,15 @@ def load_tail_selections(tail_excel_path):
             # Find selection rows
             if col1 == "User Selection":
                 user_row = row_idx
-            elif col1 == "Rules-Based AI Selection":
-                rb_row = row_idx
+            elif col1 == "Framework AI Selection":
+                fw_row = row_idx
             elif col1 == "Open-Ended AI Selection":
                 oe_row = row_idx
         
         # Extract selection data with priority: User → RB → OE
         selected_method = selected_reasoning = selected_params = None
         
-        for row_num in [user_row, rb_row, oe_row]:
+        for row_num in [user_row, fw_row, oe_row]:
             if row_num is None:
                 continue
             
@@ -337,12 +337,12 @@ def _exp_ref(exp_row_map, period, cl_ldf_wb=None):
 def _build_cl_ldfs_col_row_maps(wb_cl, measure_sheet_name):
     """
     Build column and row maps for referencing Chain Ladder Selections - LDFs.xlsx.
-    Returns (col_map, user_row, rb_row, user_reason_row, rb_reason_row) where:
+    Returns (col_map, user_row, fw_row, user_reason_row, fw_reason_row) where:
       col_map: {column_header: column_letter}
       user_row: row number of "User Selection"
-      rb_row: row number of "Rules-Based AI Selection"
+      fw_row: row number of "Framework AI Selection"
       user_reason_row: row number of "User Reasoning"
-      rb_reason_row: row number of "Rules-Based AI Reasoning"
+      fw_reason_row: row number of "Framework AI Reasoning"
     """
     if measure_sheet_name not in wb_cl.sheetnames:
         return {}, None, None, None, None
@@ -350,9 +350,9 @@ def _build_cl_ldfs_col_row_maps(wb_cl, measure_sheet_name):
     ws = wb_cl[measure_sheet_name]
     col_map = {}
     user_row = None
-    rb_row = None
+    fw_row = None
     user_reason_row = None
-    rb_reason_row = None
+    fw_reason_row = None
     
     # Find column headers and selection rows
     for row_idx, row_cells in enumerate(ws.iter_rows(), start=1):
@@ -367,14 +367,14 @@ def _build_cl_ldfs_col_row_maps(wb_cl, measure_sheet_name):
         # Track selection rows
         if col1 == "User Selection":
             user_row = row_idx
-        elif col1 == "Rules-Based AI Selection":
-            rb_row = row_idx
+        elif col1 == "Framework AI Selection":
+            fw_row = row_idx
         elif col1 == "User Reasoning":
             user_reason_row = row_idx
-        elif col1 == "Rules-Based AI Reasoning":
-            rb_reason_row = row_idx
+        elif col1 == "Framework AI Reasoning":
+            fw_reason_row = row_idx
     
-    return col_map, user_row, rb_row, user_reason_row, rb_reason_row
+    return col_map, user_row, fw_row, user_reason_row, fw_reason_row
 
 
 
@@ -1004,7 +1004,7 @@ def create_triangle_sheets_xlw(gen_wb, measures, fmt_dict, ldf_cdf_detail=None, 
         selected_row_written = False
         
         # Build column/row maps for reading selections
-        col_map, user_row, rb_row, user_reason_row, rb_reason_row = _build_cl_ldfs_col_row_maps(wb_form, measure)
+        col_map, user_row, fw_row, user_reason_row, fw_reason_row = _build_cl_ldfs_col_row_maps(wb_form, measure)
         
         # Process source rows
         for row_idx, src_cells in enumerate(ws_src_form.iter_rows()):
@@ -1041,7 +1041,7 @@ def create_triangle_sheets_xlw(gen_wb, measures, fmt_dict, ldf_cdf_detail=None, 
                 dst_row += 1
                 current_section = 'selections'
                 
-                # Write "Selected" row (User selection > RB-AI selection, cell by cell —
+                # Write "Selected" row (User selection > Framework AI selection, cell by cell —
                 # a user may have only overridden a few intervals, not the whole row)
                 ws_xlw.write(dst_row, 0, "Selected", fmt_dict.get('label'))
                 for col_idx, src_cell in enumerate(src_cells[1:], start=1):
@@ -1049,8 +1049,8 @@ def create_triangle_sheets_xlw(gen_wb, measures, fmt_dict, ldf_cdf_detail=None, 
                     if user_val not in (None, ""):
                         cached_val = user_val
                     else:
-                        rb_val = ws_src_vals.cell(rb_row, src_cell.column).value if rb_row else None
-                        cached_val = rb_val if rb_val not in (None, "") else None
+                        fw_val = ws_src_vals.cell(fw_row, src_cell.column).value if fw_row else None
+                        cached_val = fw_val if fw_val not in (None, "") else None
                     if cached_val is not None:
                         ws_xlw.write_number(dst_row, col_idx, float(cached_val), fmt_dict.get('data_ldf'))
                     else:
@@ -1058,7 +1058,7 @@ def create_triangle_sheets_xlw(gen_wb, measures, fmt_dict, ldf_cdf_detail=None, 
                 dst_row += 1
                 
                 # Write "Selected Reasoning" row
-                if user_reason_row and rb_reason_row:
+                if user_reason_row and fw_reason_row:
                     ws_xlw.write(dst_row, 0, "Selected Reasoning", fmt_dict.get('label'))
                     for col_idx, src_cell in enumerate(src_cells[1:], start=1):
                         user_val = ws_src_vals.cell(user_reason_row, src_cell.column).value
@@ -1067,10 +1067,10 @@ def create_triangle_sheets_xlw(gen_wb, measures, fmt_dict, ldf_cdf_detail=None, 
                         if user_reason:
                             ws_xlw.write(dst_row, col_idx, str(user_reason), fmt_dict.get('label'))
                         else:
-                            rb_val = ws_src_vals.cell(rb_reason_row, src_cell.column).value
-                            rb_reason = rb_val if rb_val not in (None, "") else None
-                            if rb_reason:
-                                ws_xlw.write(dst_row, col_idx, str(rb_reason), fmt_dict.get('label'))
+                            fw_val = ws_src_vals.cell(fw_reason_row, src_cell.column).value
+                            fw_reason = fw_val if fw_val not in (None, "") else None
+                            if fw_reason:
+                                ws_xlw.write(dst_row, col_idx, str(fw_reason), fmt_dict.get('label'))
                             else:
                                 ws_xlw.write_blank(dst_row, col_idx, None, fmt_dict.get('label'))
                     dst_row += 1

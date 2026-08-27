@@ -7,7 +7,7 @@ description: View the base actuarial LDF selection logic used for chain-ladder s
 
 ## Quick Reference
 
-**What this covers:** LDF selection framework (non-tail factors), tail factor selection framework (15-point decision), diagnostic adjustment rules (10 types), AI selector approaches (rules-based vs open-ended)
+**What this covers:** LDF selection framework (non-tail factors), tail factor selection framework (15-point decision), diagnostic adjustment rules (10 types), AI selector approaches (framework vs open-ended)
 
 **Four views available:**
 1. LDF selection framework → [Section A](#a-view-ldf-selection-framework)
@@ -37,14 +37,14 @@ Your selection logic defines the criteria, thresholds, and decision hierarchy th
 
 Then use the AskUserQuestion tool with exactly these four options and no others:
 
-1. **View LDF selection framework** — See the rule-based LDF selection criteria and decision hierarchy
+1. **View LDF selection framework** — See the framework LDF selection criteria and decision hierarchy
 2. **View tail factor selection framework** — See the 15-point tail factor decision framework
 3. **View diagnostic rules** — See the 10 diagnostic adjustment rules (applied to LDF selections)
-4. **View AI selector approach** — See how AI selectors differ from rule-based selectors
+4. **View AI selector approach** — See how AI selectors differ from framework selectors
 
 ## A. View LDF Selection Framework
 
-**Authoritative Source:** the rules-based chain-ladder LDF selector agent, in the `reserving-analysis` skill's `agents/` folder.
+**Authoritative Source:** the framework chain-ladder LDF selector agent, in the `reserving-analysis` skill's `agents/` folder.
 
 Read the agent file and present a summary with this structure:
 
@@ -59,7 +59,7 @@ Once done, remind: "When you're ready to see this logic in action on your data, 
 
 ## B. View Tail Factor Selection Framework
 
-**Authoritative Source:** the rules-based tail curve selector agent, in the `reserving-analysis` skill's `agents/` folder.
+**Authoritative Source:** the framework tail curve selector agent, in the `reserving-analysis` skill's `agents/` folder.
 
 Read the agent file and present a summary with this structure:
 
@@ -75,7 +75,7 @@ Once done, remind: "When you're ready to see this logic in action on your data, 
 
 ## C. View Diagnostic Rules
 
-**Authoritative Source:** the rules-based chain-ladder LDF selector agent (Section 10), in the `reserving-analysis` skill's `agents/` folder.
+**Authoritative Source:** the framework chain-ladder LDF selector agent (Section 10), in the `reserving-analysis` skill's `agents/` folder.
 
 Read Section 10 from the agent file and present a summary with this structure:
 
@@ -91,16 +91,16 @@ Once done, remind: "When you're ready to see this logic in action on your data, 
 
 ## D. View AI Selector Approach
 
-**Authoritative Sources:** all selector agents in the `reserving-analysis` skill's `agents/` folder — LDF, tail curve, and ultimates selectors, each with a rules-based and an open-ended variant.
+**Authoritative Sources:** all selector agents in the `reserving-analysis` skill's `agents/` folder — LDF, tail curve, and ultimates selectors, each with a framework and an open-ended variant.
 
 Read all AI agent files and present a summary with this structure:
 
-1. **AI vs Rule-Based** — explain the fundamental difference (rules-based vs open-ended judgment)
-2. **LDF AI Approaches** — describe both rules-based and open-ended approaches
-3. **Tail AI Approaches** — describe both rules-based and open-ended approaches
-4. **Ultimate AI Approaches** — describe both rules-based and open-ended approaches
+1. **Framework vs Open-Ended** — explain the fundamental difference (framework vs open-ended judgment)
+2. **LDF AI Approaches** — describe both framework and open-ended approaches
+3. **Tail AI Approaches** — describe both framework and open-ended approaches
+4. **Ultimate AI Approaches** — describe both framework and open-ended approaches
 5. **Common Elements** — what all AI agents share (data inputs, JSON output format, opus model for open-ended)
-6. **Use Cases** — when to use rules-based vs open-ended selections
+6. **Use Cases** — when to use framework vs open-ended selections
 7. **Selection Priority** — how Excel selections take precedence over JSON outputs
 
 Format the summary as plain prose, not bullet lists. Quote brief excerpts from the agent prompts to illustrate tone/approach, but don't reproduce them entirely.
@@ -110,7 +110,7 @@ Once done, remind: "When you're ready to see both selectors in action on your da
 ## Guardrails
 
 - This is a **read-only** skill. It does not create, modify, or save any files.
-- It reads from these authoritative sources only: the LDF, tail curve, and ultimates selector agents (rules-based and open-ended variants) in the `reserving-analysis` skill's `agents/` folder.
+- It reads from these authoritative sources only: the LDF, tail curve, and ultimates selector agents (framework and open-ended variants) in the `reserving-analysis` skill's `agents/` folder.
 - If the `reserving-analysis` skill isn't installed/available, tell the user this skill's content depends on it rather than inventing an answer.
 - Do NOT invent, assume, or present any selection logic that is not in these reference files.
 - Do NOT offer to create or modify custom logic files.

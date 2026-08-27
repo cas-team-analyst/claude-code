@@ -163,7 +163,7 @@ _This is a draft report that should be filled in as you make your way through th
 
 ### 5.5 Assumption Rationale
 **Material assumptions in this analysis:**
-- **LDF selections:** Based on volume-weighted averages with rule-based framework (14 criteria) and AI cross-check. See Section 4.2 and LDF selection workbooks for detailed reasoning.
+- **LDF selections:** Based on volume-weighted averages with framework (14 criteria) and AI cross-check. See Section 4.2 and LDF selection workbooks for detailed reasoning.
 - **Tail factors:** Based on curve fitting (Bondy, Exponential Decay, etc.) with leave-one-out validation. See tail selection workbook for detailed reasoning.
 - **Expected loss ratios (if used):** [Fill in source if BF/IE methods were used, otherwise note "Not applicable - CL only"]
 

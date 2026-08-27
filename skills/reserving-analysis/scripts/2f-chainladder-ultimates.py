@@ -100,7 +100,7 @@ def get_tail(selections: dict) -> float:
 def read_tail_method_from_excel(excel_path: str, measure: str) -> str:
     """
     Read selected tail curve METHOD from the Tail selections Excel file for a specific measure.
-    Priority: 'User Selection' row → 'Rules-Based AI Selection' row → 'Open-Ended AI Selection' row.
+    Priority: 'User Selection' row → 'Framework AI Selection' row → 'Open-Ended AI Selection' row.
     Returns None if file doesn't exist or no selection found.
     """
     tail_path = Path(excel_path)
@@ -112,7 +112,7 @@ def read_tail_method_from_excel(excel_path: str, measure: str) -> str:
         df = pd.read_excel(excel_path, sheet_name=measure[:31], engine='openpyxl', engine_kwargs={'data_only': True})
         
         # Look for selection rows (method is in column B, index 1)
-        for label in ("User Selection", "Rules-Based AI Selection", "Open-Ended AI Selection"):
+        for label in ("User Selection", "Framework AI Selection", "Open-Ended AI Selection"):
             for idx, row in df.iterrows():
                 if str(row.iloc[0]).strip() == label:
                     method_val = row.iloc[1]  # Column B (index 1) is Method
@@ -262,7 +262,7 @@ def read_selections_from_excel(excel_path: str, measure: str, ages: list) -> dic
     Read LDF selections from the Chain Ladder Selections Excel file for a specific measure.
     Merges cell by cell (per interval), not row by row: a user typically only overrides a
     handful of intervals, leaving the rest of the row blank, so each interval falls back
-    independently. Priority per interval: 'User Selection' → 'Rules-Based AI Selection' →
+    independently. Priority per interval: 'User Selection' → 'Framework AI Selection' →
     'Open-Ended AI Selection'. Uses robust upward-scanning interval detection.
     """
     try:
@@ -270,19 +270,19 @@ def read_selections_from_excel(excel_path: str, measure: str, ages: list) -> dic
         # Lowest priority first so higher-priority labels overwrite per interval on merge.
         by_label = {
             label: read_labeled_selections(df, label)
-            for label in ("Open-Ended AI Selection", "Rules-Based AI Selection", "User Selection")
+            for label in ("Open-Ended AI Selection", "Framework AI Selection", "User Selection")
         }
         merged = {}
-        for label in ("Open-Ended AI Selection", "Rules-Based AI Selection", "User Selection"):
+        for label in ("Open-Ended AI Selection", "Framework AI Selection", "User Selection"):
             merged.update(by_label[label])
         if not merged:
             raise ValueError(
-                f"No values found in 'User Selection', 'Rules-Based AI Selection', or 'Open-Ended AI Selection' row for sheet '{measure}'."
+                f"No values found in 'User Selection', 'Framework AI Selection', or 'Open-Ended AI Selection' row for sheet '{measure}'."
             )
         print(
             f"  Found {len(merged)} LDF selection(s) for {measure} "
             f"(User: {len(by_label['User Selection'])}, "
-            f"Rules-Based: {len(by_label['Rules-Based AI Selection'])}, "
+            f"Framework: {len(by_label['Framework AI Selection'])}, "
             f"Open-Ended: {len(by_label['Open-Ended AI Selection'])})"
         )
         return merged

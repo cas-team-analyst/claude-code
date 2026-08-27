@@ -139,7 +139,7 @@ def write_ultimates_sheet_xlw(wb, ws, df_ult, df_prior, category, measures):
         Accident Period, Current Age, Incurred, Paid, 
         Incurred CL, Paid CL, Initial Expected, Incurred BF, Paid BF,
         [Prior Selection, Prior Reasoning],
-        Rules-Based AI Selection, Rules-Based AI Reasoning,
+        Framework AI Selection, Framework AI Reasoning,
         Open-Ended AI Selection, Open-Ended AI Reasoning,
         User Selection, User Reasoning
     """
@@ -257,7 +257,7 @@ def write_ultimates_sheet_xlw(wb, ws, df_ult, df_prior, category, measures):
     
     # Add selection columns
     headers.extend([
-        "Rules-Based AI Selection", "Rules-Based AI Reasoning",
+        "Framework AI Selection", "Framework AI Reasoning",
         "Open-Ended AI Selection", "Open-Ended AI Reasoning",
         "User Selection", "User Reasoning"
     ])
@@ -266,7 +266,7 @@ def write_ultimates_sheet_xlw(wb, ws, df_ult, df_prior, category, measures):
     text_columns = {
         "Accident Period",
         "Prior Reasoning",
-        "Rules-Based AI Reasoning",
+        "Framework AI Reasoning",
         "Open-Ended AI Reasoning",
         "User Reasoning"
     }
@@ -286,8 +286,8 @@ def write_ultimates_sheet_xlw(wb, ws, df_ult, df_prior, category, measures):
     if has_prior_data:
         ws.set_column(col_map["Prior Selection"], col_map["Prior Selection"], 22)
         ws.set_column(col_map["Prior Reasoning"], col_map["Prior Reasoning"], 30)
-    ws.set_column(col_map["Rules-Based AI Selection"], col_map["Rules-Based AI Selection"], 22)
-    ws.set_column(col_map["Rules-Based AI Reasoning"], col_map["Rules-Based AI Reasoning"], 30)
+    ws.set_column(col_map["Framework AI Selection"], col_map["Framework AI Selection"], 22)
+    ws.set_column(col_map["Framework AI Reasoning"], col_map["Framework AI Reasoning"], 30)
     ws.set_column(col_map["Open-Ended AI Selection"], col_map["Open-Ended AI Selection"], 22)
     ws.set_column(col_map["Open-Ended AI Reasoning"], col_map["Open-Ended AI Reasoning"], 30)
     ws.set_column(col_map["User Selection"], col_map["User Selection"], 22)
@@ -372,9 +372,9 @@ def write_ultimates_sheet_xlw(wb, ws, df_ult, df_prior, category, measures):
             ws.write(r_idx, col_map["Prior Selection"], prior_sel, fmt['prior'])
             ws.write(r_idx, col_map["Prior Reasoning"], prior_reason, fmt['prior'])
         
-        # Rules-Based AI Selection (yellow fill - populated by 5b script)
-        ws.write(r_idx, col_map["Rules-Based AI Selection"], "", fmt['selection'])
-        ws.write(r_idx, col_map["Rules-Based AI Reasoning"], "", fmt['selection'])
+        # Framework AI Selection (yellow fill - populated by 5b script)
+        ws.write(r_idx, col_map["Framework AI Selection"], "", fmt['selection'])
+        ws.write(r_idx, col_map["Framework AI Reasoning"], "", fmt['selection'])
         
         # Open-Ended AI Selection (purple fill - populated by 5b script)
         ws.write(r_idx, col_map["Open-Ended AI Selection"], "", fmt['ai'])
