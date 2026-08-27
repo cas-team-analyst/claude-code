@@ -22,10 +22,12 @@ _The video from our CAS presentation can be found at https://www.youtube.com/wat
 1. Sign up for a Claude account at https://claude.ai/
    - **Important Note**: While this approach works on Claude's free tier, free/consumer accounts don't get the same data privacy protections as paid accounts — by default your conversations may be used to train models unless you turn that off in Settings > Privacy. See the [AI Training & Data Privacy Policies guide](https://github.com/cas-team-analyst/team-analyst/blob/main/guides/AI_TRAINING_POLICIES.md) before uploading any real client data.
 
-2. Select the **Sonnet** model for your chat, **Medium** effort. Opus will quickly hit limits, and Haiku can lose focus during long workflows.
+2. In the chat box, select **Cowork**, **Sonnet**, and **Medium**. Cowork will enable the use of subagents. Sonnet is preferred to Opus (quickly hits limits) and Haiku (can lose focus during long workflows).
 
 3. Download the skill zip files from https://github.com/cas-team-analyst/team-analyst/tree/main/skills-import — `reserving-analysis.zip`, `peer-review.zip`, `selection-logic.zip` (optional), `help.zip` (optional).
+
 4. In Claude Chat, go to Customize > Skills > Add > Upload a skill, and upload each zip.
+
 5. Prepare your data. At least one loss or claim count triangle is required. Optionally, you can also provide exposures, prior selections, and initial expected loss rate and/or frequency. You can also download a file from https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data to use.
 
 Now you are ready to run the workflow! It may take some time to complete, so you may want to review the sample outputs first. If you want to just see what the output looks like, a sample workflow run with example output files is available at https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data/sample-run.
