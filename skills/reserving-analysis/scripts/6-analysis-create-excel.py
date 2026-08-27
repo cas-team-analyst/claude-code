@@ -1041,11 +1041,16 @@ def create_triangle_sheets_xlw(gen_wb, measures, fmt_dict, ldf_cdf_detail=None, 
                 dst_row += 1
                 current_section = 'selections'
                 
-                # Write "Selected" row (User selection > RB-AI selection)
+                # Write "Selected" row (User selection > RB-AI selection, cell by cell —
+                # a user may have only overridden a few intervals, not the whole row)
                 ws_xlw.write(dst_row, 0, "Selected", fmt_dict.get('label'))
                 for col_idx, src_cell in enumerate(src_cells[1:], start=1):
-                    val_cell = ws_src_vals.cell(src_cell.row, src_cell.column)
-                    cached_val = val_cell.value if val_cell.value not in (None, "") else None
+                    user_val = ws_src_vals.cell(user_row, src_cell.column).value if user_row else None
+                    if user_val not in (None, ""):
+                        cached_val = user_val
+                    else:
+                        rb_val = ws_src_vals.cell(rb_row, src_cell.column).value if rb_row else None
+                        cached_val = rb_val if rb_val not in (None, "") else None
                     if cached_val is not None:
                         ws_xlw.write_number(dst_row, col_idx, float(cached_val), fmt_dict.get('data_ldf'))
                     else:

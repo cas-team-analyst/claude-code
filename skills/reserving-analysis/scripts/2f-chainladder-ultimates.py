@@ -260,20 +260,32 @@ def extract_diagonal(triangle_data: pd.DataFrame) -> pd.DataFrame:
 def read_selections_from_excel(excel_path: str, measure: str, ages: list) -> dict:
     """
     Read LDF selections from the Chain Ladder Selections Excel file for a specific measure.
-    Priority: 'User Selection' row (actuary manual) → 'Rules-Based AI Selection' row → 'Open-Ended AI Selection' row (fallback).
-    Uses robust upward-scanning interval detection.
+    Merges cell by cell (per interval), not row by row: a user typically only overrides a
+    handful of intervals, leaving the rest of the row blank, so each interval falls back
+    independently. Priority per interval: 'User Selection' → 'Rules-Based AI Selection' →
+    'Open-Ended AI Selection'. Uses robust upward-scanning interval detection.
     """
     try:
         df = pd.read_excel(excel_path, sheet_name=measure, engine='openpyxl', engine_kwargs={'data_only': True})
-        # Try user selection first, then rules-based AI selection, then open-ended AI selection
-        for label in ("User Selection", "Rules-Based AI Selection", "Open-Ended AI Selection"):
-            selections = read_labeled_selections(df, label)
-            if selections:
-                print(f"  Found {len(selections)} LDF selection(s) for {measure} (row: '{label}')")
-                return selections
-        raise ValueError(
-            f"No values found in 'User Selection', 'Rules-Based AI Selection', or 'Open-Ended AI Selection' row for sheet '{measure}'."
+        # Lowest priority first so higher-priority labels overwrite per interval on merge.
+        by_label = {
+            label: read_labeled_selections(df, label)
+            for label in ("Open-Ended AI Selection", "Rules-Based AI Selection", "User Selection")
+        }
+        merged = {}
+        for label in ("Open-Ended AI Selection", "Rules-Based AI Selection", "User Selection"):
+            merged.update(by_label[label])
+        if not merged:
+            raise ValueError(
+                f"No values found in 'User Selection', 'Rules-Based AI Selection', or 'Open-Ended AI Selection' row for sheet '{measure}'."
+            )
+        print(
+            f"  Found {len(merged)} LDF selection(s) for {measure} "
+            f"(User: {len(by_label['User Selection'])}, "
+            f"Rules-Based: {len(by_label['Rules-Based AI Selection'])}, "
+            f"Open-Ended: {len(by_label['Open-Ended AI Selection'])})"
         )
+        return merged
     except Exception as e:
         print(f"  Warning: Could not read selections for {measure}: {e}")
         return {}
