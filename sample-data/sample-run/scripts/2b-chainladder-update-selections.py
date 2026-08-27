@@ -22,7 +22,7 @@ from modules.xl_styles import SELECTION_FILL, AI_FILL, DATA_FONT, THIN_BORDER
 
 # Paths from modules/config.py — override here if needed:
 METHOD_ID = "chainladder"
-SELECTIONS_PATTERN    = config.SELECTIONS + f"{METHOD_ID}-ai-rules-based-*.json"
+SELECTIONS_PATTERN    = config.SELECTIONS + f"{METHOD_ID}-ai-framework-*.json"
 AI_SELECTIONS_PATTERN = config.SELECTIONS + f"{METHOD_ID}-ai-open-ended-*.json"
 EXCEL_FILE            = config.SELECTIONS + "Chain Ladder Selections - LDFs.xlsx"
 
@@ -31,10 +31,10 @@ def find_selections_section(ws):
     """Find the row where interval headers and selection rows are located."""
     for row in ws.iter_rows():
         for cell in row:
-            if cell.value == "Rules-Based AI Selection":
+            if cell.value == "Framework AI Selection":
                 selection_row = cell.row
                 reasoning_row = selection_row + 1
-                # Header row is the row just before the Rules-Based AI Selection row
+                # Header row is the row just before the Framework AI Selection row
                 # (or before Prior Selection if it exists)
                 header_row = selection_row - 1
                 # Check if there are Prior Selection rows above
@@ -78,7 +78,7 @@ def find_user_section(ws):
 
 
 def has_existing_selections(ws):
-    """Return True if the Rules-Based AI Selection row already has values."""
+    """Return True if the Framework AI Selection row already has values."""
     _, selection_row, _ = find_selections_section(ws)
     if selection_row is None:
         return False
@@ -137,7 +137,7 @@ def update_sheet(ws, measure_selections):
             reason_cell.border = THIN_BORDER
             continue
 
-        # Write selection value (this is rules-based now)
+        # Write selection value (this is framework now)
         sel_cell = ws.cell(row=selection_row, column=col)
         sel_cell.value = sel["selection"]
         sel_cell.fill = SELECTION_FILL
@@ -157,7 +157,7 @@ def update_sheet(ws, measure_selections):
     # Set row height for reasoning row
     ws.row_dimensions[reasoning_row].height = 60
 
-    print(f"  Updated {len(measure_selections)} rules-based selections in '{ws.title}'")
+    print(f"  Updated {len(measure_selections)} framework selections in '{ws.title}'")
 
 
 def update_ai_sheet(ws, measure_selections, interval_to_col):
@@ -207,7 +207,7 @@ def update_ai_sheet(ws, measure_selections, interval_to_col):
 def load_per_measure_json_files(pattern, selection_type):
     """Load and combine all per-measure JSON files matching the pattern.
     
-    Extracts measure name from filename (e.g., 'chainladder-ai-rules-based-paid_loss.json' -> 'Paid Loss')
+    Extracts measure name from filename (e.g., 'chainladder-ai-framework-paid_loss.json' -> 'Paid Loss')
     and adds it to each selection object.
     """
     combined = []
@@ -218,7 +218,7 @@ def load_per_measure_json_files(pattern, selection_type):
     
     for filepath in sorted(files):
         try:
-            # Extract measure from filename: chainladder-ai-rules-based-paid_loss.json -> paid_loss
+            # Extract measure from filename: chainladder-ai-framework-paid_loss.json -> paid_loss
             filename = os.path.basename(filepath)
             # Remove extension
             name_no_ext = os.path.splitext(filename)[0]
@@ -248,7 +248,7 @@ def load_per_measure_json_files(pattern, selection_type):
 def main():
     """Update Chain Ladder Selections Excel file with selections from per-measure JSON files."""
     # Load selections from per-measure JSON files
-    selections = load_per_measure_json_files(SELECTIONS_PATTERN, "rules-based")
+    selections = load_per_measure_json_files(SELECTIONS_PATTERN, "framework")
     
     if not selections:
         print(f"No selections found matching pattern: {SELECTIONS_PATTERN}")

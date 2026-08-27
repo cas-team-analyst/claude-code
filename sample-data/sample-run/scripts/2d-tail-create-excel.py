@@ -9,7 +9,7 @@ goal: Create Chain Ladder Selections - Tail.xlsx for actuarial tail curve review
 Sheet layout per measure:
   - Section A: Selected LDFs from Chain Ladder Selections - LDFs.xlsx
   - Section B: Curve Comparison Table (method × diagnostics)
-  - Section C: Tail Curve Selection Area (prior, rules-based, open-ended, user — method only)
+  - Section C: Tail Curve Selection Area (prior, framework, open-ended, user — method only)
 
 run-note: When copied to a project, run from the scripts/ directory:
     cd scripts/
@@ -55,10 +55,10 @@ def find_selected_ldfs_in_cl_excel(cl_excel_path, measure):
     Returns:
         {
             'intervals': {interval: col_idx},
-            'selection_rows': {'user': row, 'rules_based': row, 'open_ended': row},
-            'reasoning_rows': {'user': row, 'rules_based': row, 'open_ended': row},
-            'cached_values': {interval: value},  # Using priority: User > Rules-Based > Open-Ended
-            'cached_reasoning': {interval: {'user': text, 'rules_based': text, 'open_ended': text}}
+            'selection_rows': {'user': row, 'framework': row, 'open_ended': row},
+            'reasoning_rows': {'user': row, 'framework': row, 'open_ended': row},
+            'cached_values': {interval: value},  # Using priority: User > Framework > Open-Ended
+            'cached_reasoning': {interval: {'user': text, 'framework': text, 'open_ended': text}}
         }
         or {} if file not found or no selections
     """
@@ -79,7 +79,7 @@ def find_selected_ldfs_in_cl_excel(cl_excel_path, measure):
         selection_rows = {}
         selection_labels = {
             "User Selection": "user",
-            "Rules-Based AI Selection": "rules_based",
+            "Framework AI Selection": "framework",
             "Open-Ended AI Selection": "open_ended"
         }
         
@@ -98,7 +98,7 @@ def find_selected_ldfs_in_cl_excel(cl_excel_path, measure):
         reasoning_rows = {}
         reasoning_labels = {
             "User Reasoning": "user",
-            "Rules-Based AI Reasoning": "rules_based",
+            "Framework AI Reasoning": "framework",
             "Open-Ended AI Reasoning": "open_ended"
         }
         
@@ -133,7 +133,7 @@ def find_selected_ldfs_in_cl_excel(cl_excel_path, measure):
             print(f"  WARNING: No interval headers found near selection rows in {measure} sheet")
             return {}
         
-        # Calculate cached values using priority logic: User > Rules-Based > Open-Ended
+        # Calculate cached values using priority logic: User > Framework > Open-Ended
         cached_values = {}
         cached_reasoning = {}
         
@@ -142,9 +142,9 @@ def find_selected_ldfs_in_cl_excel(cl_excel_path, measure):
             # Check User first
             if 'user' in selection_rows:
                 value = ws.cell(selection_rows['user'], col_idx).value
-            # Fall back to Rules-Based if User is None
-            if value is None and 'rules_based' in selection_rows:
-                value = ws.cell(selection_rows['rules_based'], col_idx).value
+            # Fall back to Framework if User is None
+            if value is None and 'framework' in selection_rows:
+                value = ws.cell(selection_rows['framework'], col_idx).value
             # Fall back to Open-Ended if both above are None
             if value is None and 'open_ended' in selection_rows:
                 value = ws.cell(selection_rows['open_ended'], col_idx).value
@@ -153,7 +153,7 @@ def find_selected_ldfs_in_cl_excel(cl_excel_path, measure):
             
             # Read reasoning for all three
             reasoning_dict = {}
-            for key in ['user', 'rules_based', 'open_ended']:
+            for key in ['user', 'framework', 'open_ended']:
                 if key in reasoning_rows:
                     reason_val = ws.cell(reasoning_rows[key], col_idx).value
                     reasoning_dict[key] = reason_val if reason_val else None
@@ -297,7 +297,7 @@ def write_selected_ldfs_section(ws, start_row, measure, cl_excel_path, output_fi
     """
     Write selected LDFs section with values and reasoning from Chain Ladder Excel.
     Intervals as columns, one row for selections, one row for reasoning.
-    Uses cascaded priority: User Selection > Rules-Based AI > Open-Ended AI.
+    Uses cascaded priority: User Selection > Framework AI > Open-Ended AI.
     
     Returns:
         next_row (int)
@@ -343,7 +343,7 @@ def write_selected_ldfs_section(ws, start_row, measure, cl_excel_path, output_fi
     ws.write(row, 0, "Reasoning", fmt['label'])
     for c_idx, interval in enumerate(sorted_intervals):
         reasoning_dict = cached_reasoning.get(interval, {})
-        reasoning = reasoning_dict.get('user') or reasoning_dict.get('rules_based') or reasoning_dict.get('open_ended') or ""
+        reasoning = reasoning_dict.get('user') or reasoning_dict.get('framework') or reasoning_dict.get('open_ended') or ""
         if reasoning:
             ws.write(row, c_idx + 1, reasoning, fmt['label'])
     
@@ -438,7 +438,7 @@ def write_scenario_comparison_section(ws, start_row, measure, df_scenarios, fmt)
 
 
 def write_selection_section(ws, start_row, measure, fmt, prior_selections=None):
-    """Section C: Tail Curve Selection Area (prior, rules-based AI, open-ended AI, user selection)."""
+    """Section C: Tail Curve Selection Area (prior, framework AI, open-ended AI, user selection)."""
     row = write_section_header(ws, start_row, 4, "Tail Curve Selection", fmt, "label_row")
     
     headers = ['Label', 'Method', 'Reasoning', 'Additional Notes']
@@ -469,8 +469,8 @@ def write_selection_section(ws, start_row, measure, fmt, prior_selections=None):
             row += 1
             row += 1  # Blank row
     
-    # Rules-Based AI Selection row
-    ws.write(row, 0, "Rules-Based AI Selection", fmt['selection'])
+    # Framework AI Selection row
+    ws.write(row, 0, "Framework AI Selection", fmt['selection'])
     for c_idx in range(1, 4):
         ws.write(row, c_idx, '', fmt['selection_text'])
     row += 1
@@ -579,7 +579,7 @@ def export_md_data(measures, df_scenarios, df_enhanced, df_diagnostics, df_ldf_a
             reasoning_vals = []
             for interval in sorted_intervals:
                 reasoning_dict = cached_reasoning.get(interval, {})
-                reasoning = reasoning_dict.get('user') or reasoning_dict.get('rules_based') or reasoning_dict.get('open_ended') or ""
+                reasoning = reasoning_dict.get('user') or reasoning_dict.get('framework') or reasoning_dict.get('open_ended') or ""
                 truncated = reasoning[:80] + "..." if len(reasoning) > 80 else reasoning
                 reasoning_vals.append(truncated)
             

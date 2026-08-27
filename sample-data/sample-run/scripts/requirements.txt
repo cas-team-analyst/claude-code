@@ -1,0 +1,4 @@
+openpyxl # for manipulating excel templates
+xlsxwriter # alternative to openpyxl that supports cached formula values
+pandas # for data manipulation
+pytest # for automated testing

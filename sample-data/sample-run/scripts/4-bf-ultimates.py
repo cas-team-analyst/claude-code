@@ -135,8 +135,6 @@ def compute_ultimate_bfs(diagonal: pd.DataFrame, ultimate_cls: pd.DataFrame,
     result_df = pd.DataFrame(rows)
     print(f"  Computed {len(result_df)} BF ultimate(s)")
     
-    result_df['period'] = result_df['period'].astype(str)
-    result_df['current_age'] = result_df['current_age'].astype(str)
     return result_df
 
 
@@ -211,8 +209,25 @@ if __name__ == "__main__":
     if output_csv.exists():
         print(f"\nMerging with existing data in: {output_csv}")
         df_existing = pd.read_csv(output_csv)
-        df_existing["period"] = df_existing["period"].astype(str)
-        df_existing["current_age"] = df_existing["current_age"].astype(str)
+
+        # Normalize merge key dtypes -- CSV round-trips can leave numeric-looking
+        # keys as int64/float64 in one frame and str (e.g. "287") in the other,
+        # which breaks pd.merge, and naive str() casts create "287.0" vs "287"
+        # mismatches. Normalize both sides to a common string representation.
+        def _norm_age(v):
+            if pd.isna(v) or v == '' or str(v).lower() == 'nan':
+                return ''
+            try:
+                return str(int(float(v)))
+            except (ValueError, TypeError):
+                return str(v)
+
+        df_existing['period'] = df_existing['period'].astype(str)
+        df_bf['period'] = df_bf['period'].astype(str)
+        df_existing['current_age'] = df_existing['current_age'].apply(_norm_age)
+        df_bf['current_age'] = df_bf['current_age'].apply(_norm_age)
+        df_existing['measure'] = df_existing['measure'].astype(str)
+        df_bf['measure'] = df_bf['measure'].astype(str)
 
         # Merge on period, measure, current_age (outer join to keep all rows)
         df_combined = df_existing.merge(

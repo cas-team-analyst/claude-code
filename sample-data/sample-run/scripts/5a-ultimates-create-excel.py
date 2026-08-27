@@ -33,7 +33,7 @@ from modules.xl_writers import write_ultimates_sheet_xlw
 # Paths from modules/config.py — override here if needed:
 INPUT_ULTIMATES  = config.ULTIMATES + "projected-ultimates.csv"
 INPUT_TRIANGLES = config.PROCESSED_DATA + "1_triangles.csv"  # Triangle data including Exposure measure
-PRIOR_SELECTIONS_RB = config.SELECTIONS + "ultimates-prior.json"             # Optional, priority 1 — set to prior cycle's selected ultimates
+PRIOR_SELECTIONS_FW = config.SELECTIONS + "ultimates-prior.json"             # Optional, priority 1 — set to prior cycle's selected ultimates
 PRIOR_SELECTIONS_OE = config.SELECTIONS + "ultimates-prior-oe.json"          # Optional, priority 2 — fallback prior
 OUTPUT_FILE      = config.SELECTIONS + "Ultimates.xlsx"
 SELECTIONS_OUTPUT_PATH = config.SELECTIONS
@@ -213,17 +213,17 @@ def main():
                   f"otherwise the ultimates selector will treat CL as unavailable for every AY.\n")
 
     df_prior = None
-    # Try loading prior selections - prioritize rules-based, fall back to open-ended
+    # Try loading prior selections - prioritize framework, fall back to open-ended
     prior_loaded = False
     try:
-        if pathlib.Path(PRIOR_SELECTIONS_RB).exists():
-            with open(PRIOR_SELECTIONS_RB, 'r') as f:
+        if pathlib.Path(PRIOR_SELECTIONS_FW).exists():
+            with open(PRIOR_SELECTIONS_FW, 'r') as f:
                 prior_data = json.load(f)
             df_prior = pd.DataFrame(prior_data)
-            print(f"Loaded prior selections from {PRIOR_SELECTIONS_RB} (rules-based)")
+            print(f"Loaded prior selections from {PRIOR_SELECTIONS_FW} (framework)")
             prior_loaded = True
     except Exception as e:
-        print(f"  Could not load rules-based prior selections: {e}")
+        print(f"  Could not load framework prior selections: {e}")
     
     if not prior_loaded:
         try:

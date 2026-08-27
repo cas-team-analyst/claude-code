@@ -14,7 +14,7 @@ Process to complete each step:
     - Mark the step as complete with [X]
 5. Move on to the next step.
 
-# Step 1: Project Setup
+# Step 1: Project Setup — COMPLETE [2026-08-27]
 
 - [X] Respond to the user with the welcome message from assets/welcome-message.md and wait for their confirmation.
 
@@ -35,6 +35,10 @@ Process to complete each step:
   - Fill in the Overview section using values from the setup form: Analysis name, Prepared by, Draft Date, etc.
   - Fill in Step 1: List folders created, note interaction mode selected
 
+**Project folder:** `C:\Users\super\Documents\actuarial\cas-rfp\spec-only\team-analyst\sample-data\sample-run`
+**Triangle file:** `raw-data\Triangle_Examples_1.xlsx`
+**Interaction mode:** Fully Automatic
+
 # Step 2: Exploratory Data Analysis
 
 - [X] Review the files available using the preview_data_file scripts. For each file add a file summary subsection to REPORT.md in the data section.
@@ -44,17 +48,27 @@ Process to complete each step:
   - Fill in **Section 3.2 Data Reconciliation**: note whether data was reconciled to a prior valuation or financial system. If no reconciliation was performed, state "Not reconciled - data accepted as provided by [source]."
   - Fill in **Section 3.3 Data Quality Observations**: any outliers, gaps, negative development, coding anomalies, or unusual patterns noticed during exploration. If none observed, state "No material data quality issues observed during initial review."
 
+**Step 2 COMPLETE [2026-08-27].** File contains 5 sheets: Tri 1 (metadata: Line WC, clerical/low hazard, payroll $100M-$500M), Paid 1 (paid loss triangle, AY 2001-2024, ages 11-287mo), Inc 1 (incurred loss triangle, same shape), Ct 1 (claim count triangle, same shape), Exposure (Accident Year x Payroll, 2001-2024). No ELR file, no prior selections, no closed-count triangle.
+
 # Step 3: Data Intake
 
 - [X] Use bash cp to copy all the numbered scripts and the modules folder from the reserving-analysis skill scripts folder to `scripts/` in the working directory. Do NOT regenerate.
 
 - [X] Based on available data, determine which triangles we will use to come up with Ultimates estimates using the Chain Ladder method: Paid Losses, Incurred Losses, Reported Claims, Closed Claims, etc.
 
+**Triangles selected:** Paid Loss, Incurred Loss, Reported Count. No Closed Count triangle available.
+
 - [X] If you haven't already found prior selections, ask the user if prior LDF selections exist from a previous analysis. If they do, ask where they are located (Excel file, CSV, database, etc.). You will need to modify `read_and_process_prior_selections()` in `1a-load-and-validate.py` to read from that source during data extraction.
+
+**User response:** No prior LDF selections exist.
 
 - [X] Ask the user if prior tail factor selections exist from a previous analysis. If they do, ask where they are located and what tail factor was used for each measure. Create a CSV file at `selections/tail-factor-prior.csv` with columns: `measure`, `cutoff_age`, `tail_factor`, `method`, `reasoning`. This will be loaded by `2d-tail-create-excel.py` and shown in the "Prior Selection" row for reference. If no prior tail selections exist, skip this step.
 
+**User response:** No prior tail selections exist. Skipped.
+
 - [X] If you haven't already found an input file with Expected Loss Rates (containing period, expected loss rate, and expected frequency), ask the user if this file exists and to place it in the raw-data folder. Without this file, we won't be able to use the Initial Expected or Bornhuetter-Ferguson methods.
+
+**User response:** No ELR file - see ELR Fallback Decision below.
 
 - [X] **ELR Fallback Decision (CRITICAL USER COMMUNICATION):** If initial expected data is not provided (no expected loss rate/frequency file) but exposure is available, **STOP and clearly inform the user:**
   
@@ -72,18 +86,30 @@ Process to complete each step:
   
   Wait for the user to choose. Note their response in REPORT.md Section 5.2 (Expected Loss Ratios) and Section 5.5 (Assumption Rationale). If they choose option 1, also add to Section 3.4 (Data Limitations): "No ELR file provided - using 3-year rolling average of empirical loss rates as fallback for Initial Expected/BF methods."
 
+**User chose option 1: Use the fallback (3-year rolling average of empirical loss rates).**
+
 - [X] Modify the variables at the top of each script with the appropriate DATA_FILE_PATH, OUTPUT_PATH, and TEMPLATE_PATH.
+
+**No changes needed** - `modules/config.py` defaults (`../raw-data/`, `../processed-data/`, etc., relative to `scripts/`) already matched this project's folder layout. Added `TRIANGLE_FILE = "Triangle_Examples_1.xlsx"` to `1a-load-and-validate.py`.
 
 - [X] Modify `1a-load-and-validate.py` to accept the format of the data provided by the user. This includes:
   - Customizing `read_and_process_triangles()` to read triangle data from your source
   - If prior selections exist, customizing `read_and_process_prior_selections()` to read from your source.
   - Run it to verify it works and passes validation. Only mark this step complete once the tests in the script have passed to verify the output is in the necessary format.
 
+**Complete.** Implemented `_read_wide_triangle()` and `read_triangle_data()`/`read_and_process_triangles()` to parse the workbook's wide-triangle layout. Ran successfully: "DATA PREPARATION COMPLETE" - 924 rows loaded, `validate_combined_data()` passed. No prior selections file exists, so `read_and_process_prior_selections()` was left unmodified (returns None, as designed).
+
 - [X] **Confirm data format with the user.** This step always runs, regardless of interaction mode. Use the data-validation template from assets so every analysis presents data validation the same way. Do not improvise the format, reorder sections, or omit headings — even if a section is short or trivial. Populate every section from the actual processed data. The spot-check triangle should default to Paid Loss; if Paid Loss is not present, use the first loss measure available (Incurred, then Reported). Do not proceed until the user confirms.
+
+**User confirmed "Looks good" on 2026-08-27.**
 
 - [X] Report to the user what LDF averages (review `1d-ldf-averages.py`) and metrics will be calculated. _(Pause for Selections only: also ask if they'd like to add others before continuing.)_
 
+**Reported to user:** simple, volume-weighted, and exclude-high-low averages over 3-yr, 5-yr, 10-yr, and all-year windows, plus coefficient-of-variation (CV) and slope stability metrics, for each measure/age interval. (Fully Automatic mode - no pause needed.)
+
 - [X] Run all the other Python scripts to create output in `processed-data/`.
+
+**Complete.** Ran `1b-calculate-ldfs.py` (828 rows with LDFs), `1c-diagnostics.py` (8 diagnostic columns), `1d-ldf-averages.py` (69 summary rows).
 
 - [X] **Update REPORT.md:**
   - Update **Section 3.1 Data Used** table: add rows for triangle types used (paid loss, incurred loss, reported count, closed count, exposure), confirm source file names and as-of dates; note if ELR file is present or absent.
@@ -98,52 +124,55 @@ Process to complete each step:
   - Note the output files created in `processed-data/`
   - Record the data validation confirmation date
 
-# Step 4: Chain Ladder LDF Selections
+**Step 3 COMPLETE [2026-08-27].**
 
-- [X] Tell the user: "I'm about to apply the base selection logic framework to make LDF selections. If you'd like to explore these in detail, you can use `/selection-logic` in a separate session or after this analysis is complete — using it here would interrupt the current workflow."
+# Step 4: Chain Ladder LDF Selections — COMPLETE [2026-08-27]
+
+- [X] Tell the user: "I'm about to apply the base selection logic framework to make LDF selections. If you'd like to explore these in detail, you can use `/selection-logic` in a separate session or after this analysis is complete. Using it here would interrupt the current workflow."
 
 - [X] Run `2a-chainladder-create-excel.py` to create the LDF selection workbook and export per-measure context files. The script will print the context file paths it creates (e.g., "Exported MD: selections/chainladder-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [X] **Invoke the rules-based selector once** for all measures. Call the `selector-chain-ladder-ldf-ai-rules-based` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [X] **Invoke the framework selector once** for all measures. Call the `selector-chain-ladder-ldf-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
-  - Apply the rules-based selection framework to each measure independently
-  - Write one JSON file per measure: `selections/chainladder-ai-rules-based-<measure>.json`
+  - Apply the selection framework to each measure independently
+  - Write one JSON file per measure: `selections/chainladder-ai-framework-<measure>.json`
   
-  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created.
+  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
 - [X] **Invoke the open-ended selector once** for all measures. Call the `selector-chain-ladder-ldf-ai-open-ended` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
   - Apply holistic actuarial judgment (no rigid rules framework) to each measure independently
   - Write one JSON file per measure: `selections/chainladder-ai-open-ended-<measure>.json`
   
-  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created.
+  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
 - [X] Run `2b-chainladder-update-selections.py` to collect all per-measure JSON files and insert the selections and reasoning into the Excel file. This script will:
-  - Load all `selections/chainladder-ai-rules-based-*.json` files and combine them
+  - Load all `selections/chainladder-ai-framework-*.json` files and combine them
   - Load all `selections/chainladder-ai-open-ended-*.json` files and combine them
-  - Populate the **Rules-Based AI Selection** row (from rules-based files) and **Open-Ended AI Selection** row (from open-ended files) in each sheet
+  - Populate the **Framework AI Selection** row (from framework files) and **Open-Ended AI Selection** row (from open-ended files) in each sheet
 
-- [X] Tell the user where `selections/Chain Ladder Selections - LDFs.xlsx` is located. Explain that both rules-based and open-ended AI selections (purple rows) are visible. The **Rules-Based Selection** row is what gets used for ultimates — the user can override it manually. If the Rules-Based Selection row is left blank, the Open-Ended AI Selection will be used as a fallback.
+- [X] Tell the user where `selections/Chain Ladder Selections - LDFs.xlsx` is located. Explain that both framework and open-ended AI selections (purple rows) are visible. The **Framework AI Selection** row is what gets used for ultimates — the user can override it manually. If the Framework AI Selection row is left blank, the Open-Ended AI Selection will be used as a fallback.
 
-_(Pause for Selections only):_
-- [X] Open `selections/Chain Ladder Selections - LDFs.xlsx` for the user. Let them know they can review and override any AI selections. Pause and wait for the user to confirm they are done reviewing before continuing.
+_(Pause for Selections only):_ N/A — Fully Automatic mode, no pause taken.
 
 - [X] **Update REPORT.md:**
-  - Fill in **Section 4.1 Methods Applied** table: add rows for each method used. For each triangle measure (Paid Loss, Incurred Loss, Reported Count), add rows for "Paid LDF" or "Incurred LDF" or "Reported LDF" as applicable. In "Why Selected" column, note "Selected via rule-based framework with AI cross-check - mature year primary method."
-  - Fill in **Section 4.2 Method Weighting / Selection Logic**: Describe the 14-criteria rule-based framework used for LDF selections and note that AI selections provided a cross-check. Describe maturity-based weighting approach (e.g., "Chain Ladder weighted 100% for years 96+ months developed, BF/CL blend for immature years").
-  - Fill in **Section 5.1 Development Patterns**: Note the selection basis: "Volume-weighted averages with averaging windows from 3-year to all-year. Rule-based framework selected optimal window per age based on stability, volume, and fit diagnostics."
+  - Fill in **Section 4.1 Methods Applied** table: add rows for each method used. For each triangle measure (Paid Loss, Incurred Loss, Reported Count), add rows for "Paid LDF" or "Incurred LDF" or "Reported LDF" as applicable. In "Why Selected" column, note "Selected via framework with AI cross-check - mature year primary method."
+  - Fill in **Section 4.2 Method Weighting / Selection Logic**: Describe the 14-criteria framework used for LDF selections and note that AI selections provided a cross-check. Describe maturity-based weighting approach (e.g., "Chain Ladder weighted 100% for years 96+ months developed, BF/CL blend for immature years").
+  - Fill in **Section 5.1 Development Patterns**: Note the selection basis: "Volume-weighted averages with averaging windows from 3-year to all-year. Framework selected optimal window per age based on stability, volume, and fit diagnostics."
   - **Section 5.3 Trend Assumptions** and **Section 5.4 Other Assumptions** are already filled with "Not implemented" - leave as-is unless user performed manual trend adjustments.
   - **Section 4.3 LAE Treatment** is already filled with "Not applicable" - leave as-is unless user indicates LAE is handled separately.
-  - Add to **Section 11 Open Questions** any LDF selections flagged as low-confidence or where the rule-based and AI selections diverged materially (check the JSON reasoning files for "low" confidence flags).
+  - Add to **Section 11 Open Questions** any LDF selections flagged as low-confidence or where the framework and AI selections diverged materially (check the JSON reasoning files for "low" confidence flags).
+
+**Flagged:** Material cutoff-age divergence between Framework AI and Open-Ended AI for all three measures (see REPORT.md Section 11, item 1) — most notable for Reported Count (71-83 mo. vs. 263-275 mo.).
 
 - [X] **Update REPLICATE.md Step 4:**
   - Document that `2a-chainladder-create-excel.py` was run to create the selection workbook
-  - Note that AI selectors made rules-based and open-ended selections (JSON files created)
+  - Note that AI selectors made framework and open-ended selections (JSON files created)
   - Document that `2b-chainladder-update-selections.py` populated the Excel file with AI selections
-  - **Critical:** If user made manual overrides in the "User Selection" row, list each one with measure, interval, selected LDF, and reasoning. If no overrides, explicitly state "All selections are from Rules-Based AI Selection row."
-  - Add instruction: "To replicate: Extract final selections from User Selection row if present, otherwise use Rules-Based AI Selection row. Do not re-run AI selector."
+  - **Critical:** If user made manual overrides in the "User Selection" row, list each one with measure, interval, selected LDF, and reasoning. If no overrides, explicitly state "All selections are from Framework AI Selection row."
+  - Add instruction: "To replicate: Extract final selections from User Selection row if present, otherwise use Framework AI Selection row. Do not re-run AI selector."
 
-# Step 5: Chain Ladder Tail Curve Method Selections
+# Step 5: Chain Ladder Tail Curve Method Selections — COMPLETE [2026-08-27]
 
 - [X] Tell the user: "I'm about to apply the tail curve selection framework. This uses curve fitting diagnostics (Bondy, Exponential Decay, McClenahan, Skurnick, etc.) and leave-one-out testing to select the best curve method for extrapolating development beyond the empirical cutoff age. The LDF agents already selected the cutoff age (where empirical selections end). The tail curve method will be used by the Chain Ladder script to generate fitted LDFs for ages after the cutoff."
 
@@ -151,52 +180,54 @@ _(Pause for Selections only):_
 
 - [X] Run `2d-tail-create-excel.py` to create `selections/Chain Ladder Selections - Tail.xlsx` with curve fit results and diagnostics. If prior tail selections exist (`selections/tail-factor-prior.csv`), they will be included in a "Prior Selection" row for reference. The script will print the context file paths it creates (e.g., "  Exported MD: selections/tail-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [X] **Invoke the rules-based tail selector once** for all measures. Call the `selector-tail-curve-ai-rules-based` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [X] **Invoke the framework tail selector once** for all measures. Call the `selector-tail-curve-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
   - Apply the tail curve decision framework to each measure independently
   - Select the best curve METHOD (not tail factor) based on diagnostics
-  - Write one JSON file per measure: `selections/tail-curve-ai-rules-based-<measure>.json`
+  - Write one JSON file per measure: `selections/tail-curve-ai-framework-<measure>.json`
   
-  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created.
+  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
 - [X] **Invoke the open-ended tail selector once** for all measures. Call the `selector-tail-curve-ai-open-ended` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
   - Apply holistic actuarial judgment (no rigid rules framework) to each measure independently
   - Write one JSON file per measure: `selections/tail-curve-ai-open-ended-<measure>.json`
   
-  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created.
+  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
 - [X] Run `2e-tail-update-selections.py` to collect all per-measure JSON files and insert the selections into the Excel file. This script will:
-  - Load all `selections/tail-curve-ai-rules-based-*.json` files and combine them
+  - Load all `selections/tail-curve-ai-framework-*.json` files and combine them
   - Load all `selections/tail-curve-ai-open-ended-*.json` files and combine them
-  - Populate the **Rules-Based AI Selection** row and **Open-Ended AI Selection** row in each sheet
+  - Populate the **Framework AI Selection** row and **Open-Ended AI Selection** row in each sheet
 
-- [X] Tell the user where `selections/Chain Ladder Selections - Tail.xlsx` is located. Explain that both rules-based and open-ended AI selections (purple rows) are visible. The **Rules-Based Selection** row shows the selected curve METHOD (e.g., 'bondy', 'exp_dev_quick') — this is what gets used to generate fitted LDFs in the Chain Ladder script. The user can override it manually. If the Rules-Based Selection row is left blank, the Open-Ended AI Selection will be used as a fallback.
+- [X] Tell the user where `selections/Chain Ladder Selections - Tail.xlsx` is located. Explain that both framework and open-ended AI selections (purple rows) are visible. The **Framework AI Selection** row shows the selected curve METHOD (e.g., 'bondy', 'exp_dev_quick') — this is what gets used to generate fitted LDFs in the Chain Ladder script. The user can override it manually. If the Framework AI Selection row is left blank, the Open-Ended AI Selection will be used as a fallback.
 
 _(Pause for Selections only):_
 - [X] Open `selections/Chain Ladder Selections - Tail.xlsx` for the user. Let them know they can review and override the tail curve method selections. Pause and wait for the user to confirm they are done reviewing before continuing.
 
 - [X] **Update REPORT.md:**
   - Update **Section 5.1 Development Patterns**: Add tail curve details: "Tail curve method selected from curve fitting diagnostics. [State which method was selected for each measure - Bondy, Exponential Decay, etc.] with R² values of [X.XX]. Leave-one-out testing showed [describe results]. Fitted LDFs for ages beyond the cutoff are generated using the selected curve method's formula." Reference the tail selection workbook for full diagnostics.
-  - Add to **Section 11 Open Questions** any tail curve selections flagged as low-confidence or where curve fit diagnostics were poor (R² < 0.85) or where rule-based and AI selections diverged materially.
+  - Add to **Section 11 Open Questions** any tail curve selections flagged as low-confidence or where curve fit diagnostics were poor (R² < 0.85) or where framework and AI selections diverged materially.
 
 - [X] **Update REPLICATE.md Step 5:**
   - Document that `2c-tail-methods-diagnostics.py` was run to fit curves and create diagnostics
   - Document that `2d-tail-create-excel.py` created the tail selection workbook
-  - Note that AI selectors made rules-based and open-ended tail curve method selections (JSON files created)
+  - Note that AI selectors made framework and open-ended tail curve method selections (JSON files created)
   - Document that `2e-tail-update-selections.py` populated the Excel file with AI selections
-  - **Critical:** If user made manual overrides in the "User Selection" row, list each one with measure and selected curve method (e.g., 'bondy', 'exp_dev_quick'). If no overrides, explicitly state "All selections are from Rules-Based AI Selection row."
-  - Add instruction: "To replicate: Extract final tail curve methods from User Selection row if present, otherwise use Rules-Based AI Selection row. Fitted LDFs are generated by `2f-chainladder-ultimates.py` using the selected curve method. Do not re-run AI selector."
+  - **Critical:** If user made manual overrides in the "User Selection" row, list each one with measure and selected curve method (e.g., 'bondy', 'exp_dev_quick'). If no overrides, explicitly state "All selections are from Framework AI Selection row."
+  - Add instruction: "To replicate: Extract final tail curve methods from User Selection row if present, otherwise use Framework AI Selection row. Fitted LDFs are generated by `2f-chainladder-ultimates.py` using the selected curve method. Do not re-run AI selector."
 
-# Step 6: Calculate Method Projections
+# Step 6: Calculate Method Projections — COMPLETE [2026-08-27]
 
 - [X] Run `2f-chainladder-ultimates.py`, `3-ie-ultimates.py`, and `4-bf-ultimates.py`. Debug any errors that occur. It is normal for IE and BF to get skipped if the user didn't provide the necessary data (exposure, initial expected). Note: `2f-chainladder-ultimates.py` will:
   1. Read empirical LDF selections from `selections/Chain Ladder Selections - LDFs.xlsx` (up to the cutoff age)
-  2. Read the selected tail curve METHOD from `selections/Chain Ladder Selections - Tail.xlsx` (priority: User Selection → Rules-Based AI → Open-Ended AI)
+  2. Read the selected tail curve METHOD from `selections/Chain Ladder Selections - Tail.xlsx` (priority: User Selection → Framework AI → Open-Ended AI)
   3. Load curve parameters from `processed-data/tail-scenarios.parquet`
   4. Generate fitted LDFs for ages beyond the cutoff using the selected curve method's formula
   5. Build complete CDFs by chaining empirical + fitted LDFs
   6. Calculate Chain Ladder ultimates and save to `ultimates/projected-ultimates.parquet`
+
+**All three methods ran successfully** (no skips) — Exposure/payroll data was available to support the ELR fallback. Chain Ladder totals: Paid Loss ultimate $52.0M (IBNR $10.2M), Incurred Loss ultimate $51.3M (IBNR $7.6M), Reported Count ultimate 9,747 (IBNR 31).
 
 - [X] **Update REPORT.md:**
   - Update **Section 4.1 Methods Applied** table: Confirm which methods actually ran vs. were skipped. If IE or BF were skipped, note why (e.g., "Initial Expected skipped - no expected loss rate file provided"). Update the "Segments Applied" and "Why Selected" columns based on actual execution.
@@ -209,17 +240,17 @@ _(Pause for Selections only):_
   - Document whether `4-bf-ultimates.py` ran or was skipped (and why)
   - Note the output file: `ultimates/projected-ultimates.parquet` with columns added by each method
 
-# Step 7: Ultimate Selections
+# Step 7: Ultimate Selections — COMPLETE [2026-08-27]
 
 - [X] Run `scripts/5a-ultimates-create-excel.py` to create the ultimates workbook and export category context files. The script will create two sheets: **Losses** (combining Incurred and Paid) and **Counts** (combining Reported and Closed). It will print the context file paths it creates (e.g., "  Exported MD: selections/ultimates-context-loss.md", "  Exported MD: selections/ultimates-context-count.md"). **Capture the list of context file paths** from the script output.
 
-- [X] **Invoke the rules-based ultimates selector once** for both categories. Call the `selector-ultimates-ai-rules-based` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [X] **Invoke the framework ultimates selector once** for both categories. Call the `selector-ultimates-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file (loss and count)
   - For each category, choose ONE ultimate per accident year (selecting between Incurred/Paid for Loss, or Reported/Closed for Count)
   - Apply the structured method weighting framework to both categories
-  - Write two JSON files: `selections/ultimates-ai-rules-based-loss.json` and `selections/ultimates-ai-rules-based-count.json`
+  - Write two JSON files: `selections/ultimates-ai-framework-loss.json` and `selections/ultimates-ai-framework-count.json`
   
-  Verify that two JSON files were created (one for Loss, one for Count). **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created.
+  Verify that two JSON files were created (one for Loss, one for Count). **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
 - [X] **Invoke the open-ended ultimates selector once** for both categories. Call the `selector-ultimates-ai-open-ended` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file (loss and count)
@@ -227,21 +258,30 @@ _(Pause for Selections only):_
   - Apply holistic actuarial judgment (no rigid rules framework) to both categories
   - Write two JSON files: `selections/ultimates-ai-open-ended-loss.json` and `selections/ultimates-ai-open-ended-count.json`
   
-  Verify that two JSON files were created (one for Loss, one for Count). **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created.
+  Verify that two JSON files were created (one for Loss, one for Count). **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
-- [X] Run `5b-ultimates-update-selections.py` to load the category JSON files and insert both rules-based and open-ended selections and reasoning into `selections/Ultimates.xlsx`. This script will:
-  - Load `selections/ultimates-ai-rules-based-loss.json` and `selections/ultimates-ai-rules-based-count.json`
+- [X] Run `5b-ultimates-update-selections.py` to load the category JSON files and insert both framework and open-ended selections and reasoning into `selections/Ultimates.xlsx`. This script will:
+  - Load `selections/ultimates-ai-framework-loss.json` and `selections/ultimates-ai-framework-count.json`
   - Load `selections/ultimates-ai-open-ended-loss.json` and `selections/ultimates-ai-open-ended-count.json`
-  - Populate the Rules-Based AI Selection and Open-Ended AI Selection columns in the Loss and Count sheets
+  - Populate the Framework AI Selection and Open-Ended AI Selection columns in the Loss and Count sheets
 
-- [X] Tell the user where `selections/Ultimates.xlsx` is located. Explain that both rules-based and open-ended AI selections are visible. The rules-based selection is what gets used by default — the user can override it manually. The open-ended selection provides an independent cross-check. Note that the workbook now has **Losses** and **Counts** sheets instead of per-measure sheets, and one ultimate is selected per category per accident year.
+- [X] Tell the user where `selections/Ultimates.xlsx` is located. Explain that both framework and open-ended AI selections are visible. The framework selection is what gets used by default — the user can override it manually. The open-ended selection provides an independent cross-check. Note that the workbook now has **Losses** and **Counts** sheets instead of per-measure sheets, and one ultimate is selected per category per accident year.
 
-_(Pause for Selections only):_
-- [X] Open `selections/Ultimates.xlsx` for the user. Let them know they can review and override any AI ultimate selections. Pause and wait for the user to confirm they are done reviewing before continuing.
+_(Pause for Selections only):_ N/A — Fully Automatic mode, no pause taken.
 
 - [X] Run `scripts/5c-summary-indications.py` to compute headline indications from the selected ultimates. This script reads `selections/Ultimates.xlsx` and outputs a formatted markdown table with total unpaid reserve, case reserves, and IBNR.
 
 - [X] **Update PROGRESS.md with headline indications:** Copy the markdown table output from `5c-summary-indications.py` into a "Headline Indications" section in PROGRESS.md.
+
+## Headline Indications (as of Step 7, 2026-08-27)
+
+| Metric | Loss | Count |
+|---|---|---|
+| Paid / Reported to Date | $41,767,854 | 9,716 |
+| Case Reserves | $1,848,541 | — |
+| IBNR | $4,688,269 | 35 |
+| **Total Unpaid** | **$6,536,810** | **35** |
+| **Selected Ultimate** | **$48,304,664** | **~9,751** |
 
 - [X] **Update REPORT.md:**
   - Fill in **Section 2 Summary of Indications** table: Extract total unpaid reserve, case reserves, and IBNR from the selected ultimates in `selections/Ultimates.xlsx`. Sum across all accident years. If multiple segments/categories exist, create one row per category (Loss, Count) showing totals.
@@ -252,27 +292,20 @@ _(Pause for Selections only):_
   - Update **Section 5.5 Assumption Rationale**: Add the ELR source if applicable (e.g., "Expected loss ratios from [company pricing / industry benchmark / historical average]").
   - Add to **Section 11 Open Questions** any accident years where method indications diverged materially (e.g., "> 20% difference between CL and BF") or where selections required significant judgment. Flag any years with low confidence ratings.
 
+**Flagged:** AY 2023 (54% CL-vs-BF divergence) and AY 2024 (89% divergence) for Incurred Loss - see REPORT.md Section 11, item 2.
+
 - [X] **Update REPLICATE.md Step 7:**
   - Document that `5a-ultimates-create-excel.py` was run to create the ultimates workbook with Losses and Counts sheets
-  - Note that AI selectors made rules-based and open-ended ultimate selections for both categories (JSON files created)
+  - Note that AI selectors made framework and open-ended ultimate selections for both categories (JSON files created)
   - Document that `5b-ultimates-update-selections.py` populated the Excel file with AI selections
-  - **Critical:** If user made manual overrides in the "User Selection" column, list each one with category (Loss or Count), period, selected ultimate, and reasoning. If no overrides, explicitly state "All selections are from Rules-Based AI Selection columns."
-  - Add instruction: "To replicate: Extract final ultimates from User Selection column if present, otherwise use Rules-Based AI Selection column. Do not re-run AI selector."
+  - **Critical:** If user made manual overrides in the "User Selection" column, list each one with category (Loss or Count), period, selected ultimate, and reasoning. If no overrides, explicitly state "All selections are from Framework AI Selection columns."
+  - Add instruction: "To replicate: Extract final ultimates from User Selection column if present, otherwise use Framework AI Selection column. Do not re-run AI selector."
 
-
-## Headline Indications
-
-| Metric | Loss | Count |
-|---|---|---|
-| Paid / Reported to Date | $41,767,854 | 9,716 |
-| Case Reserves | $1,848,541 | — |
-| IBNR | $4,276,695 | 27 |
-| **Total Unpaid** | **$6,125,236** | **27** |
-| **Selected Ultimate** | **$47,893,090** | **~9,743** |
-
-# Step 8: Build Analysis Workbook
+# Step 8: Build Analysis Workbook — COMPLETE [2026-08-27]
 
 - [X] Run `scripts/6-analysis-create-excel.py` and alert the user of the location and description of the final output files.
+
+**Output:** `Analysis.xlsx` created in the project root (88,879 bytes). Contains Loss/Counts sheets by method, CL LDF triangles, Pre/Post-Method Diagnostics, and Notes.
 
 - [X] **Update REPORT.md:**
   - Verify **Section 2 Summary of Indications** table: Confirm the total unpaid reserve, case reserves, and IBNR totals match the final output from `6-analysis-create-excel.py`. Check against the Analysis.xlsx file totals.
@@ -282,15 +315,19 @@ _(Pause for Selections only):_
   - Update **Section 14 Version History**: Add a row for the current version with today's date and a summary of changes since v0.1 (e.g., "v0.2 - added ultimate selections and completed initial analysis").
   - **Final completeness check**: Review all sections and fill any remaining placeholders. For sections that genuinely don't apply (LAE, trending, sensitivity), confirm the "Not implemented" or "Not applicable" text is present. For sections with content, ensure no bracketed placeholders remain.
 
+**Note:** Remaining bracketed items in REPORT.md are intentional and belong to Step 9 (Section 7 diagnostics checklist, Section 8.2 risk factors) or the post-peer-review Section 13 sign-off checklist - not blank placeholders needing this step's attention.
+
 - [X] **Update REPLICATE.md Step 8:**
   - Document that `6-analysis-create-excel.py` was run
   - Note which files it read (projected-ultimates.parquet, Ultimates.xlsx)
   - List the output files created (selected-ultimates.xlsx, post-method-series.xlsx, post-method-triangles.xlsx, complete-analysis.xlsx)
   - Fill in the "Key Outputs" section listing primary deliverables
 
-# Step 9: Technical Review & Peer Review
+# Step 9: Technical Review & Peer Review — COMPLETE [2026-08-27]
 
 - [X] Run `scripts/7-tech-review.py` and alert the user of the results and where the output is saved to.
+
+**Result:** 94 checks run, 64 PASS, 30 WARN, 0 FAIL. Output: `Tech Review.xlsx`.
 
 - [X] **Update REPORT.md:**
   - Fill in **Section 7 Diagnostics and Reasonableness Checks**: Check off each item in the checklist and add notes:
@@ -316,7 +353,7 @@ _(Pause for Selections only):_
 
 - [X] Suggest to the user that they get a Peer Review of the results. If they would like TeamAnalyst to do this, they should close the current workflow (this will clear context to get an independent review) and use the /peer-review skill to get an AI Peer Review.
 
-# Step 10: Summarize Final Outputs
+# Step 10: Summarize Final Outputs — COMPLETE [2026-08-27]
 
 Be explicit and exhaustive. The user should leave this step knowing exactly what was produced, where it lives, and what each file is for. Present the list below (adapted to what actually ran in this analysis — skip items that did not run, e.g., BF if it was skipped).
 
@@ -324,6 +361,10 @@ Be explicit and exhaustive. The user should leave this step knowing exactly what
 
 - [X] After listing the files, tell the user the single most important takeaway: **REPORT.md is the primary narrative deliverable, and `Complete Analysis.xlsx` is the primary numerical deliverable.** Everything else is supporting evidence or reproducibility material.
 
+**Note:** This analysis's final workbook is named `Analysis.xlsx` (not `Complete Analysis.xlsx`) - `scripts/6-analysis-create-excel.py` in this skill version writes to that filename. Functionally it is the "primary numerical deliverable" referenced above.
+
 - [X] Ask the user if anything is unclear about any of the outputs before the workflow closes.
 
 - [X] Ask the user if they have any questions about the analysis itself — methodology, selections, assumptions, data quality, results interpretation, or any findings in the technical review. Remind them they can also run `/peer-review` in a separate session for an independent AI review of the analysis.
+
+**WORKFLOW COMPLETE [2026-08-27].** All 10 steps finished successfully in Fully Automatic mode.

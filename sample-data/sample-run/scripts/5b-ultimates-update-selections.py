@@ -1,11 +1,11 @@
 # Refreshes only the selections section of the Ultimates Excel workbook based on saved selections 
-# from the ultimates-ai-rules-based-loss.json, ultimates-ai-rules-based-count.json, 
+# from the ultimates-ai-framework-loss.json, ultimates-ai-framework-count.json, 
 # ultimates-ai-open-ended-loss.json, and ultimates-ai-open-ended-count.json files. 
 # Allows you to update the displayed selections without rebuilding the entire workbook, 
 # which is useful when you need to revert changes or apply selections from another source.
 
 """
-goal: Update ONLY the selections section of Ultimates.xlsx from ultimates-ai-rules-based-*.json 
+goal: Update ONLY the selections section of Ultimates.xlsx from ultimates-ai-framework-*.json 
       and ultimates-ai-open-ended-*.json files.
       Re-run this script any time selections change without needing to rebuild the full Excel.
 
@@ -22,21 +22,21 @@ from modules import config
 from modules.xl_utils import build_column_map
 
 # Paths from modules/config.py — override here if needed:
-RULES_BASED_LOSS_FILE = config.SELECTIONS + "ultimates-ai-rules-based-loss.json"
-RULES_BASED_COUNT_FILE = config.SELECTIONS + "ultimates-ai-rules-based-count.json"
+FRAMEWORK_LOSS_FILE = config.SELECTIONS + "ultimates-ai-framework-loss.json"
+FRAMEWORK_COUNT_FILE = config.SELECTIONS + "ultimates-ai-framework-count.json"
 OPEN_ENDED_LOSS_FILE = config.SELECTIONS + "ultimates-ai-open-ended-loss.json"
 OPEN_ENDED_COUNT_FILE = config.SELECTIONS + "ultimates-ai-open-ended-count.json"
 EXCEL_FILE = config.SELECTIONS + "Ultimates.xlsx"
 
 
-def update_sheet_selections(ws, periods_data, selection_type="rules-based"):
+def update_sheet_selections(ws, periods_data, selection_type="framework"):
     """
     Update the selection and reasoning columns in a single sheet.
     
     Args:
         ws: openpyxl worksheet object
         periods_data: Dict mapping period -> {'selection': value, 'reasoning': text}
-        selection_type: "rules-based" or "open-ended" - determines which columns to update
+        selection_type: "framework" or "open-ended" - determines which columns to update
     
     Returns:
         Number of selections updated
@@ -47,9 +47,9 @@ def update_sheet_selections(ws, periods_data, selection_type="rules-based"):
     col_map = build_column_map(ws, header_row=1)
     
     # Determine which columns to update based on selection type
-    if selection_type == "rules-based":
-        sel_header = "Rules-Based AI Selection"
-        reason_header = "Rules-Based AI Reasoning"
+    if selection_type == "framework":
+        sel_header = "Framework AI Selection"
+        reason_header = "Framework AI Reasoning"
     else:  # open-ended
         sel_header = "Open-Ended AI Selection"
         reason_header = "Open-Ended AI Reasoning"
@@ -98,24 +98,24 @@ def load_category_json_file(filepath, category_name):
 
 def main():
     """Update Ultimates Excel file with selections from category JSON files."""
-    # Load rules-based selections for Loss and Count
-    rules_based_loss = load_category_json_file(RULES_BASED_LOSS_FILE, "Loss")
-    rules_based_count = load_category_json_file(RULES_BASED_COUNT_FILE, "Count")
+    # Load framework selections for Loss and Count
+    framework_loss = load_category_json_file(FRAMEWORK_LOSS_FILE, "Loss")
+    framework_count = load_category_json_file(FRAMEWORK_COUNT_FILE, "Count")
     
     # Load open-ended selections for Loss and Count
     open_ended_loss = load_category_json_file(OPEN_ENDED_LOSS_FILE, "Loss")
     open_ended_count = load_category_json_file(OPEN_ENDED_COUNT_FILE, "Count")
     
     # Check if we have any selections to apply
-    has_selections = any([rules_based_loss, rules_based_count, open_ended_loss, open_ended_count])
+    has_selections = any([framework_loss, framework_count, open_ended_loss, open_ended_count])
     
     if not has_selections:
         print("No selections found in any file")
         print("Skipping update - selections arrays are empty.")
         return
         
-    print(f"Loaded {len(rules_based_loss)} rules-based Loss selections")
-    print(f"Loaded {len(rules_based_count)} rules-based Count selections")
+    print(f"Loaded {len(framework_loss)} framework Loss selections")
+    print(f"Loaded {len(framework_count)} framework Count selections")
     print(f"Loaded {len(open_ended_loss)} open-ended Loss selections")
     print(f"Loaded {len(open_ended_count)} open-ended Count selections")
     
@@ -130,8 +130,8 @@ def main():
             }
         return by_period
     
-    rules_based_loss_by_period = organize_by_period(rules_based_loss)
-    rules_based_count_by_period = organize_by_period(rules_based_count)
+    framework_loss_by_period = organize_by_period(framework_loss)
+    framework_count_by_period = organize_by_period(framework_count)
     open_ended_loss_by_period = organize_by_period(open_ended_loss)
     open_ended_count_by_period = organize_by_period(open_ended_count)
     
@@ -147,26 +147,26 @@ def main():
         if sheet_name in wb.sheetnames:
             ws = wb[sheet_name]
             col_map = build_column_map(ws, header_row=1)
-            rb_col = col_map.get("Rules-Based AI Selection")
-            if rb_col:
+            fw_col = col_map.get("Framework AI Selection")
+            if fw_col:
                 has_existing = any(
-                    ws.cell(row=r, column=rb_col).value not in (None, "")
+                    ws.cell(row=r, column=fw_col).value not in (None, "")
                     for r in range(2, ws.max_row + 1)
                     if ws.cell(row=r, column=1).value
                 )
                 if has_existing:
-                    raise ValueError(f"Sheet '{sheet_name}' already has Rules-Based AI selections. Clear manually before re-running.")
+                    raise ValueError(f"Sheet '{sheet_name}' already has Framework AI selections. Clear manually before re-running.")
         
-    total_updates_rb = 0
+    total_updates_fw = 0
     total_updates_oe = 0
     
     # Update Losses sheet
     if 'Losses' in wb.sheetnames:
         ws = wb['Losses']
-        if rules_based_loss_by_period:
-            updates = update_sheet_selections(ws, rules_based_loss_by_period, "rules-based")
-            total_updates_rb += updates
-            print(f"  Updated {updates} rules-based selections in 'Losses'")
+        if framework_loss_by_period:
+            updates = update_sheet_selections(ws, framework_loss_by_period, "framework")
+            total_updates_fw += updates
+            print(f"  Updated {updates} framework selections in 'Losses'")
         if open_ended_loss_by_period:
             updates = update_sheet_selections(ws, open_ended_loss_by_period, "open-ended")
             total_updates_oe += updates
@@ -177,10 +177,10 @@ def main():
     # Update Counts sheet
     if 'Counts' in wb.sheetnames:
         ws = wb['Counts']
-        if rules_based_count_by_period:
-            updates = update_sheet_selections(ws, rules_based_count_by_period, "rules-based")
-            total_updates_rb += updates
-            print(f"  Updated {updates} rules-based selections in 'Counts'")
+        if framework_count_by_period:
+            updates = update_sheet_selections(ws, framework_count_by_period, "framework")
+            total_updates_fw += updates
+            print(f"  Updated {updates} framework selections in 'Counts'")
         if open_ended_count_by_period:
             updates = update_sheet_selections(ws, open_ended_count_by_period, "open-ended")
             total_updates_oe += updates
@@ -190,7 +190,7 @@ def main():
                 
     wb.save(EXCEL_FILE)
     print(f"\nSaved: {EXCEL_FILE}")
-    print(f"Total rules-based updates: {total_updates_rb}")
+    print(f"Total framework updates: {total_updates_fw}")
     print(f"Total open-ended updates: {total_updates_oe}")
 
 

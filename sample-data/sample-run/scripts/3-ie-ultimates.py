@@ -348,8 +348,15 @@ if __name__ == "__main__":
     if output_csv.exists():
         print(f"\nMerging with existing data in: {output_csv}")
         df_existing = pd.read_csv(output_csv)
-        df_existing["period"] = df_existing["period"].astype(str)
-        df_existing["current_age"] = df_existing["current_age"].astype(str)
+
+        # Normalize merge key dtypes -- CSV round-trips can leave numeric-looking
+        # keys as int64/float64 in one frame and str in the other, which breaks
+        # pd.merge. Coerce all three join keys to string on both sides.
+        for key_col in ['period', 'current_age']:
+            df_existing[key_col] = df_existing[key_col].astype(str)
+            df_ie[key_col] = df_ie[key_col].astype(str)
+        df_existing['measure'] = df_existing['measure'].astype(str)
+        df_ie['measure'] = df_ie['measure'].astype(str)
 
         # Merge on period, measure, current_age (outer join to keep all rows)
         df_combined = df_existing.merge(

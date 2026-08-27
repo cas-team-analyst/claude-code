@@ -322,56 +322,16 @@ def read_cl_sheet(ws):
 
 def detect_sheets(wb):
     names = wb.sheetnames
-    known_measures_full = {"Incurred Loss", "Paid Loss", "Reported Count", "Closed Count"}
-    known_measures_short = {"Incurred", "Paid", "Reported", "Closed"}
-    known_selection = {"Loss Selection", "Count Selection"}
-    tri_known = {"Incurred-to-Ult", "Paid-to-Ult", "Reported-to-Ult", "Closed-to-Ult"}
-
-    # Support multiple naming conventions:
-    # 1. Full names ("Incurred Loss", "Paid Loss") - complete analysis format
-    # 2. Short names ("Incurred", "Paid") - but these might be triangles, not measure tables
-    # 3. Selection sheets ("Loss Selection", "Count Selection") - values-only format
-    # 4. "Sel - " prefixed names - alternative complete analysis format
-    selection_sheets = [n for n in names if n in known_selection]
-    bare_measure_sheets = [n for n in names if n in known_measures_full]
-    short_measure_sheets = [n for n in names if n in known_measures_short]
-    sel_measure_sheets  = [n for n in names if n.startswith("Sel - ") and n[6:] in known_measures_full]
     
-    # Priority: selection sheets > full names > Sel- prefix > short names
-    # (short names are last because they might be triangles, not tables)
-    if selection_sheets:
-        measure_sheets = selection_sheets
-        measure_sel_prefix = False
-    elif bare_measure_sheets:
-        measure_sheets = bare_measure_sheets
-        measure_sel_prefix = False
-    elif sel_measure_sheets:
-        measure_sheets = sel_measure_sheets
-        measure_sel_prefix = True
-    else:
-        measure_sheets = short_measure_sheets
-        measure_sel_prefix = False
-
-    # Triangle sheets can be named Incurred-to-Ult etc., or simply Incurred etc.
-    # We only treat Incurred etc. as triangle sheets if they are not already used as measure_sheets.
-    tri_sheets = [n for n in names if n in tri_known and n not in measure_sheets]
-
-    # CL sheets can start with "CL - " (old format) or be the short measure names (new format)
-    if selection_sheets:
-        cl_sheets = [n for n in names if n in known_measures_short]
-    else:
-        cl_sheets = [n for n in names if n.startswith("CL - ")]
-
+    measure_sheets = [n for n in names if n in {"Loss Selection", "Count Selection"}]
+    cl_sheets = [n for n in names if n in {"Incurred", "Paid", "Reported", "Closed"}]
+    
     return {
         "measure_sheets":     measure_sheets,
-        "measure_sel_prefix": not bool(bare_measure_sheets) and bool(sel_measure_sheets),
-        "sel_sheets":         [n for n in names if n.startswith("Sel - ")],
         "cl_sheets":          cl_sheets,
-        "tri_sheets":         tri_sheets,
-        "diag_sheet":         "Summary Diagnostics" in names or "Post-Method Diagnostics" in names,
-        "avg_ibnr":           "Average IBNR" in names or "Post-Method Diagnostics" in names,
-        "avg_unpaid":         "Average Unpaid" in names or "Post-Method Diagnostics" in names,
+        "diag_sheet":         "Post-Method Diagnostics" in names,
     }
+
 
 
 def _num(series):
@@ -392,19 +352,13 @@ def check_structure(ck, wb, info):
         ck.ok(g, "Measure sheets present", ", ".join(info["measure_sheets"]))
     else:
         ck.fail(g, "Measure sheets present",
-                "Expected: Incurred/Paid/Reported/Closed or Incurred Loss/Paid Loss/Reported Count/Closed Count")
+                "Expected: Loss Selection, Count Selection")
 
     if info["diag_sheet"]:
         ck.ok(g, "Diagnostics sheet present")
     else:
         ck.warn(g, "Diagnostics sheet present",
-                "Not in values file — see complete-analysis.xlsx (expected)")
-
-    if info["tri_sheets"]:
-        ck.ok(g, "X-to-Ult triangle sheets present", ", ".join(info["tri_sheets"]))
-    else:
-        ck.warn(g, "X-to-Ult triangle sheets present",
-                "Not in values file — see complete-analysis.xlsx (expected)")
+                "Expected: Post-Method Diagnostics")
 
     names = wb.sheetnames
     dupes = sorted({nm for nm in names if names.count(nm) > 1})
@@ -412,6 +366,7 @@ def check_structure(ck, wb, info):
         ck.ok(g, "No duplicate sheet names")
     else:
         ck.fail(g, "No duplicate sheet names", f"Duplicates: {dupes}")
+
 
 
 def check_period_consistency(ck, info, measure_dfs, diag_df, tri_dfs, cl_dfs):
@@ -1665,82 +1620,69 @@ def main():
 
     info = detect_sheets(wb)
     print(f"Sheets: {len(wb.sheetnames)} | Measures: {len(info['measure_sheets'])} | "
-          f"CL: {len(info['cl_sheets'])} | Sel: {len(info['sel_sheets'])} | "
-          f"Triangles: {len(info['tri_sheets'])}\n")
+          f"CL: {len(info['cl_sheets'])}\n")
 
-    # Load measure sheets based on format detected
-    if info["measure_sel_prefix"]:
-        # Sheets are named "Sel - Incurred Loss" etc. with headers on row 1 (no title row).
-        # Strip the prefix so downstream checks receive the bare measure name as key.
-        measure_dfs = {m[6:]: read_no_title(wb[m]) for m in info["measure_sheets"]}
-    elif any("Selection" in m for m in info["measure_sheets"]):
-        # Selection sheets ("Loss Selection", "Count Selection") - no title row, row 1 = headers
-        measure_dfs = {m: read_no_title(wb[m]) for m in info["measure_sheets"]}
-    else:
-        # Full or short measure sheet names - expect title row
-        measure_dfs = {m: read_with_title(wb[m]) for m in info["measure_sheets"]}
+    # Selection sheets ("Loss Selection", "Count Selection") - no title row, row 1 = headers
+    measure_dfs = {m: read_no_title(wb[m]) for m in info["measure_sheets"]}
 
-    # Expand selection sheets into individual measures if applicable
-    if any("Selection" in m for m in info["measure_sheets"]):
-        expanded_dfs = {}
-        if "Loss Selection" in measure_dfs:
-            loss_sel_df = measure_dfs["Loss Selection"]
-            if "Incurred" in loss_sel_df.columns:
-                inc_df = pd.DataFrame({
-                    "Accident Period": loss_sel_df["Accident Period"],
-                    "Current Age": loss_sel_df["Current Age"] if "Current Age" in loss_sel_df.columns else None,
-                    "Actual": loss_sel_df["Incurred"],
-                    "Selected Ultimate": loss_sel_df["Selected Ultimate"] if "Selected Ultimate" in loss_sel_df.columns else None,
-                    "IBNR": loss_sel_df["IBNR"] if "IBNR" in loss_sel_df.columns else None,
-                    "Unpaid": loss_sel_df["Unpaid"] if "Unpaid" in loss_sel_df.columns else None,
-                    "CL Ultimate": loss_sel_df["Incurred CL"] if "Incurred CL" in loss_sel_df.columns else None,
-                    "BF Ultimate": loss_sel_df["Incurred BF"] if "Incurred BF" in loss_sel_df.columns else None,
-                    "Selected Reasoning": loss_sel_df["Selected Reasoning"] if "Selected Reasoning" in loss_sel_df.columns else None,
-                })
-                expanded_dfs["Incurred Loss"] = inc_df
-            if "Paid" in loss_sel_df.columns:
-                paid_df = pd.DataFrame({
-                    "Accident Period": loss_sel_df["Accident Period"],
-                    "Current Age": loss_sel_df["Current Age"] if "Current Age" in loss_sel_df.columns else None,
-                    "Actual": loss_sel_df["Paid"],
-                    "Selected Ultimate": loss_sel_df["Selected Ultimate"] if "Selected Ultimate" in loss_sel_df.columns else None,
-                    "IBNR": loss_sel_df["IBNR"] if "IBNR" in loss_sel_df.columns else None,
-                    "Unpaid": loss_sel_df["Unpaid"] if "Unpaid" in loss_sel_df.columns else None,
-                    "CL Ultimate": loss_sel_df["Paid CL"] if "Paid CL" in loss_sel_df.columns else None,
-                    "BF Ultimate": loss_sel_df["Paid BF"] if "Paid BF" in loss_sel_df.columns else None,
-                    "Selected Reasoning": loss_sel_df["Selected Reasoning"] if "Selected Reasoning" in loss_sel_df.columns else None,
-                })
-                expanded_dfs["Paid Loss"] = paid_df
-                
-        if "Count Selection" in measure_dfs:
-            count_sel_df = measure_dfs["Count Selection"]
-            if "Reported" in count_sel_df.columns:
-                rep_df = pd.DataFrame({
-                    "Accident Period": count_sel_df["Accident Period"],
-                    "Current Age": count_sel_df["Current Age"] if "Current Age" in count_sel_df.columns else None,
-                    "Actual": count_sel_df["Reported"],
-                    "Selected Ultimate": count_sel_df["Selected Ultimate"] if "Selected Ultimate" in count_sel_df.columns else None,
-                    "IBNR": count_sel_df["IBNR"] if "IBNR" in count_sel_df.columns else None,
-                    "CL Ultimate": count_sel_df["Reported CL"] if "Reported CL" in count_sel_df.columns else None,
-                    "BF Ultimate": count_sel_df["Reported BF"] if "Reported BF" in count_sel_df.columns else None,
-                    "Selected Reasoning": count_sel_df["Selected Reasoning"] if "Selected Reasoning" in count_sel_df.columns else None,
-                })
-                expanded_dfs["Reported Count"] = rep_df
-            if "Closed" in count_sel_df.columns:
-                cls_df = pd.DataFrame({
-                    "Accident Period": count_sel_df["Accident Period"],
-                    "Current Age": count_sel_df["Current Age"] if "Current Age" in count_sel_df.columns else None,
-                    "Actual": count_sel_df["Closed"],
-                    "Selected Ultimate": count_sel_df["Selected Ultimate"] if "Selected Ultimate" in count_sel_df.columns else None,
-                    "IBNR": count_sel_df["IBNR"] if "IBNR" in count_sel_df.columns else None,
-                    "CL Ultimate": count_sel_df["Closed CL"] if "Closed CL" in count_sel_df.columns else None,
-                    "BF Ultimate": count_sel_df["Closed BF"] if "Closed BF" in count_sel_df.columns else None,
-                    "Selected Reasoning": count_sel_df["Selected Reasoning"] if "Selected Reasoning" in count_sel_df.columns else None,
-                })
-                expanded_dfs["Closed Count"] = cls_df
-        measure_dfs.update(expanded_dfs)
-
-    sel_dfs = {s: read_no_title(wb[s]) for s in info["sel_sheets"]}
+    # Expand selection sheets into individual measures
+    expanded_dfs = {}
+    if "Loss Selection" in measure_dfs:
+        loss_sel_df = measure_dfs["Loss Selection"]
+        if "Incurred" in loss_sel_df.columns:
+            inc_df = pd.DataFrame({
+                "Accident Period": loss_sel_df["Accident Period"],
+                "Current Age": loss_sel_df["Current Age"] if "Current Age" in loss_sel_df.columns else None,
+                "Actual": loss_sel_df["Incurred"],
+                "Selected Ultimate": loss_sel_df["Selected Ultimate"] if "Selected Ultimate" in loss_sel_df.columns else None,
+                "IBNR": loss_sel_df["IBNR"] if "IBNR" in loss_sel_df.columns else None,
+                "Unpaid": loss_sel_df["Unpaid"] if "Unpaid" in loss_sel_df.columns else None,
+                "CL Ultimate": loss_sel_df["Incurred CL"] if "Incurred CL" in loss_sel_df.columns else None,
+                "BF Ultimate": loss_sel_df["Incurred BF"] if "Incurred BF" in loss_sel_df.columns else None,
+                "Selected Reasoning": loss_sel_df["Selected Reasoning"] if "Selected Reasoning" in loss_sel_df.columns else None,
+            })
+            expanded_dfs["Incurred Loss"] = inc_df
+        if "Paid" in loss_sel_df.columns:
+            paid_df = pd.DataFrame({
+                "Accident Period": loss_sel_df["Accident Period"],
+                "Current Age": loss_sel_df["Current Age"] if "Current Age" in loss_sel_df.columns else None,
+                "Actual": loss_sel_df["Paid"],
+                "Selected Ultimate": loss_sel_df["Selected Ultimate"] if "Selected Ultimate" in loss_sel_df.columns else None,
+                "IBNR": loss_sel_df["IBNR"] if "IBNR" in loss_sel_df.columns else None,
+                "Unpaid": loss_sel_df["Unpaid"] if "Unpaid" in loss_sel_df.columns else None,
+                "CL Ultimate": loss_sel_df["Paid CL"] if "Paid CL" in loss_sel_df.columns else None,
+                "BF Ultimate": loss_sel_df["Paid BF"] if "Paid BF" in loss_sel_df.columns else None,
+                "Selected Reasoning": loss_sel_df["Selected Reasoning"] if "Selected Reasoning" in loss_sel_df.columns else None,
+            })
+            expanded_dfs["Paid Loss"] = paid_df
+            
+    if "Count Selection" in measure_dfs:
+        count_sel_df = measure_dfs["Count Selection"]
+        if "Reported" in count_sel_df.columns:
+            rep_df = pd.DataFrame({
+                "Accident Period": count_sel_df["Accident Period"],
+                "Current Age": count_sel_df["Current Age"] if "Current Age" in count_sel_df.columns else None,
+                "Actual": count_sel_df["Reported"],
+                "Selected Ultimate": count_sel_df["Selected Ultimate"] if "Selected Ultimate" in count_sel_df.columns else None,
+                "IBNR": count_sel_df["IBNR"] if "IBNR" in count_sel_df.columns else None,
+                "CL Ultimate": count_sel_df["Reported CL"] if "Reported CL" in count_sel_df.columns else None,
+                "BF Ultimate": count_sel_df["Reported BF"] if "Reported BF" in count_sel_df.columns else None,
+                "Selected Reasoning": count_sel_df["Selected Reasoning"] if "Selected Reasoning" in count_sel_df.columns else None,
+            })
+            expanded_dfs["Reported Count"] = rep_df
+        if "Closed" in count_sel_df.columns:
+            cls_df = pd.DataFrame({
+                "Accident Period": count_sel_df["Accident Period"],
+                "Current Age": count_sel_df["Current Age"] if "Current Age" in count_sel_df.columns else None,
+                "Actual": count_sel_df["Closed"],
+                "Selected Ultimate": count_sel_df["Selected Ultimate"] if "Selected Ultimate" in count_sel_df.columns else None,
+                "IBNR": count_sel_df["IBNR"] if "IBNR" in count_sel_df.columns else None,
+                "CL Ultimate": count_sel_df["Closed CL"] if "Closed CL" in count_sel_df.columns else None,
+                "BF Ultimate": count_sel_df["Closed BF"] if "Closed BF" in count_sel_df.columns else None,
+                "Selected Reasoning": count_sel_df["Selected Reasoning"] if "Selected Reasoning" in count_sel_df.columns else None,
+            })
+            expanded_dfs["Closed Count"] = cls_df
+    measure_dfs.update(expanded_dfs)
 
     cl_dfs = {}
     for c in info["cl_sheets"]:
@@ -1759,29 +1701,18 @@ def main():
             df = extract_embedded_diagnostics_table(ws_post, section_title)
             if not df.empty:
                 tri_dfs[key] = df
-    else:
-        tri_dfs = {t: read_with_title(wb[t]) for t in info["tri_sheets"]}
 
     diag_df = None
     if info["diag_sheet"]:
-        if "Post-Method Diagnostics" in wb.sheetnames:
-            diag_df = read_no_title_until_blank(wb["Post-Method Diagnostics"])
-        else:
-            diag_df = read_with_title(wb["Summary Diagnostics"])
+        diag_df = read_no_title_until_blank(wb["Post-Method Diagnostics"])
 
     avg_ibnr_df = None
-    if info["avg_ibnr"]:
-        if "Post-Method Diagnostics" in wb.sheetnames:
-            avg_ibnr_df = extract_embedded_diagnostics_table(wb["Post-Method Diagnostics"], "AVERAGE IBNR")
-        else:
-            avg_ibnr_df = read_with_title(wb["Average IBNR"])
+    if info["diag_sheet"]:
+        avg_ibnr_df = extract_embedded_diagnostics_table(wb["Post-Method Diagnostics"], "AVERAGE IBNR")
 
     avg_unpaid_df = None
-    if info["avg_unpaid"]:
-        if "Post-Method Diagnostics" in wb.sheetnames:
-            avg_unpaid_df = extract_embedded_diagnostics_table(wb["Post-Method Diagnostics"], "AVERAGE UNPAID")
-        else:
-            avg_unpaid_df = read_with_title(wb["Average Unpaid"])
+    if info["diag_sheet"]:
+        avg_unpaid_df = extract_embedded_diagnostics_table(wb["Post-Method Diagnostics"], "AVERAGE UNPAID")
 
     print("--- Group 1: Structure ---")
     check_structure(ck, wb, info)
@@ -1799,18 +1730,9 @@ def main():
     check_cross_measure(ck, measure_dfs)
 
     print("\n--- Group 6: Sel - Sheet Consistency ---")
-    if info["measure_sel_prefix"]:
-        # Measure sheets ARE the Sel- sheets; self-comparison adds no value — skip.
-        ck.ok("6. Sel - Sheet Consistency",
-              "Sel - sheets are the primary measure sheets (values file format)",
-              "Self-comparison skipped")
-    elif any("Selection" in m for m in info["measure_sheets"]):
-        # Selection sheets are primary measure sheets
-        ck.ok("6. Sel - Sheet Consistency",
-              "Selection sheets are the primary measure sheets (no Sel- prefix needed)",
-              "Self-comparison skipped")
-    else:
-        check_sel_sheets(ck, measure_dfs, sel_dfs)
+    ck.ok("6. Sel - Sheet Consistency",
+          "Selection sheets are the primary measure sheets",
+          "Self-comparison skipped")
 
     print("\n--- Group 7: X-to-Ult Triangles ---")
     check_xtoult_triangles(ck, tri_dfs, measure_dfs)

@@ -91,17 +91,30 @@ def _read_labeled_selections(df, label):
 
 def read_selections(excel_path, measure):
     """Read selected LDFs for a measure. Error if no selections. Returns {interval: ldf} without Tail.
-    Priority: 'User Selection' → 'Selection' (rules-based AI) → 'AI Selection' (open-ended AI)."""
+    Merges cell by cell (per interval), not row by row: a user typically only overrides a
+    handful of intervals, leaving the rest of the row blank, so each interval falls back
+    independently. Priority per interval: 'User Selection' → 'Framework AI Selection' →
+    'Open-Ended AI Selection'."""
     try:
         df = pd.read_excel(excel_path, sheet_name=measure, engine='openpyxl',
                            engine_kwargs={'data_only': True})
-        for label in ("User Selection", "Rules-Based AI Selection", "Open-Ended AI Selection"):
+        # Lowest priority first so higher-priority labels overwrite per interval on merge.
+        merged = {}
+        counts = {}
+        for label in ("Open-Ended AI Selection", "Framework AI Selection", "User Selection"):
             sels = _read_labeled_selections(df, label)
             sels_no_tail = {k: v for k, v in sels.items() if k.lower() != 'tail'}
-            if sels_no_tail:
-                print(f"  Read {len(sels_no_tail)} LDF selections for {measure} (row: '{label}')")
-                return sels_no_tail
-        raise ValueError(f"No selection row with values found for '{measure}'")
+            counts[label] = len(sels_no_tail)
+            merged.update(sels_no_tail)
+        if not merged:
+            raise ValueError(f"No selection row with values found for '{measure}'")
+        print(
+            f"  Read {len(merged)} LDF selections for {measure} "
+            f"(User: {counts['User Selection']}, "
+            f"Framework: {counts['Framework AI Selection']}, "
+            f"Open-Ended: {counts['Open-Ended AI Selection']})"
+        )
+        return merged
     except ValueError:
         raise
     except Exception as e:
