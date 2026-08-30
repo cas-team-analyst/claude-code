@@ -20,6 +20,7 @@ always runs. You'll be asked about your available data during data intake.
 Interaction modes:
 - Pause for Selections: pauses after LDF selections and after ultimate selections for your review
 - Fully Automatic: runs start to finish with no pauses (except to confirm data format)
+- Selections Demo: skips updating REPORT.md and REPLICATE.md for a shorter run that focuses on selections.
 
 Three standard documents will be created in your project folder and filled in
 as the analysis progresses:

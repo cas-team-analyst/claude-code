@@ -359,9 +359,9 @@ Be explicit and exhaustive. The user should leave this step knowing exactly what
 
 - [X] Tell the user the analysis is complete and list every output file produced, grouped by folder. For each file, give the path and a one-line description of what it contains and who it is for. See closing-summary.md from assets.
 
-- [X] After listing the files, tell the user the single most important takeaway: **REPORT.md is the primary narrative deliverable, and `Complete Analysis.xlsx` is the primary numerical deliverable.** Everything else is supporting evidence or reproducibility material.
+- [X] After listing the files, tell the user the single most important takeaway: **REPORT.md is the primary narrative deliverable, and `Analysis.xlsx` is the primary numerical deliverable.** Everything else is supporting evidence or reproducibility material.
 
-**Note:** This analysis's final workbook is named `Analysis.xlsx` (not `Complete Analysis.xlsx`) - `scripts/6-analysis-create-excel.py` in this skill version writes to that filename. Functionally it is the "primary numerical deliverable" referenced above.
+**Note:** This analysis's final workbook is named `Analysis.xlsx` (not `Analysis.xlsx`) - `scripts/6-analysis-create-excel.py` in this skill version writes to that filename. Functionally it is the "primary numerical deliverable" referenced above.
 
 - [X] Ask the user if anything is unclear about any of the outputs before the workflow closes.
 

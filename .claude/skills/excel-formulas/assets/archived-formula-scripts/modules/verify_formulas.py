@@ -1,4 +1,4 @@
-# Formula verification: opens Complete Analysis.xlsx in Excel via win32com,
+# Formula verification: opens Analysis.xlsx in Excel via win32com,
 # force-recalculates, and compares formula results against Values Only.
 # Windows-only (requires pywin32 and Excel).
 #
@@ -64,7 +64,7 @@ def _opx_sheet_to_dict(opx_ws, max_col):
 
 def run_verify(complete=None, values_only=None):
     """
-    Open Complete Analysis.xlsx in Excel, recalculate, and compare against Values Only.
+    Open Analysis.xlsx in Excel, recalculate, and compare against Values Only.
     Raises SystemExit(1) on mismatch; prints PASS on success.
     Returns list of error strings (empty = pass).
     """

@@ -41,7 +41,7 @@ This directory contains the original formula-based versions of the TeamAnalyst E
    - Used for: Renaming sheets while preserving formula references
 
 2. **verify_formulas.py** (Windows-only, Excel COM-based)
-   - Function: `run_verify()` - opens Complete Analysis.xlsx in Excel via win32com, force-recalculates, compares formula results against Values Only workbook
+   - Function: `run_verify()` - opens Analysis.xlsx in Excel via win32com, force-recalculates, compares formula results against Values Only workbook
    - Dependencies: pywin32, Excel desktop application
    - Used by: 6b-create-values-only.py (if it existed)
 

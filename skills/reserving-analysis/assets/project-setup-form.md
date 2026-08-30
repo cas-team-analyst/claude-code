@@ -16,4 +16,5 @@ How would you like to run the analysis?
 [Multiselect with options:
 - **Pause for Selections** — automated data prep and calculations; you review and confirm LDF and tail curve selections before projections run
 - **Fully Automatic** — end-to-end execution with no pauses; AI makes all selections
+- **Selections Demo** — skips updating REPORT.md and REPLICATE.md for a shorter run that focuses on selections.
 ]

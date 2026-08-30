@@ -14,11 +14,15 @@ Process to complete each step:
 
 # Phase 1: Project Setup
 
-- [ ] Respond to the user with the welcome message from assets/welcome-message.md and wait for their confirmation.
+- [ ] Respond to the user with the message from `assets/welcome-message.md` and wait for confirmation.
 
-- [ ] Present the project-setup-form from assets. Display the form exactly as written. Wait for the user to provide all the fields before proceeding. Do not skip fields or infer missing values.
+- [ ] Present the form `assets/project-setup-form.md`. Display the form exactly as written. Wait for the user to provide all the fields before proceeding. Do not skip fields or infer missing values.
 
-- [ ] Use bash cp to copy PROGRESS.md, REPLICATE.md, and REPORT.md from skill assets into the project folder provided in the setup form. Do NOT read them or write them. Send PROGRESS.md, REPLICATE.md, and REPORT.md to the user as files. Track the PROGRESS.md steps in the task list as you go.
+- [ ] Use bash cp or similar to copy PROGRESS.md, REPLICATE.md, and REPORT.md from skill assets into the project folder provided in the setup form. Do NOT read them or write them. 
+
+- [ ] If the user selected Selections Demo mode, rm REPLICATE.md and REPORT.md and remove mentions from PROGRESS.md. If the user selects Fully Automatic, remove PROGRESS.md steps that involve manual user input or review. Send PROGRESS.md, REPLICATE.md, and REPORT.md to the user as files, if they are still being used. 
+
+- [ ] Add the phases from PROGRESS.md to the task list.
 
 - [ ] Create folders `raw-data/`, `processed-data/`, `selections/`, `scripts/`, and `ultimates/` inside the project folder. The user will have selected their triangle file(s) and project folder via the file picker — use those paths to copy the triangle file(s) into `raw-data/` with bash cp. Do not ask the user to copy files manually.
 
@@ -73,7 +77,7 @@ Process to complete each step:
 
 - [ ] **Confirm data format with the user.** This step always runs, regardless of interaction mode. Use the data-validation template from assets so every analysis presents data validation the same way. Do not improvise the format, reorder sections, or omit headings — even if a section is short or trivial. Populate every section from the actual processed data. The spot-check triangle should default to Paid Loss; if Paid Loss is not present, use the first loss measure available (Incurred, then Reported). Do not proceed until the user confirms.
 
-- [ ] Report to the user what LDF averages (review `1d-ldf-averages.py`) and metrics will be calculated. _(Pause for Selections only: also ask if they'd like to add others before continuing.)_
+- [ ] Report to the user what LDF averages (review `1d-ldf-averages.py`) and metrics will be calculated. _(Pause for Selections/Selections Demo: also ask if they'd like to add others before continuing.)_
 
 - [ ] Run all the other Python scripts to create output in `processed-data/`.
 
@@ -110,7 +114,7 @@ Process to complete each step:
 
 - [ ] Tell the user where `selections/Chain Ladder Selections - LDFs.xlsx` is located. Explain that both framework and open-ended AI selections (purple rows) are visible. The **Framework AI Selection** row is what gets used for ultimates — the user can override it manually. If the Framework AI Selection row is left blank, the Open-Ended AI Selection will be used as a fallback.
 
-_(Pause for Selections only):_
+_(Pause for Selections/Selections Demo):_
 - [ ] Open `selections/Chain Ladder Selections - LDFs.xlsx` for the user. Let them know they can review and override any AI selections. Pause and wait for the user to confirm they are done reviewing before continuing.
 
 - [ ] Update REPORT.md: search for `AI (Phase 4):` in the template and follow the fill instructions at each match. Sections 5.3, 5.4, and 4.3 are pre-filled; confirm they are correct and leave as-is.
@@ -151,7 +155,7 @@ _(Pause for Selections only):_
 
 - [ ] Tell the user where `selections/Chain Ladder Selections - Tail.xlsx` is located. Explain that both framework and open-ended AI selections (purple rows) are visible. The **Framework AI Selection** row shows the selected curve METHOD (e.g., 'bondy', 'exp_dev_quick') — this is what gets used to generate fitted LDFs in the Chain Ladder script. The user can override it manually. If the Framework AI Selection row is left blank, the Open-Ended AI Selection will be used as a fallback.
 
-_(Pause for Selections only):_
+_(Pause for Selections/Selections Demo:)_
 - [ ] Open `selections/Chain Ladder Selections - Tail.xlsx` for the user. Let them know they can review and override the tail curve method selections. Pause and wait for the user to confirm they are done reviewing before continuing.
 
 - [ ] Update REPORT.md: search for `AI (Phase 5):` in the template and follow the fill instructions at each match.
@@ -205,7 +209,7 @@ _(Pause for Selections only):_
 
 - [ ] Tell the user where `selections/Ultimates.xlsx` is located. Explain that both framework and open-ended AI selections are visible. The framework selection is what gets used by default — the user can override it manually. The open-ended selection provides an independent cross-check. Note that the workbook now has **Losses** and **Counts** sheets instead of per-measure sheets, and one ultimate is selected per category per accident year.
 
-_(Pause for Selections only):_
+_(Pause for Selections/Selections Demo:)_
 - [ ] Open `selections/Ultimates.xlsx` for the user. Let them know they can review and override any AI ultimate selections. Pause and wait for the user to confirm they are done reviewing before continuing.
 
 - [ ] Run `scripts/5c-summary-indications.py` to compute headline indications from the selected ultimates. This script reads `selections/Ultimates.xlsx` and outputs a formatted markdown table with total unpaid reserve, case reserves, and IBNR.
@@ -244,16 +248,12 @@ _(Pause for Selections only):_
 
 Be explicit and exhaustive. The user should leave this step knowing exactly what was produced, where it lives, and what each file is for. Present the list below (adapted to what actually ran in this analysis — skip items that did not run, e.g., BF if it was skipped).
 
-- [ ] After listing the files, tell the user the single most important takeaway: **REPORT.md is the primary narrative deliverable, and `Complete Analysis.xlsx` is the primary numerical deliverable.** Everything else is supporting evidence or reproducibility material.
+- [ ] After listing the files, tell the user the single most important takeaway: **REPORT.md is the primary narrative deliverable, and `Analysis.xlsx` is the primary numerical deliverable.** Everything else is supporting evidence or reproducibility material.
 
-- [ ] Ask the user if anything is unclear about any of the outputs before the workflow closes.
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user, as well as a .zip with all the project files.
 
-- [ ] Ask the user if they have any questions about the analysis itself — methodology, selections, assumptions, data quality, results interpretation, or any findings in the technical review.
+- [ ] Provide the user a closing summary following the template at `assets/closing-summary.md`.
 
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
-
-- [ ] Provide the user a closing summary following the template at `assets/closing-summary.md` and send the files as a .zip file.
-
-- [ ] Let the user know: If they'd like to continue with Peer Review, they should start a New Chat and run `/peer-review`for an independent AI peer review of the completed analysis.
+- [ ] Let the user know: If they'd like to continue with Peer Review, they should start a New Chat, upload the zip, and run `/peer-review` for an independent AI peer review of the completed analysis. Or, they can ask questions about the analysis or the workflow.
 
 ---

@@ -1,4 +1,4 @@
-# Verify that formula cells in Complete Analysis.xlsx evaluate to the same values
+# Verify that formula cells in Analysis.xlsx evaluate to the same values
 # as those written in Complete Analysis - Values Only.xlsx.
 #
 # Uses win32com to open Complete Analysis in Excel (resolving cross-workbook links
@@ -25,7 +25,7 @@ from openpyxl import load_workbook
 from modules import config
 from modules.xl_utils import measure_short_name
 
-COMPLETE   = pathlib.Path(config.BASE_DIR + "Complete Analysis.xlsx").resolve()
+COMPLETE   = pathlib.Path(config.BASE_DIR + "Analysis.xlsx").resolve()
 VALUES_ONLY = pathlib.Path(config.BASE_DIR + "Complete Analysis - Values Only.xlsx").resolve()
 
 TOL_ABS = 1.0       # absolute tolerance — $1 for dollar amounts
