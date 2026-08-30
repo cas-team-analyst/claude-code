@@ -100,9 +100,9 @@ Process to complete each step:
 
 # Step 4: Chain Ladder LDF Selections
 
-- [ ] Tell the user: "I'm about to apply the base selection logic framework to make LDF selections. If you'd like to explore this framework in detail, you can read it at https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/agents/selector-chain-ladder-ldf-ai-framework.agent.md in a separate session or after this analysis is complete. Reviewing it here would interrupt the current workflow."
-
 - [ ] Run `2a-chainladder-create-excel.py` to create the LDF selection workbook and export per-measure context files. The script will print the context file paths it creates (e.g., "Exported MD: selections/chainladder-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
+
+- [ ] Before you call subagents, show the user as an artifact: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework selector once** for all measures. Call the `selector-chain-ladder-ldf-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
@@ -150,6 +150,8 @@ _(Pause for Selections only):_
 - [ ] Run `2c-tail-methods-diagnostics.py` to fit tail curves and generate diagnostics. Debug any errors.
 
 - [ ] Run `2d-tail-create-excel.py` to create `selections/Chain Ladder Selections - Tail.xlsx` with curve fit results and diagnostics. If prior tail selections exist (`selections/tail-factor-prior.csv`), they will be included in a "Prior Selection" row for reference. The script will print the context file paths it creates (e.g., "  Exported MD: selections/tail-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
+
+- [ ] Before you call subagents, show the user as an artifact: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework tail selector once** for all measures. Call the `selector-tail-curve-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
@@ -212,6 +214,8 @@ _(Pause for Selections only):_
 # Step 7: Ultimate Selections
 
 - [ ] Run `scripts/5a-ultimates-create-excel.py` to create the ultimates workbook and export category context files. The script will create two sheets: **Losses** (combining Incurred and Paid) and **Counts** (combining Reported and Closed). It will print the context file paths it creates (e.g., "  Exported MD: selections/ultimates-context-loss.md", "  Exported MD: selections/ultimates-context-count.md"). **Capture the list of context file paths** from the script output.
+
+- [ ] Before you call subagents, show the user as an artifact: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework ultimates selector once** for both categories. Call the `selector-ultimates-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file (loss and count)

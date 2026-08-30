@@ -19,6 +19,10 @@ description: Actuarial reserving analysis workflow. Use when the user requests r
 
 5. Begin the next incomplete step in PROGRESS.md.
 
+## Cloud Agent Guidelines
+
+- Share documents with the user as you update them: PROGRESS.md, REPORT.md, REPLICATE.md.
+
 ## Cowork Agent Guidelines
 
 Applies only when running as a Cowork agent (see Startup Steps).
@@ -30,6 +34,7 @@ Applies only when running as a Cowork agent (see Startup Steps).
 - Cache out of date? Suggest close/reopen Cowork.
 
 - Never use unicode symbols in commands.
+
 
 ## Supporting Files
 
