@@ -20,7 +20,7 @@ Process to complete each step:
 
 - [ ] Present the project-setup-form from assets. Display the form exactly as written. Wait for the user to provide all the fields before proceeding. Do not skip fields or infer missing values.
 
-- [ ] Use bash cp to copy PROGRESS.md, REPLICATE.md, and REPORT.md from skill assets into the project folder provided in the setup form. Do NOT read them or write them.
+- [ ] Use bash cp to copy PROGRESS.md, REPLICATE.md, and REPORT.md from skill assets into the project folder provided in the setup form. Do NOT read them or write them. Send them to the user as a file so they can see them. Track the PROGRESS.md steps in the task list as you go.
 
 - [ ] Create folders `raw-data/`, `processed-data/`, `selections/`, `scripts/`, and `ultimates/` inside the project folder. The user will have selected their triangle file(s) and project folder via the file picker — use those paths to copy the triangle file(s) into `raw-data/` with bash cp. Do not ask the user to copy files manually.
 
@@ -34,6 +34,8 @@ Process to complete each step:
 - [ ] **Update REPLICATE.md:**
   - Fill in the Overview section using values from the setup form: Analysis name, Prepared by, Draft Date, etc.
   - Fill in Step 1: List folders created, note interaction mode selected
+
+- [ ] Send the user PROGRESS.md, REPORT.md, and REPLICATE.md as files so they can see the tracking documents that will be built up as the analysis proceeds.
 
 # Step 2: Exploratory Data Analysis
 
@@ -98,11 +100,13 @@ Process to complete each step:
   - Note the output files created in `processed-data/`
   - Record the data validation confirmation date
 
+- [ ] Send the user REPORT.md as a file so they can see the data sections now populated.
+
 # Step 4: Chain Ladder LDF Selections
 
 - [ ] Run `2a-chainladder-create-excel.py` to create the LDF selection workbook and export per-measure context files. The script will print the context file paths it creates (e.g., "Exported MD: selections/chainladder-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, show the user as an artifact: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework selector once** for all measures. Call the `selector-chain-ladder-ldf-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
@@ -151,7 +155,7 @@ _(Pause for Selections only):_
 
 - [ ] Run `2d-tail-create-excel.py` to create `selections/Chain Ladder Selections - Tail.xlsx` with curve fit results and diagnostics. If prior tail selections exist (`selections/tail-factor-prior.csv`), they will be included in a "Prior Selection" row for reference. The script will print the context file paths it creates (e.g., "  Exported MD: selections/tail-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, show the user as an artifact: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework tail selector once** for all measures. Call the `selector-tail-curve-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
@@ -215,7 +219,7 @@ _(Pause for Selections only):_
 
 - [ ] Run `scripts/5a-ultimates-create-excel.py` to create the ultimates workbook and export category context files. The script will create two sheets: **Losses** (combining Incurred and Paid) and **Counts** (combining Reported and Closed). It will print the context file paths it creates (e.g., "  Exported MD: selections/ultimates-context-loss.md", "  Exported MD: selections/ultimates-context-count.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, show the user as an artifact: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework ultimates selector once** for both categories. Call the `selector-ultimates-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file (loss and count)
@@ -246,6 +250,8 @@ _(Pause for Selections only):_
 - [ ] Run `scripts/5c-summary-indications.py` to compute headline indications from the selected ultimates. This script reads `selections/Ultimates.xlsx` and outputs a formatted markdown table with total unpaid reserve, case reserves, and IBNR.
 
 - [ ] **Update PROGRESS.md with headline indications:** Copy the markdown table output from `5c-summary-indications.py` into a "Headline Indications" section in PROGRESS.md.
+
+- [ ] Send the user PROGRESS.md as a file so they see the headline indications as soon as they're available.
 
 - [ ] **Update REPORT.md:**
   - Fill in **Section 2 Summary of Indications** table: Extract total unpaid reserve, case reserves, and IBNR from the selected ultimates in `selections/Ultimates.xlsx`. Sum across all accident years. If multiple segments/categories exist, create one row per category (Loss, Count) showing totals.
@@ -281,6 +287,8 @@ _(Pause for Selections only):_
   - List the output files created (selected-ultimates.xlsx, post-method-series.xlsx, post-method-triangles.xlsx, complete-analysis.xlsx)
   - Fill in the "Key Outputs" section listing primary deliverables
 
+- [ ] Send the user REPORT.md as a file now that it is substantially complete, so they can review the draft narrative before technical review.
+
 # Step 9: Technical Review & Peer Review
 
 - [ ] Run `scripts/7-tech-review.py` and alert the user of the results and where the output is saved to.
@@ -306,6 +314,8 @@ _(Pause for Selections only):_
   - Document that `7-tech-review.py` was run
   - List any issues flagged, or note "None - all checks passed"
   - Add any final notes about special considerations or known issues
+
+- [ ] Send the user REPLICATE.md as a file so they can confirm the reproducibility record is complete before closing out.
 
 - [ ] Suggest to the user that they get a Peer Review of the results. If they would like TeamAnalyst to do this, they should close the current workflow (this will clear context to get an independent review) and use the /peer-review skill to get an AI Peer Review.
 

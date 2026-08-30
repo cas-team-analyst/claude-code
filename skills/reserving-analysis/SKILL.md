@@ -8,7 +8,7 @@ description: Actuarial reserving analysis workflow. Use when the user requests r
 
 **Follow Every Time BEFORE reading PROGRESS.md**
 
-1. Confirm to the user which version of the skill this is: v20260826.
+1. Confirm to the user which version of the skill this is: v20260830.
 
 2. Determine whether you're running as a local Cowork agent (VM/filesystem access to the user's machine) or a cloud Claude agent (no access to the user's local folders). If Cowork: Identify and mount the project folder. Do not use your own folder (may cause max path length issues), ask the user to select one. Obtain permission to modify it. Identify and mount the plugin skill folder (if applicable, NOT the anthropic-skills folder) so you can copy files from it into the project folder.
 
@@ -18,10 +18,6 @@ description: Actuarial reserving analysis workflow. Use when the user requests r
    - Copy PROGRESS.md, REPORT.md, and REPLICATE.md from `assets/` to project directory. Use copy commands, do NOT read and write the files.
 
 5. Begin the next incomplete step in PROGRESS.md.
-
-## Cloud Agent Guidelines
-
-- Share documents with the user as you update them: PROGRESS.md, REPORT.md, REPLICATE.md.
 
 ## Cowork Agent Guidelines
 

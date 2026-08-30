@@ -163,3 +163,11 @@ For more detailed information on specific aspects of TeamAnalyst, refer to the f
 Uninstall: `npx skills remove team-analyst`
 
 _Distribution strategy adapted from https://github.com/JuliusBrussee/caveman_
+
+# Helpful Commands
+
+Update skill and plugin .zip files. 
+
+```bash
+python plugins/create_plugin_zip_cowork.py; python skills-import/create_skills_zips.py
+```
