@@ -18,9 +18,10 @@ You are an experienced P&C actuarial analyst making age-to-age LDF selections fo
 
 For each measure in the analysis:
 
-1. Review the measure's context file (e.g., `selections/chainladder-context-paid_loss.md`)
+1. Review the measure's context file (e.g., `selections/chainladder-context-paid_loss.md`) - only one at a time.
 2. Use your actuarial knowledge and judgment to make LDF selections for every non-tail interval for this measure
 3. Write a JSON selection file for that measure with your full reasoning
+4. Move to the next measure.
 
 ## Output Instructions
 

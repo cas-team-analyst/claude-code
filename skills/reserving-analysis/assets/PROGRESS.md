@@ -1,52 +1,42 @@
 # General Procedures
 
+## Document Roles
+
+- **REPORT.md** — the narrative actuarial report
+- **REPLICATE.md** — an auditor replication guide. Write each entry as a prescription a human could follow to reproduce this analysis from scratch, without any AI assistance. Focus on final values, decisions, and script execution order — not on what the AI did or which selectors were invoked.
+
 ## Progress Tracking
 
-ALWAYS COME BACK TO PROGRESS TO MARK THE [] STEP COMPLETE BEFORE STARTING THE NEXT [] STEP.
-
 Process to complete each step:
-1. Mark status as "In Progress [yyyy-mm-dd]"
-2. Perform the requested action. Keep the user informed as you work.
-3. When complete
-    - Update REPORT.md
-    - Update REPLICATE.md
-    - Mark the step as complete with [X]
-    - Send the user an updated PROGRESS.md file.
-4. Move on to the next step.
+1. Perform each [ ] step in order. Keep the user informed as you work.
+2. Mark each step complete with [X] when done.
+3. Move on to the next step.
 
-# Step 1: Project Setup
+# Phase 1: Project Setup
 
 - [ ] Respond to the user with the welcome message from assets/welcome-message.md and wait for their confirmation.
 
 - [ ] Present the project-setup-form from assets. Display the form exactly as written. Wait for the user to provide all the fields before proceeding. Do not skip fields or infer missing values.
 
-- [ ] Use bash cp to copy PROGRESS.md, REPLICATE.md, and REPORT.md from skill assets into the project folder provided in the setup form. Do NOT read them or write them. Send them to the user as a file so they can see them (not an asset, as this make the chat window very busy). Track the PROGRESS.md steps in the task list as you go.
+- [ ] Use bash cp to copy PROGRESS.md, REPLICATE.md, and REPORT.md from skill assets into the project folder provided in the setup form. Do NOT read them or write them. Send PROGRESS.md, REPLICATE.md, and REPORT.md to the user as files. Track the PROGRESS.md steps in the task list as you go.
 
 - [ ] Create folders `raw-data/`, `processed-data/`, `selections/`, `scripts/`, and `ultimates/` inside the project folder. The user will have selected their triangle file(s) and project folder via the file picker — use those paths to copy the triangle file(s) into `raw-data/` with bash cp. Do not ask the user to copy files manually.
 
-- [ ] **Update REPORT.md:**
-  - Fill in the header fields using the values from the setup plus Prepared by (user name), Draft Date (today).
-  - Fill in **Section 1.1 Purpose** with the purpose of this analysis from the setup form (e.g., "quarterly reserve review for internal management").
-  - Fill in **Section 1.2 Scope** table with any known info from setup: Segment/LOB, basis (gross/net), currency, geography.
-  - Fill in **Section 1.3 Intended Internal Users** with the audience from the setup form.
-  - Add a row to **Section 14 Version History**: v0.1, today's date, analyst name, "Initial draft".
+- [ ] Update REPORT.md: search for `AI (Phase 1):` in the template and follow the fill instructions at each match.
 
-- [ ] **Update REPLICATE.md:**
-  - Fill in the Overview section using values from the setup form: Analysis name, Prepared by, Draft Date, etc.
-  - Fill in Step 1: List folders created, note interaction mode selected
+- [ ] Update REPLICATE.md.
 
-- [ ] Send the user PROGRESS.md, REPORT.md, and REPLICATE.md as files so they can see the tracking documents that will be built up as the analysis proceeds.
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
 
-# Step 2: Exploratory Data Analysis
+# Phase 2: Exploratory Data Analysis
 
 - [ ] Review the files available using the preview_data_file scripts. For each file add a file summary subsection to REPORT.md in the data section.
 
-- [ ] **Update REPORT.md:**
-  - Fill in **Section 3.1 Data Used** table: one row per data file (source name, as-of date, notes on format/coverage). Include triangle files and any other inputs.
-  - Fill in **Section 3.2 Data Reconciliation**: note whether data was reconciled to a prior valuation or financial system. If no reconciliation was performed, state "Not reconciled - data accepted as provided by [source]."
-  - Fill in **Section 3.3 Data Quality Observations**: any outliers, gaps, negative development, coding anomalies, or unusual patterns noticed during exploration. If none observed, state "No material data quality issues observed during initial review."
+- [ ] Update REPORT.md: search for `AI (Phase 2):` in the template and follow the fill instructions at each match.
 
-# Step 3: Data Intake
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+
+# Phase 3: Data Intake
 
 - [ ] Use bash cp to copy all the numbered scripts and the modules folder from the reserving-analysis skill scripts folder to `scripts/` in the working directory. Do NOT regenerate.
 
@@ -87,26 +77,17 @@ Process to complete each step:
 
 - [ ] Run all the other Python scripts to create output in `processed-data/`.
 
-- [ ] **Update REPORT.md:**
-  - Update **Section 3.1 Data Used** table: add rows for triangle types used (paid loss, incurred loss, reported count, closed count, exposure), confirm source file names and as-of dates; note if ELR file is present or absent.
-  - Update **Section 3.3 Data Quality Observations**: note any adjustments made to `1a-load-and-validate.py` (e.g., outlier exclusions, coding changes, negative development corrections), any data limitations discovered.
-  - Update **Section 3.4 Data Limitations**: note missing data types (e.g., "No closed count data - unable to estimate closure rates", "No ELR file provided - IE/BF methods skipped", "No prior selections available") and how limitations impact the analysis.
-  - Update **Section 1.2 Scope** table: fill in accident/underwriting years range (e.g., "2001-2024"), coverages (which measures are available), and basis once confirmed from the processed data.
+- [ ] Update REPORT.md: search for `AI (Phase 3):` in the template and follow the fill instructions at each match.
 
-- [ ] **Update REPLICATE.md Step 2:**
-  - List all input files in raw-data/ with brief descriptions
-  - Document which scripts were run (1a through 1d)
-  - List any customizations made to `1a-load-and-validate.py` (column mappings, data transformations, outlier handling)
-  - Note the output files created in `processed-data/`
-  - Record the data validation confirmation date
+- [ ] Update REPLICATE.md.
 
-- [ ] Send the user REPORT.md as a file so they can see the data sections now populated.
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
 
-# Step 4: Chain Ladder LDF Selections
+# Phase 4: Chain Ladder LDF Selections
 
 - [ ] Run `2a-chainladder-create-excel.py` to create the LDF selection workbook and export per-measure context files. The script will print the context file paths it creates (e.g., "Exported MD: selections/chainladder-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file (call it "AI Context Example: LDF"). This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user the selector subagent instructions and a context file example (call it "AI Context Example: LDF").
 
 - [ ] **Invoke the framework selector once** for all measures. Call a general subagent following the spec at `selector-chain-ladder-ldf-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
@@ -132,22 +113,13 @@ Process to complete each step:
 _(Pause for Selections only):_
 - [ ] Open `selections/Chain Ladder Selections - LDFs.xlsx` for the user. Let them know they can review and override any AI selections. Pause and wait for the user to confirm they are done reviewing before continuing.
 
-- [ ] **Update REPORT.md:**
-  - Fill in **Section 4.1 Methods Applied** table: add rows for each method used. For each triangle measure (Paid Loss, Incurred Loss, Reported Count), add rows for "Paid LDF" or "Incurred LDF" or "Reported LDF" as applicable. In "Why Selected" column, note "Selected via framework with AI cross-check - mature year primary method."
-  - Fill in **Section 4.2 Method Weighting / Selection Logic**: Describe the 14-criteria framework used for LDF selections and note that AI selections provided a cross-check. Describe maturity-based weighting approach (e.g., "Chain Ladder weighted 100% for years 96+ months developed, BF/CL blend for immature years").
-  - Fill in **Section 5.1 Development Patterns**: Note the selection basis: "Volume-weighted averages with averaging windows from 3-year to all-year. Framework selected optimal window per age based on stability, volume, and fit diagnostics."
-  - **Section 5.3 Trend Assumptions** and **Section 5.4 Other Assumptions** are already filled with "Not implemented" - leave as-is unless user performed manual trend adjustments.
-  - **Section 4.3 LAE Treatment** is already filled with "Not applicable" - leave as-is unless user indicates LAE is handled separately.
-  - Add to **Section 11 Open Questions** any LDF selections flagged as low-confidence or where the framework and AI selections diverged materially (check the JSON reasoning files for "low" confidence flags).
+- [ ] Update REPORT.md: search for `AI (Phase 4):` in the template and follow the fill instructions at each match. Sections 5.3, 5.4, and 4.3 are pre-filled; confirm they are correct and leave as-is.
 
-- [ ] **Update REPLICATE.md Step 4:**
-  - Document that `2a-chainladder-create-excel.py` was run to create the selection workbook
-  - Note that AI selectors made framework and open-ended selections (JSON files created)
-  - Document that `2b-chainladder-update-selections.py` populated the Excel file with AI selections
-  - **Critical:** If user made manual overrides in the "User Selection" row, list each one with measure, interval, selected LDF, and reasoning. If no overrides, explicitly state "All selections are from Framework AI Selection row."
-  - Add instruction: "To replicate: Extract final selections from User Selection row if present, otherwise use Framework AI Selection row. Do not re-run AI selector."
+- [ ] Update REPLICATE.md.
 
-# Step 5: Chain Ladder Tail Curve Method Selections
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+
+# Phase 5: Chain Ladder Tail Curve Method Selections
 
 - [ ] Tell the user: "I'm about to apply the tail curve selection framework. This uses curve fitting diagnostics (Bondy, Exponential Decay, McClenahan, Skurnick, etc.) and leave-one-out testing to select the best curve method for extrapolating development beyond the empirical cutoff age. The LDF agents already selected the cutoff age (where empirical selections end). The tail curve method will be used by the Chain Ladder script to generate fitted LDFs for ages after the cutoff."
 
@@ -155,7 +127,7 @@ _(Pause for Selections only):_
 
 - [ ] Run `2d-tail-create-excel.py` to create `selections/Chain Ladder Selections - Tail.xlsx` with curve fit results and diagnostics. If prior tail selections exist (`selections/tail-factor-prior.csv`), they will be included in a "Prior Selection" row for reference. The script will print the context file paths it creates (e.g., "  Exported MD: selections/tail-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file (call it "AI Context Example: Tail"). This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user the selector subagent instructions and a context file example (call it "AI Context Example: Tail").
 
 - [ ] **Invoke the framework tail selector once** for all measures. Call a general subagent following the spec at `selector-tail-curve-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
@@ -182,19 +154,13 @@ _(Pause for Selections only):_
 _(Pause for Selections only):_
 - [ ] Open `selections/Chain Ladder Selections - Tail.xlsx` for the user. Let them know they can review and override the tail curve method selections. Pause and wait for the user to confirm they are done reviewing before continuing.
 
-- [ ] **Update REPORT.md:**
-  - Update **Section 5.1 Development Patterns**: Add tail curve details: "Tail curve method selected from curve fitting diagnostics. [State which method was selected for each measure - Bondy, Exponential Decay, etc.] with R² values of [X.XX]. Leave-one-out testing showed [describe results]. Fitted LDFs for ages beyond the cutoff are generated using the selected curve method's formula." Reference the tail selection workbook for full diagnostics.
-  - Add to **Section 11 Open Questions** any tail curve selections flagged as low-confidence or where curve fit diagnostics were poor (R² < 0.85) or where framework and AI selections diverged materially.
+- [ ] Update REPORT.md: search for `AI (Phase 5):` in the template and follow the fill instructions at each match.
 
-- [ ] **Update REPLICATE.md Step 5:**
-  - Document that `2c-tail-methods-diagnostics.py` was run to fit curves and create diagnostics
-  - Document that `2d-tail-create-excel.py` created the tail selection workbook
-  - Note that AI selectors made framework and open-ended tail curve method selections (JSON files created)
-  - Document that `2e-tail-update-selections.py` populated the Excel file with AI selections
-  - **Critical:** If user made manual overrides in the "User Selection" row, list each one with measure and selected curve method (e.g., 'bondy', 'exp_dev_quick'). If no overrides, explicitly state "All selections are from Framework AI Selection row."
-  - Add instruction: "To replicate: Extract final tail curve methods from User Selection row if present, otherwise use Framework AI Selection row. Fitted LDFs are generated by `2f-chainladder-ultimates.py` using the selected curve method. Do not re-run AI selector."
+- [ ] Update REPLICATE.md.
 
-# Step 6: Calculate Method Projections
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+
+# Phase 6: Calculate Method Projections
 
 - [ ] Run `2f-chainladder-ultimates.py`, `3-ie-ultimates.py`, and `4-bf-ultimates.py`. Debug any errors that occur. It is normal for IE and BF to get skipped if the user didn't provide the necessary data (exposure, initial expected). Note: `2f-chainladder-ultimates.py` will:
   1. Read empirical LDF selections from `selections/Chain Ladder Selections - LDFs.xlsx` (up to the cutoff age)
@@ -204,22 +170,17 @@ _(Pause for Selections only):_
   5. Build complete CDFs by chaining empirical + fitted LDFs
   6. Calculate Chain Ladder ultimates and save to `ultimates/projected-ultimates.parquet`
 
-- [ ] **Update REPORT.md:**
-  - Update **Section 4.1 Methods Applied** table: Confirm which methods actually ran vs. were skipped. If IE or BF were skipped, note why (e.g., "Initial Expected skipped - no expected loss rate file provided"). Update the "Segments Applied" and "Why Selected" columns based on actual execution.
-  - Update **Section 5.2 Expected Loss Ratios**: If IE/BF ran, fill in the ELR table showing the a priori expected loss ratios used for each accident year. If these methods were skipped, state "Not applicable - IE/BF methods not used in this analysis."
-  - **Section 4.3 LAE Treatment** should already state "Not applicable" unless user has specified separate LAE handling - confirm this is correct or update if needed.
+- [ ] Update REPORT.md: search for `AI (Phase 6)` in the template and follow the fill instructions at each match.
 
-- [ ] **Update REPLICATE.md Step 6:**
-  - Document that `2f-chainladder-ultimates.py` was run (note which Excel file it read LDFs and tail factors from)
-  - Document whether `3-ie-ultimates.py` ran or was skipped (and why)
-  - Document whether `4-bf-ultimates.py` ran or was skipped (and why)
-  - Note the output file: `ultimates/projected-ultimates.parquet` with columns added by each method
+- [ ] Update REPLICATE.md.
 
-# Step 7: Ultimate Selections
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+
+# Phase 7: Ultimate Selections
 
 - [ ] Run `scripts/5a-ultimates-create-excel.py` to create the ultimates workbook and export category context files. The script will create two sheets: **Losses** (combining Incurred and Paid) and **Counts** (combining Reported and Closed). It will print the context file paths it creates (e.g., "  Exported MD: selections/ultimates-context-loss.md", "  Exported MD: selections/ultimates-context-count.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file (call it "AI Context Example: Ultimates"). This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user the selector subagent instructions and a context file example (call it "AI Context Example: Ultimates").
 
 - [ ] **Invoke the framework ultimates selector once** for both categories. Call a general subagent following the spec at `selector-ultimates-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file (loss and count)
@@ -251,82 +212,48 @@ _(Pause for Selections only):_
 
 - [ ] **Update PROGRESS.md with headline indications:** Copy the markdown table output from `5c-summary-indications.py` into a "Headline Indications" section in PROGRESS.md.
 
-- [ ] Send the user PROGRESS.md as a file so they see the headline indications as soon as they're available.
+- [ ] Send updated PROGRESS.md to the user.
 
-- [ ] **Update REPORT.md:**
-  - Fill in **Section 2 Summary of Indications** table: Extract total unpaid reserve, case reserves, and IBNR from the selected ultimates in `selections/Ultimates.xlsx`. Sum across all accident years. If multiple segments/categories exist, create one row per category (Loss, Count) showing totals.
-  - Fill in **Section 2 Comparison to prior estimate** table: If prior estimate data is available, show prior ultimate, current ultimate, change ($), and change (%). If no prior estimate exists, state "Not applicable - no prior estimate available for comparison."
-  - Fill in **Section 2 Key drivers of change**: If comparing to prior, briefly describe what changed (e.g., "emergence better/worse than expected", "LDF selections revised", "additional year of data"). If no comparison, state "Not applicable."
-  - Fill in **Section 6 Results by Segment**: Create one subsection (6.1, 6.2, etc.) per category (Loss, Count). For each, state: "Selected ultimates: See Ultimates.xlsx [category] sheet", "Method weighting: [summarize - e.g., mature years use CL, immature years use BF]", "Notable judgment calls: [list any manual overrides or low-confidence selections]."
-  - Update **Section 5.2 Expected Loss Ratios**: If IE/BF methods were used, populate the table with the a priori ELRs by accident year. If not used, state "Not applicable - IE/BF not used."
-  - Update **Section 5.5 Assumption Rationale**: Add the ELR source if applicable (e.g., "Expected loss ratios from [company pricing / industry benchmark / historical average]").
-  - Add to **Section 11 Open Questions** any accident years where method indications diverged materially (e.g., "> 20% difference between CL and BF") or where selections required significant judgment. Flag any years with low confidence ratings.
+- [ ] Update REPORT.md: search for `AI (Phase 7):` in the template and follow the fill instructions at each match.
 
-- [ ] **Update REPLICATE.md Step 7:**
-  - Document that `5a-ultimates-create-excel.py` was run to create the ultimates workbook with Losses and Counts sheets
-  - Note that AI selectors made framework and open-ended ultimate selections for both categories (JSON files created)
-  - Document that `5b-ultimates-update-selections.py` populated the Excel file with AI selections
-  - **Critical:** If user made manual overrides in the "User Selection" column, list each one with category (Loss or Count), period, selected ultimate, and reasoning. If no overrides, explicitly state "All selections are from Framework AI Selection columns."
-  - Add instruction: "To replicate: Extract final ultimates from User Selection column if present, otherwise use Framework AI Selection column. Do not re-run AI selector."
+- [ ] Update REPLICATE.md.
 
-# Step 8: Build Analysis Workbook
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+
+# Phase 8: Build Analysis Workbook
 
 - [ ] Run `scripts/6-analysis-create-excel.py` and alert the user of the location and description of the final output files.
 
-- [ ] **Update REPORT.md:**
-  - Verify **Section 2 Summary of Indications** table: Confirm the total unpaid reserve, case reserves, and IBNR totals match the final output from `6-analysis-create-excel.py`. Check against the Analysis.xlsx file totals.
-  - Fill in **Section 0 Reviewer Quick-Start**: Write a brief 1-2 sentence summary of what the analysis covers (e.g., "Workers Compensation reserve analysis for AY 2001-2024 using Chain Ladder and Bornhuetter-Ferguson methods"). List 2-3 key judgment calls made (e.g., "BF selected for AY 2023-2024 due to low maturity"). State where reviewer scrutiny is most needed (e.g., "Recent year ultimate selections", "Tail factor assumptions", "Method divergence for AY 2012").
-  - Fill in **Section 9 Reliance on Others** table: List data sources and information relied upon (e.g., "Claims Department - triangle data as of [date]", "Finance - exposure data", etc.). If no external reliance, state "No external sources relied upon beyond internal company data systems."
-  - Fill in **Section 10 Information Date**: State the valuation date/as-of date for the analysis. Under "Subsequent events considered", state either "None known as of [draft date]" or describe any events.
-  - Update **Section 14 Version History**: Add a row for the current version with today's date and a summary of changes since v0.1 (e.g., "v0.2 - added ultimate selections and completed initial analysis").
-  - **Final completeness check**: Review all sections and fill any remaining placeholders. For sections that genuinely don't apply (LAE, trending, sensitivity), confirm the "Not implemented" or "Not applicable" text is present. For sections with content, ensure no bracketed placeholders remain.
+- [ ] Update REPORT.md: search for `AI (Phase 8):` in the template and follow the fill instructions at each match. Then do a final completeness pass: confirm pre-filled sections (LAE, trending, sensitivity) still say "Not implemented" or "Not applicable" and no bracketed placeholders remain.
 
-- [ ] **Update REPLICATE.md Step 8:**
-  - Document that `6-analysis-create-excel.py` was run
-  - Note which files it read (projected-ultimates.parquet, Ultimates.xlsx)
-  - List the output files created (selected-ultimates.xlsx, post-method-series.xlsx, post-method-triangles.xlsx, complete-analysis.xlsx)
-  - Fill in the "Key Outputs" section listing primary deliverables
+- [ ] Update REPLICATE.md.
 
-- [ ] Send the user REPORT.md as a file now that it is substantially complete, so they can review the draft narrative before technical review.
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
 
-# Step 9: Technical Review & Peer Review
+# Phase 9: Technical Review
 
 - [ ] Run `scripts/7-tech-review.py` and alert the user of the results and where the output is saved to.
 
-- [ ] **Update REPORT.md:**
-  - Fill in **Section 7 Diagnostics and Reasonableness Checks**: Check off each item in the checklist and add notes:
-    - "Loss ratios by AY": State "Reviewed - progression is reasonable" or note any anomalies (e.g., "AY 2007 shows elevated loss ratio - large claim suspected")
-    - "Frequency / severity trends": State "Consistent with historical patterns" or note any flags from `7-tech-review.py` (e.g., "YoY severity spikes flagged in periods 3, 4, 6 - see tech review")
-    - "Implied paid and reported development": State "Patterns consistent with triangle selections"
-    - "Actual vs. expected emergence": State "Not applicable - no prior estimate" or provide brief comparison if available
-    - "Comparison to independent benchmark": State "Not performed" unless benchmark data was used
-    - "Hindsight test on prior ultimates": State "Not performed" or provide results if available
-    - "Ratio of IBNR to case reserves": State "Reviewed - ratios reasonable" or note concerns
-  - Under **"Anomalies to investigate"**: List all FAIL and WARN items from `7-tech-review.py`. Examples: "Tech review FAIL: 16 periods with IBNR < 0 (IE method mis-calibrated)", "Tech review WARN: YoY severity spikes of 45%, 101%, 244% in periods 3, 4, 6", "Tech review WARN: 136 reported-to-ult cells > 1.0 due to sub-1.0 count CDFs"
-  - Fill in **Section 8.2 Sources of Uncertainty**: Describe key risk factors:
-    - Process risk: e.g., "Limited development history for recent years - thin data increases parameter uncertainty"
-    - Parameter risk: e.g., "Tail factor uncertainty - curve fits show R² of [values], alternative tail factors could shift reserve by [estimate]", "LDF selection uncertainty - mature years stable, recent years volatile"
-    - Model risk: e.g., "Method selection for immature years - CL vs BF choice drives material reserve differences"
-    - Systemic risk: Note any flagged by tech review or judgment (e.g., "AY 2007 large loss not separately estimated - if re-opened could impact ultimate")
-  - **Section 8.1 Sensitivity** is marked "Not implemented" - leave as-is unless user performed manual sensitivity testing.
+- [ ] Update REPORT.md: search for `AI (Phase 9):` in the template and follow the fill instructions at each match.
 
-- [ ] **Update REPLICATE.md Step 9:**
-  - Document that `7-tech-review.py` was run
-  - List any issues flagged, or note "None - all checks passed"
-  - Add any final notes about special considerations or known issues
+- [ ] Update REPLICATE.md.
 
-- [ ] Send the user REPLICATE.md as a file so they can confirm the reproducibility record is complete before closing out.
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
 
-- [ ] Suggest to the user that they get a Peer Review of the results. If they would like TeamAnalyst to do this, they should close the current workflow (this will clear context to get an independent review) and use the /peer-review skill to get an AI Peer Review.
-
-# Step 10: Summarize Final Outputs
+# Phase 10: Summarize Final Outputs
 
 Be explicit and exhaustive. The user should leave this step knowing exactly what was produced, where it lives, and what each file is for. Present the list below (adapted to what actually ran in this analysis — skip items that did not run, e.g., BF if it was skipped).
-
-- [ ] Provide the user a closing summary following the template at `assets/closing-summary.md` and send the files as a .zip file.
 
 - [ ] After listing the files, tell the user the single most important takeaway: **REPORT.md is the primary narrative deliverable, and `Complete Analysis.xlsx` is the primary numerical deliverable.** Everything else is supporting evidence or reproducibility material.
 
 - [ ] Ask the user if anything is unclear about any of the outputs before the workflow closes.
 
-- [ ] Ask the user if they have any questions about the analysis itself — methodology, selections, assumptions, data quality, results interpretation, or any findings in the technical review. Remind them they can also run `/peer-review` in a separate session for an independent AI review of the analysis.
+- [ ] Ask the user if they have any questions about the analysis itself — methodology, selections, assumptions, data quality, results interpretation, or any findings in the technical review.
+
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+
+- [ ] Provide the user a closing summary following the template at `assets/closing-summary.md` and send the files as a .zip file.
+
+- [ ] Let the user know: If they'd like to continue with Peer Review, they should start a New Chat and run `/peer-review`for an independent AI peer review of the completed analysis.
+
+---

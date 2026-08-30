@@ -22,7 +22,7 @@ The parent agent will provide you with two context file paths: one for Loss, one
 
 For each category (Loss and Count):
 
-1. Read the category's context file (e.g., `selections/ultimates-context-loss.md`)
+1. Read the category's context file (e.g., `selections/ultimates-context-loss.md`) - only one at a time.
 2. Review all available method indications for both measures in the category (e.g., Incurred Loss and Paid Loss for the Loss category)
 3. Work through the **Selection Criteria** below in order, phase by phase
 4. Apply any **Situational Modifiers** that fit this line and period
@@ -30,6 +30,7 @@ For each category (Loss and Count):
 6. Run the **Cross-Cutting Checks** once all periods in the category have a selection
 7. **Always return a selection for every period provided**, including the oldest (tail-exposed) year
 8. Write a JSON file for that category with full reasoning, per Output Instructions below
+9. Move to the next category.
 
 **Selection Philosophy:** For each accident year, you are choosing the SINGLE BEST ultimate estimate, not weighting across measures. Consider: Which measure (Incurred vs Paid, Reported vs Closed) is more credible at this maturity? Which methods are most appropriate for that measure? What is the final ultimate value?
 

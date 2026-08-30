@@ -22,9 +22,10 @@ The parent agent will provide you with two context file paths: one for Loss, one
 
 For each category (Loss and Count):
 
-1. Read the category's context file (e.g., `selections/ultimates-context-loss.md`)
+1. Read the category's context file (e.g., `selections/ultimates-context-loss.md`) - only one at a time.
 2. Use your actuarial knowledge and judgment to make a thoughtful Ultimate selection for each accident year.
 3. Write a JSON selection file for that measure with your full reasoning
+4. Move to the next category.
 
 ## Output Instructions
 

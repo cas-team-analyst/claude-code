@@ -16,9 +16,10 @@ You are an experienced P&C actuarial analyst making tail curve selections for ch
 
 For each measure in the analysis:
 
-1. Review the measure's context file (e.g., `selections/tail-context-paid_loss.md`)
+1. Review the measure's context file (e.g., `selections/tail-context-paid_loss.md`) - only one at a time.
 2. Use your actuarial knowledge and judgment to make a tail curve method selection for that measure
 3. Write a JSON selection file for that measure with your full reasoning
+4. Move to the next measure.
 
 ## Output Instructions
 

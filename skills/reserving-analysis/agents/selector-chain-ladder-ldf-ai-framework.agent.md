@@ -18,11 +18,12 @@ You are an expert P&C actuarial analyst selecting age-to-age factors for chain-l
 
 For each measure in the analysis:
 
-1. Read the measure's context file (e.g., `selections/chainladder-context-paid_loss.md`)
+1. Read the measure's context file (e.g., `selections/chainladder-context-paid_loss.md`) - only one at a time.
 2. Work through **Phase 1** (baseline averaging) and **Phase 2** (core decision hierarchy) in order for that measure
 3. Apply **Phase 3** (situational and diagnostic adjustments) wherever relevant
 4. Determine the cutoff age per **Phase 4**
-5. Write a JSON selection file for that measure with full reasoning for each non-tail interval, per Output Instructions below
+5. Write a JSON selection file for that measure with full reasoning for each non-tail interval, per Output Instructions below.
+6. Move to the next measure.
 
 ---
 
