@@ -8,7 +8,6 @@ description: Get oriented with the TeamAnalyst plugin and explore available skil
 ## Quick Reference
 
 **Main workflow:** `/reserving-analysis` — end-to-end loss reserving (data → methods → selections → projections)  
-**View selection logic:** `/selection-logic` — review LDF and tail factor decision frameworks  
 **Peer review:** `/peer-review` — validate completed analysis against ASOP standards  
 
 ---
@@ -21,8 +20,7 @@ TeamAnalyst is an AI-powered actuarial analyst. It walks you through loss reserv
 
 ## Step 2: Describe the Available Skills
 
-- **`/reserving-analysis`** — the core workflow. Runs data prep, actuarial methods (Chain Ladder, Initial Expected, Bornhuetter-Ferguson), LDF and tail factor selections, and ultimate projections. Every analysis produces three standard documents: **REPORT.md** (deliverable), **PROGRESS.md** (workflow checklist), and **REPLICATE.md** (reproducibility log).
-- **`/selection-logic`** — explains the actuarial LDF and tail factor decision frameworks used during chain-ladder selections.
+- **`/reserving-analysis`** — the core workflow. Runs data prep, actuarial methods (Chain Ladder, Initial Expected, Bornhuetter-Ferguson), LDF and tail factor selections, and ultimate projections. Every analysis produces three standard documents: **REPORT.md** (deliverable), **PROGRESS.md** (workflow checklist), and **REPLICATE.md** (reproducibility log). The LDF and tail factor decision frameworks it applies live in the selector agent files under `skills/reserving-analysis/agents/`.
 - **`/peer-review`** — reviews a completed analysis against cross-method consistency checks and ASOP standards; produces an advisory findings report without modifying selections.
 
 ## Step 3: Explain Interaction Modes
@@ -45,5 +43,6 @@ If the user asks about specific topics, read the relevant file to answer accurat
 
 - **ASOP standards** (13, 23, 25, 36, 41, 43) — see the `peer-review` skill
 - **Tail curve methods** (Bondy, Exponential Decay, McClenahan, Skurnick, etc.) — see the tail curve selector agents in the `reserving-analysis` skill
+- **LDF and tail selection criteria and diagnostic rules** — read the selector agent files directly in `skills/reserving-analysis/agents/` (framework and open-ended variants for LDF, tail curve, and ultimates)
 
 If the referenced skill isn't installed/available, tell the user it's needed for that information rather than guessing at its content.

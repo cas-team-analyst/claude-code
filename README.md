@@ -24,7 +24,7 @@ _The video from our CAS presentation can be found at https://www.youtube.com/wat
 
 2. In the chat box, select **Cowork**, **Sonnet**, and **Medium**. Cowork will enable the use of subagents. Sonnet is preferred to Opus (quickly hits limits) and Haiku (can lose focus during long workflows).
 
-3. Download the skill zip files from https://github.com/cas-team-analyst/team-analyst/tree/main/skills-import — `reserving-analysis.zip`, `peer-review.zip`, `selection-logic.zip` (optional), `help.zip` (optional).
+3. Download the skill zip files from https://github.com/cas-team-analyst/team-analyst/tree/main/skills-import — `reserving-analysis.zip`, `peer-review.zip`, `help.zip` (optional).
 
 4. In Claude Chat, go to Customize > Skills > Add > Upload a skill, and upload each zip.
 
@@ -54,8 +54,9 @@ These skills are available:
 
 - `/help` for orientation and help using the workflow
 - `/reserving-analysis` for the full reserving workflow
-- `/selection-logic` to inspect the LDF, tail, and ultimates selection strategy
 - `/peer-review` perform AI peer review on a completed analysis
+
+The LDF, tail, and ultimates selection strategy is documented directly in the selector agent files under [`skills/reserving-analysis/agents/`](https://github.com/cas-team-analyst/team-analyst/tree/main/skills/reserving-analysis/agents) (see [How It Works](#how-it-works)).
 
 To go further:
 

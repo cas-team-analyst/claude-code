@@ -20,11 +20,10 @@ TeamAnalyst is a skill-and-script bundle for actuarial reserve analysis workflow
 The core user-facing workflow is `reserving-analysis`, supported by:
 
 - `help` for orientation and skill discovery
-- `selection-logic` for reviewing the actuarial decision framework
 - `peer-review` for reviewing a completed analysis
 - supporting/internal skills such as `python`, `excel-formulas`, and `improve-agent`
 
-The selector files in `skills/reserving-analysis/agents/` are custom subagents consumed by the workflow. They must stay aligned with the workflow instructions in `skills/`.
+The selector files in `skills/reserving-analysis/agents/` are custom subagents consumed by the workflow. They must stay aligned with the workflow instructions in `skills/`. There is no separate skill for viewing or explaining selection logic; agents and users refer directly to the selector agent files in `skills/reserving-analysis/agents/`.
 
 ---
 
@@ -36,7 +35,6 @@ The selector files in `skills/reserving-analysis/agents/` are custom subagents c
 |------|------------------|
 | `skills/help/SKILL.md` | Orientation flow and top-level skill discovery. |
 | `skills/reserving-analysis/SKILL.md` | Main reserving workflow, sequencing, user interaction model, and script/template usage rules. |
-| `skills/selection-logic/SKILL.md` | How selector framework content is presented to users. |
 | `skills/peer-review/SKILL.md` | Peer review workflow and findings expectations. |
 | `skills/reserving-analysis/agents/*.agent.md` | Selector custom subagents. Update these when the decision framework changes. |
 | `README.md` | User-facing install and usage documentation. |
