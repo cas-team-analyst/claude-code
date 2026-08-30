@@ -22,7 +22,7 @@ _The video from our CAS presentation can be found at https://www.youtube.com/wat
 1. Sign up for a Claude account at https://claude.ai/
    - **Important Note**: While this approach works on Claude's free tier, free/consumer accounts don't get the same data privacy protections as paid accounts — by default your conversations may be used to train models unless you turn that off in Settings > Privacy. See the [AI Training & Data Privacy Policies guide](https://github.com/cas-team-analyst/team-analyst/blob/main/guides/AI_TRAINING_POLICIES.md) before uploading any real client data.
 
-2. In the chat box, select **Cowork**, **Sonnet**, and **Medium**. Cowork will enable the use of subagents. Sonnet is preferred to Opus (quickly hits limits) and Haiku (can lose focus during long workflows).
+2. In the chat box, select **Cowork**, **Sonnet**, and **Medium**. Cowork will enable the use of subagents (ignore this if the option is not available). Sonnet is preferred to Opus (quickly hits limits) and Haiku (can lose focus during long workflows).
 
 3. Download the skill zip files from https://github.com/cas-team-analyst/team-analyst/tree/main/skills-import — `reserving-analysis.zip`, `peer-review.zip`.
 
