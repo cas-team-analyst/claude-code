@@ -19,7 +19,6 @@ TeamAnalyst is a skill-and-script bundle for actuarial reserve analysis workflow
 
 The core user-facing workflow is `reserving-analysis`, supported by:
 
-- `help` for orientation and skill discovery
 - `peer-review` for reviewing a completed analysis
 - supporting/internal skills such as `python`, `excel-formulas`, and `improve-agent`
 
@@ -33,7 +32,6 @@ The selector files in `skills/reserving-analysis/agents/` are custom subagents c
 
 | File | What it controls |
 |------|------------------|
-| `skills/help/SKILL.md` | Orientation flow and top-level skill discovery. |
 | `skills/reserving-analysis/SKILL.md` | Main reserving workflow, sequencing, user interaction model, and script/template usage rules. |
 | `skills/peer-review/SKILL.md` | Peer review workflow and findings expectations. |
 | `skills/reserving-analysis/agents/*.agent.md` | Selector custom subagents. Update these when the decision framework changes. |
@@ -86,7 +84,7 @@ General rules:
 - if a skill references selector logic, prefer the canonical subagents in its local `agents/` directory rather than duplicating that logic into the skill
 - keep descriptions specific, because they are part of skill discovery
 
-The default user journey should begin with `help` or `reserving-analysis`.
+The default user journey should begin with `reserving-analysis`.
 
 ---
 

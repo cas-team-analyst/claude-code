@@ -72,7 +72,6 @@ Once installed, the tool itself will guide the user through setup, data explorat
 
 The user can also branch into supporting capabilities when needed. The bundle includes:
 
-- A help skill for orientation and onboarding
 - A peer-review skill for reviewing completed analysis output against applicable best practices and guidance from ASOPs
 
 The built-in LDF, tail factor, and ultimates decision frameworks are documented directly in the selector agent files under `skills/reserving-analysis/agents/`, which any user with repository access can read.
