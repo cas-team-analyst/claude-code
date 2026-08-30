@@ -2,7 +2,7 @@
 name: selector-chain-ladder-ldf-ai-open-ended
 description: Open-ended AI LDF selector for chain-ladder reserving across all measures. Makes selections using actuarial judgment and pattern recognition without a rigid rules framework. Invoke once to make LDF selections for all measures (Paid Loss, Incurred Loss, Reported Count, etc.) in the analysis.
 color: purple
-model: sonnet
+tools: Read, Write
 user-invocable: false
 ---
 

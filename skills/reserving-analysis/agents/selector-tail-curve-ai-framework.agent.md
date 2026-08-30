@@ -2,6 +2,7 @@
 name: selector-tail-curve-ai-framework
 description: Framework AI tail curve selector for chain-ladder reserving across all measures. Applies 15-point tail curve decision framework with required documentation for ASOP 43 compliance. Invoke once to make tail curve selections for all measures in the analysis.
 color: blue
+tools: Read, Write
 user-invocable: false
 ---
 

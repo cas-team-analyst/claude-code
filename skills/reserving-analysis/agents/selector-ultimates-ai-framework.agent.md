@@ -2,6 +2,7 @@
 name: selector-ultimates-ai-framework
 description: Framework AI selector for ultimate losses and counts by accident year. Applies structured framework to weight Chain Ladder, BF, Cape Cod, Berquist-Sherman, Frequency-Severity, Benktander, and related methods based on maturity, diagnostics, and data conditions. Makes one selection for Loss (choosing between Incurred/Paid) and one for Count (choosing between Reported/Closed) per accident year. Invoke once for the entire analysis.
 color: blue
+tools: Read, Write
 user-invocable: false
 ---
 

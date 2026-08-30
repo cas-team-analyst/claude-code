@@ -2,6 +2,7 @@
 name: selector-chain-ladder-ldf-ai-framework
 description: Framework AI LDF selector for chain-ladder reserving across all measures. Applies structured decision framework with documented criteria. Invoke once to make LDF selections for all measures (Paid Loss, Incurred Loss, Reported Count, etc.) in the analysis.
 color: blue
+tools: Read, Write
 user-invocable: false
 ---
 

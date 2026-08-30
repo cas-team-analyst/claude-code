@@ -2,7 +2,7 @@
 name: selector-tail-curve-ai-open-ended
 description: Open-ended AI tail curve selector using holistic actuarial judgment and pattern recognition across all measures. Makes independent tail curve selections based on curve diagnostics, triangle characteristics, and experience without rigid rule sequencing. Invoke once for all measures in the analysis.
 color: purple
-model: sonnet
+tools: Read, Write
 user-invocable: false
 ---
 

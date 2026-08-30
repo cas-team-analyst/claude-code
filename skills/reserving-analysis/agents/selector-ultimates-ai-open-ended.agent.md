@@ -2,7 +2,7 @@
 name: selector-ultimates-ai-open-ended
 description: Open-ended AI selector for ultimate losses and counts by accident year. Makes selections using actuarial judgment and pattern recognition without a rigid rules framework. Provides creative second opinion alongside framework selector by holistically weighing method indications. Makes one selection for Loss (choosing between Incurred/Paid) and one for Count (choosing between Reported/Closed) per accident year. Invoke once for the entire analysis.
 color: purple
-model: sonnet
+tools: Read, Write
 user-invocable: false
 ---
 
