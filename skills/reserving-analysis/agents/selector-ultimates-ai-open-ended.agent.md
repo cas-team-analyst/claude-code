@@ -18,21 +18,13 @@ The parent agent will provide you with two context file paths: one for Loss, one
 
 **Your first step:** The parent agent will pass you a list of context markdown file paths (e.g., `selections/ultimates-context-loss.md`, `selections/ultimates-context-count.md`). Read each context file. These are your primary data sources. Do not rely on `Ultimates.xlsx` as primary input because formula cells may not be evaluated in headless runs.
 
-**Prior selections:** If available, prior ultimate selections will appear in a "Prior Selections" section in the context markdown showing selected ultimates by period with measure, method, and reasoning from the previous analysis. Use this for year-over-year continuity and to understand what changed.
-
 ## Task
 
 For each category (Loss and Count):
 
 1. Read the category's context file (e.g., `selections/ultimates-context-loss.md`)
-2. Review the ultimate indications from all available methods for both measures in the category (e.g., Incurred Loss and Paid Loss for the Loss category)
-3. Consider the triangle diagnostics, maturity, exposure trends, prior selections, and a priori loss ratios
-4. **Choose ONE ultimate per accident year** - selecting the measure (Incurred vs Paid, or Reported vs Closed) and method combination that best represents the expected ultimate based on your professional judgment
-5. Write a JSON file for that category
-
-**Selection Philosophy:** For each accident year, you are choosing the SINGLE BEST ultimate estimate, not weighting across measures. Think holistically: Which measure (Incurred vs Paid, Reported vs Closed) is most credible given the data characteristics? Which methods are most credible for that measure at this maturity? How much weight should maturity play? Where do method indications converge or diverge, and what does that tell you about the underlying development pattern? What is the story across accident years — is there a trend, a structural break, or stability? How much should you anchor to prior selections versus move with the current indications?
-
-You may reference method weights and maturity considerations, but you are not bound to a fixed schedule. You may reference priors, but you may depart from them if the data warrants. Use your best actuarial judgment.
+2. Use your actuarial knowledge and judgment to make a thoughtful Ultimate selection for each accident year.
+3. Write a JSON selection file for that measure with your full reasoning
 
 ## Output Instructions
 

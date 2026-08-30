@@ -54,7 +54,7 @@ Process to complete each step:
 
 - [ ] If you haven't already found prior selections, ask the user if prior LDF selections exist from a previous analysis. If they do, ask where they are located (Excel file, CSV, database, etc.). You will need to modify `read_and_process_prior_selections()` in `1a-load-and-validate.py` to read from that source during data extraction.
 
-- [ ] Ask the user if prior tail factor selections exist from a previous analysis. If they do, ask where they are located and what tail factor was used for each measure. Create a CSV file at `selections/tail-factor-prior.csv` with columns: `measure`, `cutoff_age`, `tail_factor`, `method`, `reasoning`. This will be loaded by `2d-tail-create-excel.py` and shown in the "Prior Selection" row for reference. If no prior tail selections exist, skip this step.
+- [ ] Ask the user if prior tail curve selections exist from a previous analysis. If they do, ask where they are located and what tail factor was used for each measure. Create a CSV file at `selections/tail-factor-prior.csv` with columns: `measure`, `cutoff_age`, `tail_factor`, `method`, `reasoning`. This will be loaded by `2d-tail-create-excel.py` and shown in the "Prior Selection" row for reference. If no prior tail selections exist, skip this step.
 
 - [ ] If you haven't already found an input file with Expected Loss Rates (containing period, expected loss rate, and expected frequency), ask the user if this file exists and to place it in the raw-data folder. Without this file, we won't be able to use the Initial Expected or Bornhuetter-Ferguson methods.
 
@@ -106,7 +106,7 @@ Process to complete each step:
 
 - [ ] Run `2a-chainladder-create-excel.py` to create the LDF selection workbook and export per-measure context files. The script will print the context file paths it creates (e.g., "Exported MD: selections/chainladder-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file (call it "AI Context Example: LDF"). This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework selector once** for all measures. Call a general subagent following the spec at `selector-chain-ladder-ldf-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
@@ -155,7 +155,7 @@ _(Pause for Selections only):_
 
 - [ ] Run `2d-tail-create-excel.py` to create `selections/Chain Ladder Selections - Tail.xlsx` with curve fit results and diagnostics. If prior tail selections exist (`selections/tail-factor-prior.csv`), they will be included in a "Prior Selection" row for reference. The script will print the context file paths it creates (e.g., "  Exported MD: selections/tail-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file (call it "AI Context Example: Tail"). This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework tail selector once** for all measures. Call a general subagent following the spec at `selector-tail-curve-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
@@ -219,7 +219,7 @@ _(Pause for Selections only):_
 
 - [ ] Run `scripts/5a-ultimates-create-excel.py` to create the ultimates workbook and export category context files. The script will create two sheets: **Losses** (combining Incurred and Paid) and **Counts** (combining Reported and Closed). It will print the context file paths it creates (e.g., "  Exported MD: selections/ultimates-context-loss.md", "  Exported MD: selections/ultimates-context-count.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
+- [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file (call it "AI Context Example: Ultimates"). This way they can review while they wait for subagents to finished.
 
 - [ ] **Invoke the framework ultimates selector once** for both categories. Call a general subagent following the spec at `selector-ultimates-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file (loss and count)

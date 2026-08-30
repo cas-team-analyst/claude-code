@@ -14,6 +14,6 @@ Use the file picker to attach your Excel triangle file(s).
 How would you like to run the analysis?
 
 [Multiselect with options:
-- **Pause for Selections** — automated data prep and calculations; you review and confirm LDF and tail factor selections before projections run
+- **Pause for Selections** — automated data prep and calculations; you review and confirm LDF and tail curve selections before projections run
 - **Fully Automatic** — end-to-end execution with no pauses; AI makes all selections
 ]

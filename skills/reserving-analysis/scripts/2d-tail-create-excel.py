@@ -731,7 +731,7 @@ def export_md_data(measures, df_scenarios, df_enhanced, df_diagnostics, df_ldf_a
         print(f"  Exported MD: {md_path}")
 
 def main():
-    """Create Tail Factor Selections Excel file."""
+    """Create Tail Curve Selections Excel file."""
     output_file = SELECTIONS_OUTPUT_PATH + OUTPUT_FILE_NAME
     if Path(output_file).exists():
         raise FileExistsError(

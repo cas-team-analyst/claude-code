@@ -1,10 +1,10 @@
-# Refreshes only the tail factor selections section of the Excel workbook based on saved 
+# Refreshes only the tail curve selections section of the Excel workbook based on saved
 # selections from JSON files. Allows you to update the displayed selections without rebuilding 
 # the entire workbook, which is useful when you need to revert changes or apply selections from 
 # another source.
 
 """
-goal: Update ONLY the tail factor selections section of Chain Ladder Selections - Tail.xlsx 
+goal: Update ONLY the tail curve selections section of Chain Ladder Selections - Tail.xlsx
       from tail-factor JSON files. Re-run this script any time selections change without 
       needing to rebuild the full Excel.
 
@@ -179,7 +179,7 @@ def load_per_measure_json_files(pattern, selection_type):
 
 
 def main():
-    """Update Tail Factor Selections Excel file with selections from per-measure JSON files."""
+    """Update Tail Curve Selections Excel file with selections from per-measure JSON files."""
     # Load selections from per-measure JSON files
     selections = load_per_measure_json_files(SELECTIONS_PATTERN, "framework")
     
