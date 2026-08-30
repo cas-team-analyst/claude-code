@@ -108,14 +108,14 @@ Process to complete each step:
 
 - [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
-- [ ] **Invoke the framework selector once** for all measures. Call the `selector-chain-ladder-ldf-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [ ] **Invoke the framework selector once** for all measures. Call a general subagent following the spec at `selector-chain-ladder-ldf-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
   - Apply the selection framework to each measure independently
   - Write one JSON file per measure: `selections/chainladder-ai-framework-<measure>.json`
   
   Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
-- [ ] **Invoke the open-ended selector once** for all measures. Call the `selector-chain-ladder-ldf-ai-open-ended` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [ ] **Invoke the open-ended selector once** for all measures. Call a general subagent following the spec at `selector-chain-ladder-ldf-ai-open-ended` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
   - Apply holistic actuarial judgment (no rigid rules framework) to each measure independently
   - Write one JSON file per measure: `selections/chainladder-ai-open-ended-<measure>.json`
@@ -157,7 +157,7 @@ _(Pause for Selections only):_
 
 - [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
-- [ ] **Invoke the framework tail selector once** for all measures. Call the `selector-tail-curve-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [ ] **Invoke the framework tail selector once** for all measures. Call a general subagent following the spec at `selector-tail-curve-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
   - Apply the tail curve decision framework to each measure independently
   - Select the best curve METHOD (not tail factor) based on diagnostics
@@ -165,7 +165,7 @@ _(Pause for Selections only):_
   
   Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
-- [ ] **Invoke the open-ended tail selector once** for all measures. Call the `selector-tail-curve-ai-open-ended` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [ ] **Invoke the open-ended tail selector once** for all measures. Call a general subagent following the spec at `selector-tail-curve-ai-open-ended` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file
   - Apply holistic actuarial judgment (no rigid rules framework) to each measure independently
   - Write one JSON file per measure: `selections/tail-curve-ai-open-ended-<measure>.json`
@@ -221,7 +221,7 @@ _(Pause for Selections only):_
 
 - [ ] Before you call subagents, send the user files: selector subagent instructions, an example of a context file. This way they can review while they wait for subagents to finished.
 
-- [ ] **Invoke the framework ultimates selector once** for both categories. Call the `selector-ultimates-ai-framework` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [ ] **Invoke the framework ultimates selector once** for both categories. Call a general subagent following the spec at `selector-ultimates-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file (loss and count)
   - For each category, choose ONE ultimate per accident year (selecting between Incurred/Paid for Loss, or Reported/Closed for Count)
   - Apply the structured method weighting framework to both categories
@@ -229,7 +229,7 @@ _(Pause for Selections only):_
   
   Verify that two JSON files were created (one for Loss, one for Count). **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
 
-- [ ] **Invoke the open-ended ultimates selector once** for both categories. Call the `selector-ultimates-ai-open-ended` subagent and pass the list of context file paths you captured from the script output. The subagent will:
+- [ ] **Invoke the open-ended ultimates selector once** for both categories. Call a general subagent following the spec at `selector-ultimates-ai-open-ended` and pass the list of context file paths you captured from the script output. The subagent will:
   - Read each context file (loss and count)
   - For each category, choose ONE ultimate per accident year (selecting between Incurred/Paid for Loss, or Reported/Closed for Count)
   - Apply holistic actuarial judgment (no rigid rules framework) to both categories
