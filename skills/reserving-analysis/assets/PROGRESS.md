@@ -6,13 +6,13 @@ ALWAYS COME BACK TO PROGRESS TO MARK THE [] STEP COMPLETE BEFORE STARTING THE NE
 
 Process to complete each step:
 1. Mark status as "In Progress [yyyy-mm-dd]"
-2. Inform the user about the step. 
-3. Perform the requested action. Keep the user informed as you work.
-4. When complete
+2. Perform the requested action. Keep the user informed as you work.
+3. When complete
     - Update REPORT.md
     - Update REPLICATE.md
     - Mark the step as complete with [X]
-5. Move on to the next step.
+    - Send the user an updated PROGRESS.md file.
+4. Move on to the next step.
 
 # Step 1: Project Setup
 
@@ -20,7 +20,7 @@ Process to complete each step:
 
 - [ ] Present the project-setup-form from assets. Display the form exactly as written. Wait for the user to provide all the fields before proceeding. Do not skip fields or infer missing values.
 
-- [ ] Use bash cp to copy PROGRESS.md, REPLICATE.md, and REPORT.md from skill assets into the project folder provided in the setup form. Do NOT read them or write them. Send them to the user as a file so they can see them. Track the PROGRESS.md steps in the task list as you go.
+- [ ] Use bash cp to copy PROGRESS.md, REPLICATE.md, and REPORT.md from skill assets into the project folder provided in the setup form. Do NOT read them or write them. Send them to the user as a file so they can see them (not an asset, as this make the chat window very busy). Track the PROGRESS.md steps in the task list as you go.
 
 - [ ] Create folders `raw-data/`, `processed-data/`, `selections/`, `scripts/`, and `ultimates/` inside the project folder. The user will have selected their triangle file(s) and project folder via the file picker — use those paths to copy the triangle file(s) into `raw-data/` with bash cp. Do not ask the user to copy files manually.
 

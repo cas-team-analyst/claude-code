@@ -4,10 +4,12 @@ ALWAYS COME BACK TO THIS FILE TO MARK A [] STEP COMPLETE BEFORE STARTING THE NEX
 
 Process to complete each step:
 1. Mark status as "In Progress [yyyy-mm-dd]"
-2. Inform the user about the step.
-3. Perform the requested action. Keep the user informed as you work.
-4. When complete, mark the step as complete with [X].
-5. Move on to the next step.
+2. Perform the requested action. Keep the user informed as you work.
+3. When complete
+    - Mark the step as complete with [X]
+    - Send the user an updated PROGRESS.md file.
+4. Move on to the next step.
+
 
 # Step 1: Setup and Readiness Check
 
