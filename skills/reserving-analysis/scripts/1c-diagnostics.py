@@ -256,10 +256,17 @@ if __name__ == "__main__":  # pragma: no cover
         sample = diagnostics_df.head(10)
     print(sample)
     
-    # Round all numeric columns to 4 decimal places
+    # Round all numeric columns to 4 decimal places, except rate/ratio columns
+    # (e.g. reported_frequency), which can be far smaller than 0.0001 and would
+    # otherwise round to 0 and misrepresent claim frequency in context files.
+    RATE_COLS = {
+        'incurred_loss_rate', 'paid_loss_rate', 'reported_frequency', 'closed_frequency',
+        'paid_to_incurred', 'claim_closure_rate', 'incremental_closure_rate',
+    }
     numeric_cols = diagnostics_df.select_dtypes(include=[np.number]).columns
     for col in numeric_cols:
-        diagnostics_df[col] = diagnostics_df[col].round(4)
+        if col not in RATE_COLS:
+            diagnostics_df[col] = diagnostics_df[col].round(4)
     
     # Save outputs
     diagnostics_df.to_csv(OUTPUT_PATH + f"3_diagnostics.csv", index=False)

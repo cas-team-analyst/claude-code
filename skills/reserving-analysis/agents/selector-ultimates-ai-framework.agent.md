@@ -16,7 +16,7 @@ You are an expert P&C actuarial analyst selecting ultimate losses and counts by 
 
 The parent agent will provide you with two context file paths: one for Loss, one for Count.
 
-**Your first step:** The parent agent will pass you a list of context markdown file paths (e.g., `selections/ultimates-context-loss.md`, `selections/ultimates-context-count.md`). Read each context file. These are your primary data sources. Do not rely on `Ultimates.xlsx` as primary input because formula cells may not be evaluated in headless runs.
+**Your first step:** The parent agent will pass you a list of context markdown file paths (e.g., `selections/ultimates-context-loss.md`, `selections/ultimates-context-count.md`). These are your primary data sources. Do not rely on `Ultimates.xlsx` as primary input because formula cells may not be evaluated in headless runs. **Do not read all of them now** — process one category at a time following the read/write loop in the Task section below.
 
 ## Task
 

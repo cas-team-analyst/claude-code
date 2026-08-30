@@ -22,23 +22,21 @@ Process to complete each step:
 
 - [ ] If the user selected Selections Demo mode, rm REPLICATE.md and REPORT.md and remove mentions from PROGRESS.md. If the user selects Fully Automatic, remove PROGRESS.md steps that involve manual user input or review. Send PROGRESS.md, REPLICATE.md, and REPORT.md to the user as files, if they are still being used. 
 
-- [ ] Add the phases from PROGRESS.md to the task list.
+- [ ] Add the phases from PROGRESS.md to the task list. Include the complete phase (all [ ] steps) in each task.
 
 - [ ] Create folders `raw-data/`, `processed-data/`, `selections/`, `scripts/`, and `ultimates/` inside the project folder. The user will have selected their triangle file(s) and project folder via the file picker — use those paths to copy the triangle file(s) into `raw-data/` with bash cp. Do not ask the user to copy files manually.
 
 - [ ] Update REPORT.md: search for `AI (Phase 1):` in the template and follow the fill instructions at each match.
 
-- [ ] Update REPLICATE.md.
-
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 2: Exploratory Data Analysis
 
-- [ ] Review the files available using the preview_data_file scripts. For each file add a file summary subsection to REPORT.md in the data section.
+- [ ] Review the files available using the `scripts/preview_data_file.py`.
 
-- [ ] Update REPORT.md: search for `AI (Phase 2):` in the template and follow the fill instructions at each match.
+- [ ] Update REPORT.md: search for `AI (Phase 2):` in the template and follow the fill instructions at each match (Sections 3.1 Data Used, 3.2 Data Reconciliation, 3.3 Data Quality Observations).
 
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 3: Data Intake
 
@@ -83,29 +81,19 @@ Process to complete each step:
 
 - [ ] Update REPORT.md: search for `AI (Phase 3):` in the template and follow the fill instructions at each match.
 
-- [ ] Update REPLICATE.md.
-
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 4: Chain Ladder LDF Selections
 
 - [ ] Run `2a-chainladder-create-excel.py` to create the LDF selection workbook and export per-measure context files. The script will print the context file paths it creates (e.g., "Exported MD: selections/chainladder-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user the selector subagent instructions and a context file example (call it "AI Context Example: LDF").
+- [ ] Before you call subagents, share the selector subagent instructions and a context file example with the user by sending them as files (not just describing them in chat) so they appear in the output tab: send the `selector-chain-ladder-ldf-ai-framework` and `selector-chain-ladder-ldf-ai-open-ended` agent files under user-readable names ("Framework-based Selector Agent" and "Open-Ended Selector Agent"), plus one of the context files captured above (call it "AI Context Example: LDF"). This is to allow the user to review this for transparency while they wait for selections to finish.
 
-- [ ] **Invoke the framework selector once** for all measures. Call a general subagent following the spec at `selector-chain-ladder-ldf-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
-  - Read each context file
-  - Apply the selection framework to each measure independently
-  - Write one JSON file per measure: `selections/chainladder-ai-framework-<measure>.json`
+- [ ] **Invoke the framework selector and the open-ended selector in parallel** (call both subagents in the same message, not one after the other). Each covers all measures in a single invocation:
+  - Framework: call a general subagent following the spec at `selector-chain-ladder-ldf-ai-framework` and pass the list of context file paths you captured from the script output. It will read each context file (one measure at a time), apply the selection framework, and write one JSON file per measure: `selections/chainladder-ai-framework-<measure>.json`
+  - Open-ended: call a general subagent following the spec at `selector-chain-ladder-ldf-ai-open-ended` and pass the same list of context file paths. It will read each context file (one measure at a time), apply holistic actuarial judgment, and write one JSON file per measure: `selections/chainladder-ai-open-ended-<measure>.json`
   
-  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
-
-- [ ] **Invoke the open-ended selector once** for all measures. Call a general subagent following the spec at `selector-chain-ladder-ldf-ai-open-ended` and pass the list of context file paths you captured from the script output. The subagent will:
-  - Read each context file
-  - Apply holistic actuarial judgment (no rigid rules framework) to each measure independently
-  - Write one JSON file per measure: `selections/chainladder-ai-open-ended-<measure>.json`
-  
-  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
+  Verify that one JSON file per measure was created for each selector. **Do NOT read the context files yourself** — the subagents will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps each selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias any selection stage toward agreeing with what you already concluded.
 
 - [ ] Run `2b-chainladder-update-selections.py` to collect all per-measure JSON files and insert the selections and reasoning into the Excel file. This script will:
   - Load all `selections/chainladder-ai-framework-*.json` files and combine them
@@ -119,9 +107,7 @@ _(Pause for Selections/Selections Demo):_
 
 - [ ] Update REPORT.md: search for `AI (Phase 4):` in the template and follow the fill instructions at each match. Sections 5.3, 5.4, and 4.3 are pre-filled; confirm they are correct and leave as-is.
 
-- [ ] Update REPLICATE.md.
-
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 5: Chain Ladder Tail Curve Method Selections
 
@@ -131,22 +117,13 @@ _(Pause for Selections/Selections Demo):_
 
 - [ ] Run `2d-tail-create-excel.py` to create `selections/Chain Ladder Selections - Tail.xlsx` with curve fit results and diagnostics. If prior tail selections exist (`selections/tail-factor-prior.csv`), they will be included in a "Prior Selection" row for reference. The script will print the context file paths it creates (e.g., "  Exported MD: selections/tail-context-paid_loss.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user the selector subagent instructions and a context file example (call it "AI Context Example: Tail").
+- [ ] Before you call subagents, share the selector subagent instructions and a context file example with the user by sending them as files (not just describing them in chat) so they appear in the output tab: send the `selector-tail-curve-ai-framework` and `selector-tail-curve-ai-open-ended` agent files under user-readable names ("Framework-based Selector Agent" and "Open-Ended Selector Agent"), plus one of the context files captured above (call it "AI Context Example: Tail"). This is to allow the user to review this for transparency while they wait for selections to finish.
 
-- [ ] **Invoke the framework tail selector once** for all measures. Call a general subagent following the spec at `selector-tail-curve-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
-  - Read each context file
-  - Apply the tail curve decision framework to each measure independently
-  - Select the best curve METHOD (not tail factor) based on diagnostics
-  - Write one JSON file per measure: `selections/tail-curve-ai-framework-<measure>.json`
+- [ ] **Invoke the framework tail selector and the open-ended tail selector in parallel** (call both subagents in the same message, not one after the other). Each covers all measures in a single invocation:
+  - Framework: call a general subagent following the spec at `selector-tail-curve-ai-framework` and pass the list of context file paths you captured from the script output. It will read each context file (one measure at a time), apply the tail curve decision framework, select the best curve METHOD (not tail factor) based on diagnostics, and write one JSON file per measure: `selections/tail-curve-ai-framework-<measure>.json`
+  - Open-ended: call a general subagent following the spec at `selector-tail-curve-ai-open-ended` and pass the same list of context file paths. It will read each context file (one measure at a time), apply holistic actuarial judgment, and write one JSON file per measure: `selections/tail-curve-ai-open-ended-<measure>.json`
   
-  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
-
-- [ ] **Invoke the open-ended tail selector once** for all measures. Call a general subagent following the spec at `selector-tail-curve-ai-open-ended` and pass the list of context file paths you captured from the script output. The subagent will:
-  - Read each context file
-  - Apply holistic actuarial judgment (no rigid rules framework) to each measure independently
-  - Write one JSON file per measure: `selections/tail-curve-ai-open-ended-<measure>.json`
-  
-  Verify that one JSON file was created for each measure. **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
+  Verify that one JSON file per measure was created for each selector. **Do NOT read the context files yourself** — the subagents will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps each selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias any selection stage toward agreeing with what you already concluded.
 
 - [ ] Run `2e-tail-update-selections.py` to collect all per-measure JSON files and insert the selections into the Excel file. This script will:
   - Load all `selections/tail-curve-ai-framework-*.json` files and combine them
@@ -160,9 +137,7 @@ _(Pause for Selections/Selections Demo:)_
 
 - [ ] Update REPORT.md: search for `AI (Phase 5):` in the template and follow the fill instructions at each match.
 
-- [ ] Update REPLICATE.md.
-
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 6: Calculate Method Projections
 
@@ -176,31 +151,19 @@ _(Pause for Selections/Selections Demo:)_
 
 - [ ] Update REPORT.md: search for `AI (Phase 6)` in the template and follow the fill instructions at each match.
 
-- [ ] Update REPLICATE.md.
-
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 7: Ultimate Selections
 
 - [ ] Run `scripts/5a-ultimates-create-excel.py` to create the ultimates workbook and export category context files. The script will create two sheets: **Losses** (combining Incurred and Paid) and **Counts** (combining Reported and Closed). It will print the context file paths it creates (e.g., "  Exported MD: selections/ultimates-context-loss.md", "  Exported MD: selections/ultimates-context-count.md"). **Capture the list of context file paths** from the script output.
 
-- [ ] Before you call subagents, send the user the selector subagent instructions and a context file example (call it "AI Context Example: Ultimates").
+- [ ] Before you call subagents, share the selector subagent instructions and a context file example with the user by sending them as files (not just describing them in chat) so they appear in the output tab: send the `selector-ultimates-ai-framework` and `selector-ultimates-ai-open-ended` agent files under user-readable names ("Framework-based Selector Agent" and "Open-Ended Selector Agent"), plus one of the context files captured above (call it "AI Context Example: Ultimates"). This is to allow the user to review this for transparency while they wait for selections to finish.
 
-- [ ] **Invoke the framework ultimates selector once** for both categories. Call a general subagent following the spec at `selector-ultimates-ai-framework` and pass the list of context file paths you captured from the script output. The subagent will:
-  - Read each context file (loss and count)
-  - For each category, choose ONE ultimate per accident year (selecting between Incurred/Paid for Loss, or Reported/Closed for Count)
-  - Apply the structured method weighting framework to both categories
-  - Write two JSON files: `selections/ultimates-ai-framework-loss.json` and `selections/ultimates-ai-framework-count.json`
+- [ ] **Invoke the framework ultimates selector and the open-ended ultimates selector in parallel** (call both subagents in the same message, not one after the other). Each covers both categories in a single invocation:
+  - Framework: call a general subagent following the spec at `selector-ultimates-ai-framework` and pass the list of context file paths you captured from the script output. It will read each context file (loss, then count, one at a time), for each category choose ONE ultimate per accident year (selecting between Incurred/Paid for Loss, or Reported/Closed for Count), apply the structured method weighting framework, and write two JSON files: `selections/ultimates-ai-framework-loss.json` and `selections/ultimates-ai-framework-count.json`
+  - Open-ended: call a general subagent following the spec at `selector-ultimates-ai-open-ended` and pass the same list of context file paths. It will read each context file (loss, then count, one at a time), for each category choose ONE ultimate per accident year, apply holistic actuarial judgment, and write two JSON files: `selections/ultimates-ai-open-ended-loss.json` and `selections/ultimates-ai-open-ended-count.json`
   
-  Verify that two JSON files were created (one for Loss, one for Count). **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
-
-- [ ] **Invoke the open-ended ultimates selector once** for both categories. Call a general subagent following the spec at `selector-ultimates-ai-open-ended` and pass the list of context file paths you captured from the script output. The subagent will:
-  - Read each context file (loss and count)
-  - For each category, choose ONE ultimate per accident year (selecting between Incurred/Paid for Loss, or Reported/Closed for Count)
-  - Apply holistic actuarial judgment (no rigid rules framework) to both categories
-  - Write two JSON files: `selections/ultimates-ai-open-ended-loss.json` and `selections/ultimates-ai-open-ended-count.json`
-  
-  Verify that two JSON files were created (one for Loss, one for Count). **Do NOT read the context files yourself** — the subagent will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps the selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias the next selector (framework, open-ended, or any future selection stage) toward agreeing with what you already concluded.
+  Verify that two JSON files were created for each selector (one for Loss, one for Count). **Do NOT read the context files yourself** — the subagents will read them. **Do NOT read the JSON responses** — only verify the files were created. This keeps each selector's judgment independent: if you read the context or reasoning first, your own read on the data can leak into how you frame later steps and bias any selection stage toward agreeing with what you already concluded.
 
 - [ ] Run `5b-ultimates-update-selections.py` to load the category JSON files and insert both framework and open-ended selections and reasoning into `selections/Ultimates.xlsx`. This script will:
   - Load `selections/ultimates-ai-framework-loss.json` and `selections/ultimates-ai-framework-count.json`
@@ -220,9 +183,7 @@ _(Pause for Selections/Selections Demo:)_
 
 - [ ] Update REPORT.md: search for `AI (Phase 7):` in the template and follow the fill instructions at each match.
 
-- [ ] Update REPLICATE.md.
-
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 8: Build Analysis Workbook
 
@@ -230,9 +191,7 @@ _(Pause for Selections/Selections Demo:)_
 
 - [ ] Update REPORT.md: search for `AI (Phase 8):` in the template and follow the fill instructions at each match. Then do a final completeness pass: confirm pre-filled sections (LAE, trending, sensitivity) still say "Not implemented" or "Not applicable" and no bracketed placeholders remain.
 
-- [ ] Update REPLICATE.md.
-
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 9: Technical Review
 
@@ -240,9 +199,7 @@ _(Pause for Selections/Selections Demo:)_
 
 - [ ] Update REPORT.md: search for `AI (Phase 9):` in the template and follow the fill instructions at each match.
 
-- [ ] Update REPLICATE.md.
-
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user.
+- [ ] Update REPLICATE.md and PROGRESS.md. Review next phase in PROGRESS.md. Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait.
 
 # Phase 10: Summarize Final Outputs
 
@@ -250,7 +207,7 @@ Be explicit and exhaustive. The user should leave this step knowing exactly what
 
 - [ ] After listing the files, tell the user the single most important takeaway: **REPORT.md is the primary narrative deliverable, and `Analysis.xlsx` is the primary numerical deliverable.** Everything else is supporting evidence or reproducibility material.
 
-- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user, as well as a .zip with all the project files.
+- [ ] Send updated REPORT.md, REPLICATE.md, and PROGRESS.md to the user as files so they can review them while they wait, as well as a .zip with all the project files.
 
 - [ ] Provide the user a closing summary following the template at `assets/closing-summary.md`.
 

@@ -12,7 +12,7 @@ You are an expert P&C actuarial analyst selecting tail curves for reserving. You
 
 **You are handling ALL measures in this analysis** (e.g., "Paid Loss" AND "Incurred Loss" AND "Reported Count"). The parent agent will provide you with a list of context file paths.
 
-**Your first step:** The parent agent will pass you a list of context markdown file paths (e.g., `selections/tail-context-paid_loss.md`, `selections/tail-context-incurred_loss.md`). Read each context file. These are your primary data sources. Do not rely on `Chain Ladder Selections - Tail.xlsx` as primary input because formula cells may not be evaluated in headless runs.
+**Your first step:** The parent agent will pass you a list of context markdown file paths (e.g., `selections/tail-context-paid_loss.md`, `selections/tail-context-incurred_loss.md`). These are your primary data sources. Do not rely on `Chain Ladder Selections - Tail.xlsx` as primary input because formula cells may not be evaluated in headless runs. **Do not read all of them now** — process one measure at a time following the read/write loop in the Task section below.
 
 ## Task
 
