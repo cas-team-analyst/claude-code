@@ -155,7 +155,7 @@ For readers who want to understand how TeamAnalyst works under the hood, the fol
 
 - [Python Scripts](https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data/sample-run/scripts) — Complete set of Python scripts generated during a workflow run. Shows how the workflow combines reusable script templates with dynamically generated analysis code. Includes data preparation, method calculations, Excel workbook generation, and technical review scripts.
 
-- [Peer Review Agent Skill](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/peer-review/SKILL.md) — Guardrails and context for conducting peer reviews. Defines advisory-only principles, ASOP grounding, and materiality-first review approach. The actual review output is captured in PEER_REVIEW.md.
+- [Peer Review Agent Skill](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/peer-review/SKILL.md) — Guardrails and context for conducting peer reviews. Defines advisory-only principles, ASOP grounding, and materiality-first review approach. The actual review output is captured in PEER_REVIEW_REPORT.md.
 
 **Selection Logic Frameworks**
 
@@ -177,6 +177,6 @@ The sample-run folder contains a complete example of what TeamAnalyst produces f
 
 - [Replication Instructions](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/REPLICATE.md) — Complete reproducibility log documenting all input files, scripts run, customizations made, and manual selections applied. Enables a reviewer to reproduce the analysis results without AI assistance by following the documented steps exactly.
 
-- [Peer Review Output](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/PEER_REVIEW.md) — The structured peer review evaluation of the completed analysis, showing how the tool identifies strengths, weaknesses, and areas requiring additional attention.
+- [Peer Review Output](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/PEER_REVIEW_REPORT.md) — The structured peer review evaluation of the completed analysis, showing how the tool identifies strengths, weaknesses, and areas requiring additional attention.
 
 These files provide the clearest view into how TeamAnalyst works in practice and how the balance between deterministic processing and AI assistance is achieved.

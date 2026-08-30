@@ -2,9 +2,8 @@
 name: reserving-analysis
 description: Actuarial reserving analysis workflow. Use when the user requests reserving. Do NOT use for peer review (separate skill exists).
 ---
-# Reserving Analysis Workflow
 
-## Startup Steps
+# Startup Steps
 
 **Follow Every Time BEFORE reading PROGRESS.md**
 
@@ -19,7 +18,7 @@ description: Actuarial reserving analysis workflow. Use when the user requests r
 
 5. Begin the next incomplete step in PROGRESS.md.
 
-## Cowork Agent Guidelines
+# Cowork Agent Guidelines
 
 Applies only when running as a Cowork agent (see Startup Steps).
 
@@ -30,12 +29,3 @@ Applies only when running as a Cowork agent (see Startup Steps).
 - Cache out of date? Suggest close/reopen Cowork.
 
 - Never use unicode symbols in commands.
-
-
-## Supporting Files
-
-**Skill folder structure:**
-
-- `assets/` - Templates (PROGRESS.md, REPORT.md, REPLICATE.md, welcome message, etc.).
-- `scripts/` - Numbered Python workflow scripts and modules/ subdirectory with shared utilities.
-- `agents/` - Selector subagents for LDF, tail curve, and ultimate selections, each with framework and open-ended variants.

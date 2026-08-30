@@ -323,7 +323,7 @@ _(Pause for Selections only):_
 
 Be explicit and exhaustive. The user should leave this step knowing exactly what was produced, where it lives, and what each file is for. Present the list below (adapted to what actually ran in this analysis — skip items that did not run, e.g., BF if it was skipped).
 
-- [ ] Tell the user the analysis is complete and list every output file produced, grouped by folder. For each file, give the path and a one-line description of what it contains and who it is for. See closing-summary.md from assets.
+- [ ] Provide the user a closing summary following the template at `assets/closing-summary.md` and send the files as a .zip file.
 
 - [ ] After listing the files, tell the user the single most important takeaway: **REPORT.md is the primary narrative deliverable, and `Complete Analysis.xlsx` is the primary numerical deliverable.** Everything else is supporting evidence or reproducibility material.
 
