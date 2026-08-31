@@ -1,29 +1,24 @@
-
 # Notes for Developers Working on Skills
 
-## Testing strategy
+_This is a working document. It is slim now but will be expanded by the community as we identify new helpful content._
 
-You can use a branch to run a test and then easily switch back to the baseline repo.
+## General Notes
 
-```bash
-git branch -D test
-git checkout -B test
-claude
-```
+Much of the information you need will be in `README.md`. This document gives a few more tips for technically-minded developers who would like to work with this code.
 
-Then make notes in a notepad for things you want to change. 
+- Skill files are saved at `skills/` within the project directory.
 
-When done testing
-```bash
-git checkout main
-```
+- Agent skills for working with this codebase (not specifically related to reserving) are provided at `.agents/skills/` and `.claude/skills/`.
 
-And then make and commit your baseline to the baseline tool state. 
+- After modifying a skill, run `python plugins/create_plugin_zip_cowork.py; python skills-import/create_skills_zips.py` to rebuild the packaged artifacts.
 
-## Guidelines
+- Follow best practices from [Anthropic's Guide to Skills for Claude Code](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf?hsLang=en)
 
-- If something unexpected is happening, first check to make sure the skill isn't making it happen. Avoid creating new instructions that override prior instructions, which can happen easily if the skill is complex. 
 
-## Helpful Links
+## Troubleshooting
 
-- [Anthropic's Guide to Skills for Claude Code](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf?hsLang=en)
+- If something unexpected is happening, you may have some sneaky instructions that go against what you actually want the agent to do. Review the instructions for something that might be causing the issue. Ask the agent "did you receive instructions to do ..." and it can help you give it better instructions for next time. Continue tuning instructions until you get the desired behavior. 
+
+- Turn off memory (different agents have different settings for this) to prevent prior sessions from impacting new interactions.
+
+
