@@ -1,0 +1,122 @@
+[
+  {
+    "period": 2001,
+    "selection": 701,
+    "reasoning": "Selected 701 = Reported Count CL (=BF=actual; cdf=1.0 at 287 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 701) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2001) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2002,
+    "selection": 652,
+    "reasoning": "Selected 652 = Reported Count CL (=BF=actual; cdf=1.0 at 275 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 683) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2002) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2003,
+    "selection": 552,
+    "reasoning": "Selected 552 = Reported Count CL (=BF=actual; cdf=1.0 at 263 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 648) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2003) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2004,
+    "selection": 643,
+    "reasoning": "Selected 643 = Reported Count CL (=BF=actual; cdf=1.0 at 251 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 628) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2004) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2005,
+    "selection": 641,
+    "reasoning": "Selected 641 = Reported Count CL (=BF=actual; cdf=1.0 at 239 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 624) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2005) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2006,
+    "selection": 497,
+    "reasoning": "Selected 497 = Reported Count CL (=BF=actual; cdf=1.0 at 227 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 607) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2006) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2007,
+    "selection": 476,
+    "reasoning": "Selected 476 = Reported Count CL (=BF=actual; cdf=1.0 at 215 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 550) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2007) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2008,
+    "selection": 329,
+    "reasoning": "Selected 329 = Reported Count CL (=BF=actual; cdf=1.0 at 203 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 444) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2008) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2009,
+    "selection": 322,
+    "reasoning": "Selected 322 = Reported Count CL (=BF=actual; cdf=1.0 at 191 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 384) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2009) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2010,
+    "selection": 272,
+    "reasoning": "Selected 272 = Reported Count CL (=BF=actual; cdf=1.0 at 179 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 314) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2010) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2011,
+    "selection": 346,
+    "reasoning": "Selected 346 = Reported Count CL (=BF=actual; cdf=1.0 at 167 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 319) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2011) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2012,
+    "selection": 261,
+    "reasoning": "Selected 261 = Reported Count CL (=BF=actual; cdf=1.0 at 155 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 299) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2012) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2013,
+    "selection": 292,
+    "reasoning": "Selected 292 = Reported Count CL (=BF=actual; cdf=1.0 at 143 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 306) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2013) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2014,
+    "selection": 455,
+    "reasoning": "Selected 455 = Reported Count CL (=BF=actual; cdf=1.0 at 131 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 341) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2014) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2015,
+    "selection": 334,
+    "reasoning": "Selected 334 = Reported Count CL (=BF=actual; cdf=1.0 at 119 months, fully credible/fully reported). Claim-count reporting for WC closes out much faster than dollar development \u2014 reported counts reach ultimate well ahead of losses, so full credibility at this maturity is expected and CL is the clear choice. IE (a-priori, 367) is not needed given full CL credibility and is excluded; where it diverges (e.g. 2015) that reflects the a-priori's use of a multi-year rolling average rather than any deficiency in the CL indication. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2016,
+    "selection": 390,
+    "reasoning": "Selected 390 = Reported Count CL (= BF; cdf=0.9977, i.e. essentially fully reported, pct_developed>100% \u2014 the tiny sub-1.0 CDF is normal noise in the reported-count tail curve, not a credibility concern). Reported counts for WC are near-fully credible within roughly two years of the accident year, well ahead of loss dollar development, so CL is retained as primary even at this comparatively short maturity for a long-tail line. IE (a-priori, 402) is shown for reference but not used \u2014 it is a multi-year rolling average and is less precise than the near-fully-developed CL indication at this age. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2017,
+    "selection": 309,
+    "reasoning": "Selected 309 = Reported Count CL (= BF; cdf=0.9977, i.e. essentially fully reported, pct_developed>100% \u2014 the tiny sub-1.0 CDF is normal noise in the reported-count tail curve, not a credibility concern). Reported counts for WC are near-fully credible within roughly two years of the accident year, well ahead of loss dollar development, so CL is retained as primary even at this comparatively short maturity for a long-tail line. IE (a-priori, 352) is shown for reference but not used \u2014 it is a multi-year rolling average and is less precise than the near-fully-developed CL indication at this age. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2018,
+    "selection": 325,
+    "reasoning": "Selected 325 = Reported Count CL (= BF; cdf=0.997, i.e. essentially fully reported, pct_developed>100% \u2014 the tiny sub-1.0 CDF is normal noise in the reported-count tail curve, not a credibility concern). Reported counts for WC are near-fully credible within roughly two years of the accident year, well ahead of loss dollar development, so CL is retained as primary even at this comparatively short maturity for a long-tail line. IE (a-priori, 350) is shown for reference but not used \u2014 it is a multi-year rolling average and is less precise than the near-fully-developed CL indication at this age. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2019,
+    "selection": 357,
+    "reasoning": "Selected 357 = Reported Count CL (= BF; cdf=0.997, i.e. essentially fully reported, pct_developed>100% \u2014 the tiny sub-1.0 CDF is normal noise in the reported-count tail curve, not a credibility concern). Reported counts for WC are near-fully credible within roughly two years of the accident year, well ahead of loss dollar development, so CL is retained as primary even at this comparatively short maturity for a long-tail line. IE (a-priori, 338) is shown for reference but not used \u2014 it is a multi-year rolling average and is less precise than the near-fully-developed CL indication at this age. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2020,
+    "selection": 369,
+    "reasoning": "Selected 369 = Reported Count CL (= BF; cdf=0.9962, i.e. essentially fully reported, pct_developed>100% \u2014 the tiny sub-1.0 CDF is normal noise in the reported-count tail curve, not a credibility concern). Reported counts for WC are near-fully credible within roughly two years of the accident year, well ahead of loss dollar development, so CL is retained as primary even at this comparatively short maturity for a long-tail line. IE (a-priori, 358) is shown for reference but not used \u2014 it is a multi-year rolling average and is less precise than the near-fully-developed CL indication at this age. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2021,
+    "selection": 329,
+    "reasoning": "Selected 329 = Reported Count CL (= BF; cdf=0.9962, i.e. essentially fully reported, pct_developed>100% \u2014 the tiny sub-1.0 CDF is normal noise in the reported-count tail curve, not a credibility concern). Reported counts for WC are near-fully credible within roughly two years of the accident year, well ahead of loss dollar development, so CL is retained as primary even at this comparatively short maturity for a long-tail line. IE (a-priori, 360) is shown for reference but not used \u2014 it is a multi-year rolling average and is less precise than the near-fully-developed CL indication at this age. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2022,
+    "selection": 297,
+    "reasoning": "Selected 297 = Reported Count CL (= BF; cdf=0.997, i.e. essentially fully reported, pct_developed>100% \u2014 the tiny sub-1.0 CDF is normal noise in the reported-count tail curve, not a credibility concern). Reported counts for WC are near-fully credible within roughly two years of the accident year, well ahead of loss dollar development, so CL is retained as primary even at this comparatively short maturity for a long-tail line. IE (a-priori, 340) is shown for reference but not used \u2014 it is a multi-year rolling average and is less precise than the near-fully-developed CL indication at this age. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2023,
+    "selection": 304,
+    "reasoning": "Selected 304 = Reported Count CL (= BF; cdf=0.997, i.e. essentially fully reported, pct_developed>100% \u2014 the tiny sub-1.0 CDF is normal noise in the reported-count tail curve, not a credibility concern). Reported counts for WC are near-fully credible within roughly two years of the accident year, well ahead of loss dollar development, so CL is retained as primary even at this comparatively short maturity for a long-tail line. IE (a-priori, 317) is shown for reference but not used \u2014 it is a multi-year rolling average and is less precise than the near-fully-developed CL indication at this age. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  },
+  {
+    "period": 2024,
+    "selection": 286,
+    "reasoning": "Selected 286 = weighted blend of Reported Count CL (285), BF (286), and IE (292) at 11 months, all of which converge within roughly 2.4% of each other (approaching the Sec 3.1 full-convergence threshold). Unlike the loss triangle, reported counts are already 89.7% developed at this very early maturity (cdf=1.1146), reflecting that WC claims are typically opened/reported quickly even though dollar development (case reserve growth, payment) continues for years \u2014 so CL already carries meaningful weight here, unlike the loss selection at the same age. BF (286) is selected as the point estimate, splitting the small gap between CL (285, pure development) and the a-priori-informed view (IE=292), consistent with the Very-Green-band preference for BF over raw CL. Cross-check: implied ultimate severity (selected Loss ultimate 1,282,354 / 286 claims = $4,484/claim) is in line with several other AYs (e.g. 2001: $4,513/claim), supporting internal consistency between the Loss and Count selections for this AY. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. Note: only Reported Count is available in this workflow (no Closed Count triangle), so the Count selection draws from Reported-Count CL/BF/IE indications only, per the task instructions."
+  }
+]

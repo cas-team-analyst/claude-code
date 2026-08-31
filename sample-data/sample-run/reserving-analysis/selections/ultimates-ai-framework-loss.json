@@ -1,0 +1,122 @@
+[
+  {
+    "period": 2001,
+    "selection": 3163774,
+    "reasoning": "Selected 3,163,774. Tail maturity (287mo, cdf=1.0 for both Incurred and Paid). Incurred actual (3,163,774) selected over Paid actual (3,042,295) because the 121,479 gap is open case reserve not yet disbursed (matches paid ultimate_ie IBNR of 121,479); for WC, incurred is the more complete claims-basis measure once development is exhausted, and paid alone would understate the still-open case reserve. CL/BF/IE all collapse to the same value at cdf=1.0 (full convergence). Tail curve choice (fitted per REPORT.md Sec 5.1) has negligible impact here since cdf=1.0 leaves no residual tail. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy (ultimate/payroll) = 1.00%, high end of the observed range but plausible for this AY given elevated severity years cluster in the early cohort. No prior-year selection to compare unpaid-to-benchmark against; case reserves (121,479) look reasonable relative to ultimate."
+  },
+  {
+    "period": 2002,
+    "selection": 2327734,
+    "reasoning": "Selected 2,327,734 = Incurred CL/BF (cdf=1.0, fully credible, IBNR=0). Incurred and Paid actuals differ only modestly (128,088), consistent with a small remaining open case reserve; Incurred is preferred at full maturity for WC. IE (2,904,344) is a stale a priori this far out and is disqualified (Late/Tail band: BF prior no longer informative) \u2014 excluded from consideration, not blended. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.72%. Case adequacy diagnostics not separately available for this AY, but the tight actual convergence between Incurred and Paid supports the selection."
+  },
+  {
+    "period": 2003,
+    "selection": 1778092,
+    "reasoning": "Selected 1,778,092. Incurred and Paid actuals are identical at this maturity (263mo, both cdf=1.0), so the selection is unambiguous \u2014 full convergence across all available methods (CL=BF=actual; IE of 2,633,272 is a stale a priori and disqualified at Tail maturity). No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.54%. No open case reserve remains (Incurred = Paid), consistent with a fully run-off AY."
+  },
+  {
+    "period": 2004,
+    "selection": 1142321,
+    "reasoning": "Selected 1,142,321, the 50/50 blend of Incurred CL (1,141,699) and Paid CL (1,142,943), which converge within 0.1% (full convergence, Sec 3.1) \u2014 midpoint selected. IE (1,678,711) is excluded as a stale a priori at Tail maturity (251mo); BF is zero-weighted per the long-tail-shifted Tail band (BF no longer informative this far out). No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.34%, a low point relative to neighboring years but plausible AY-to-AY volatility for a moderate-size WC book with lumpy large-loss incidence (see AY2007 for contrast). Tail curve sensitivity is minimal since cdf is already near 1.0 (1.017/1.018)."
+  },
+  {
+    "period": 2005,
+    "selection": 2291776,
+    "reasoning": "Selected 2,291,776, 50/50 blend of Incurred CL (2,289,387) and Paid CL (2,294,164), converged within 0.2%. IE (1,712,285, negative implied IBNR on the incurred side) is a stale/unreliable a priori and excluded; BF zero-weighted at Tail maturity per the WC-shifted schedule. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.67%, elevated versus 2004/2006 neighbors \u2014 plausible given AY-level claim severity volatility (WC large claims are lumpy in a book this size); flagged as consistent with observed pattern rather than a data issue. Tail factor impact minor given cdf\u22481.02."
+  },
+  {
+    "period": 2006,
+    "selection": 1531602,
+    "reasoning": "Selected 1,531,602, 50/50 blend of Incurred CL (1,563,402) and Paid CL (1,499,801); the two differ by 4.2%, within the moderate-dispersion band, so an even blend is used rather than leaning on either. IE (1,746,531) is stale/unreliable this far out and excluded; BF zero-weighted at Tail maturity (WC-shifted schedule). No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.44%. No specific case-adequacy or closure-rate diagnostic available to break the tie, so the even blend is the defensible default per Sec 1.2."
+  },
+  {
+    "period": 2007,
+    "selection": 4946514,
+    "reasoning": "Selected 4,946,514, 50/50 blend of Incurred CL (4,955,846) and Paid CL (4,937,182), converged within 0.4%. This AY is a clear outlier versus neighboring years (actual incurred 4,810,775 vs ~$1.1-2.2M for AY2004-2006/2008-2009) \u2014 consistent with a large claim or claims incurred in this accident year rather than a data or method issue, since both Paid and Incurred agree closely at this maturity. IE (2,850,338) is stale/unreliable and excluded; BF zero-weighted at Tail maturity. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 1.39%, the highest in the loss triangle \u2014 flagged as an AY with elevated large-loss activity, explainable by claim-level severity rather than a systemic trend (surrounding years do not show a comparable step)."
+  },
+  {
+    "period": 2008,
+    "selection": 1423198,
+    "reasoning": "Selected 1,423,198, 50/50 blend of Incurred CL (1,422,835) and Paid CL (1,423,560), converged within 0.05% \u2014 near-perfect agreement. IE (2,543,927) stale/excluded; BF zero-weighted at Tail maturity. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.39%, back in line with the 2004/2006/2009-2010 range, consistent with 2007 being an isolated large-loss AY rather than a step-change in the book."
+  },
+  {
+    "period": 2009,
+    "selection": 1219101,
+    "reasoning": "Selected 1,219,101, 50/50 blend of Incurred CL (1,216,435) and Paid CL (1,221,766), converged within 0.4%. IE (2,594,806) stale/excluded; BF zero-weighted at Tail maturity. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.33%, consistent with the surrounding 2008/2010 band."
+  },
+  {
+    "period": 2010,
+    "selection": 1344571,
+    "reasoning": "Selected 1,344,571, 50/50 blend of Incurred CL (1,333,640) and Paid CL (1,355,501), converged within 1.6% (inside the \u00b12% full-convergence threshold). IE (1,134,301) excluded as stale a priori at this maturity; BF zero-weighted at Tail. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.36%, in line with neighboring years."
+  },
+  {
+    "period": 2011,
+    "selection": 2039440,
+    "reasoning": "Selected 2,039,440, 50/50 blend of Incurred CL (2,042,216) and Paid CL (2,036,663), converged within 0.3%. IE (1,542,649) excluded as stale; BF zero-weighted at Tail maturity. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.53%, moderately elevated versus 2010/2012 but within the book's observed AY-to-AY volatility band and not a systemic step."
+  },
+  {
+    "period": 2012,
+    "selection": 1408574,
+    "reasoning": "Selected 1,408,574, weighted 70% Incurred CL (1,454,110) / 30% Paid CL (1,302,322). The two CL indications diverge by 11.0% \u2014 wide dispersion per Sec 3.1, so a blind average was avoided. Diagnostics: the paid-to-incurred actual ratio at this maturity is 87.6% (1,194,237/1,363,753), low for 155 months of WC maturity, suggesting the paid pattern/tail may still be lagging (Sec 5.2: paid-to-incurred below benchmark at last observable maturity implies the paid CL tail factor may be understated) \u2014 this supports leaning on Incurred CL rather than an even split. IE (1,573,502) excluded as stale a priori. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.36%. Flagged for manual review / next study: this is the largest CL divergence in the tail years and should be revisited if a granular case-reserve or large-loss diagnostic becomes available."
+  },
+  {
+    "period": 2013,
+    "selection": 771657,
+    "reasoning": "Selected 771,657, 50/50 blend of Incurred CL (757,136) and Paid CL (786,177), which diverge by 3.8% \u2014 within the moderate-dispersion band, so an even blend is used. IE (1,203,729) excluded as stale a priori. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.19%, the lowest in the triangle; plausible given this AY's actual reported loss (708,530) is also the smallest in the tail cohort \u2014 a genuinely light AY rather than a data issue, corroborated by the correspondingly low reported count for 2013 (292, see Count file)."
+  },
+  {
+    "period": 2014,
+    "selection": 1553968,
+    "reasoning": "Selected 1,553,968, 50/50 blend of Incurred CL (1,536,905) and Paid CL (1,571,031), converged within 2.2% (borderline full-convergence). IE (1,227,804) excluded as stale/unreliable a priori this far out. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.38%, consistent with the 2008-2010 band."
+  },
+  {
+    "period": 2015,
+    "selection": 3803641,
+    "reasoning": "Selected 3,803,641, 50/50 blend of Incurred CL (3,772,246) and Paid CL (3,835,035), converged within 1.7%. IE (1,669,813) is far below both CL indications and clearly stale/unreliable; excluded. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.91%, elevated versus immediate neighbors but corroborated by a correspondingly higher reported count (334) and actual incurred loss (3,382,963) already well above the norm at 119 months \u2014 consistent with genuine larger-claim activity in this AY rather than a method artifact."
+  },
+  {
+    "period": 2016,
+    "selection": 2987395,
+    "reasoning": "Selected 2,987,395, 50/50 blend of Incurred CL (2,930,275) and Paid CL (3,044,514), which diverge by 3.8% (moderate, even blend used). At 107 months (Tail band under the WC-shifted schedule) BF/IE are no longer informative and are excluded (IE=2,554,814 shown for reference only). No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.70%, elevated but broadly consistent with the 2015/2018/2019 tier of years, which appear to carry more large-claim activity than the 2008-2013 tier."
+  },
+  {
+    "period": 2017,
+    "selection": 1464391,
+    "reasoning": "Selected 1,464,391, weighted 60% Incurred CL (1,430,361) / 40% Paid CL (1,515,435). The CL indications diverge by 5.8% (moderate dispersion, just above the even-blend threshold); slight tilt to Incurred reflects the WC long-tail principle that incurred leads and is generally more credible until paid fully catches up (Sec 5.2). At 95 months (Late band, shifted schedule) BF is de-weighted to zero per the maturity table (BF shown for reference: incurred 1,614,907, paid 1,738,233 \u2014 both above the CL blend, but BF prior is no longer considered informative at this maturity). No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.34%, the lowest of the 2015-2019 cluster, corroborated by a comparatively low reported count (309) for this AY."
+  },
+  {
+    "period": 2018,
+    "selection": 2959717,
+    "reasoning": "Selected 2,959,717, weighted 60% Incurred CL (2,860,004) / 40% Paid CL (3,109,287). CL indications diverge by 8.4% (moderate-to-wide dispersion); the tilt toward Incurred follows the same long-tail-lead logic as 2017 given no contrary diagnostic. At 83 months (Late band, shifted schedule) BF/IE are de-weighted to zero (BF shown for reference: incurred 2,755,239, paid 2,903,980, both bracketing the selection reasonably). No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.67%, in line with the elevated 2015/2016/2019 tier."
+  },
+  {
+    "period": 2019,
+    "selection": 3361512,
+    "reasoning": "Selected 3,361,512. At 71 months this AY sits in the Mid band (WC-shifted schedule: Incurred CL/Paid CL primary, BF variants secondary at 0-40% weight). CL blend (50/50 Incurred 3,374,140 / Paid 3,512,494, converged within 4.0%) = 3,443,317; BF blend (50/50 Incurred 3,118,325 / Paid 3,113,868) = 3,116,097. Final selection is a 75%/25% weighting of the CL blend over the BF blend, consistent with CL's primary role at Mid maturity while still tempering with the BF/a-priori view. IE values match BF's underlying a-priori closely, no red flags. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.74%, consistent with the elevated 2015/2016/2018 tier \u2014 a run of moderately higher-severity AYs in the mid-2010s cohort."
+  },
+  {
+    "period": 2020,
+    "selection": 1541650,
+    "reasoning": "Selected 1,541,650, weighted 30% Incurred CL (1,400,893) / 70% Paid CL (1,601,975). At 59 months (Mid band) the two CL indications diverge by 13.4% \u2014 wide dispersion, investigated rather than blended evenly. Diagnostic: Incurred actual (978,900) and Paid actual (976,051) are nearly identical at this maturity, implying almost no open case reserve at ~5 years \u2014 atypical for WC, where meaningful case reserves are normally still carried at this age. This pattern is consistent with case-adequacy erosion / under-reserving on open claims (Sec 2 signal: 'case adequacy falling \u2192 dampen Incurred CL, shift weight to Paid CL'), which would cause Incurred CL (built on understated case incurred) to understate the true ultimate \u2014 supporting the tilt toward Paid CL. BF corroborates the same direction (incurred BF 1,534,253 vs paid BF 1,696,386). No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.33%. Flagged for manual review: the near-zero implied case reserve at this maturity should be checked against claim-level case reserve data in the next study, as it is the key driver of the method divergence."
+  },
+  {
+    "period": 2021,
+    "selection": 1543900,
+    "reasoning": "Selected 1,543,900. At 47 months (Early band, WC-shifted schedule: Incurred BF/Incurred CL primary, Paid BF/Paid CL secondary). Incurred blend (avg of Incurred CL 1,500,395 and Incurred BF 1,471,046, converged within 2.0%) = 1,485,721; Paid blend (avg of Paid CL 1,756,718 and Paid BF 1,602,589) = 1,679,654 \u2014 notably higher than the incurred view. Weighted 70% incurred-blend / 30% paid-blend per the Early-band primary/secondary split. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.33%, consistent with the 2009/2010/2012 tier of lighter AYs."
+  },
+  {
+    "period": 2022,
+    "selection": 1269867,
+    "reasoning": "Selected 1,269,867. At 35 months (Green band, WC-shifted schedule: Incurred BF/Paid BF primary, Incurred CL secondary at 0-40%, Paid CL zero-weighted for long-tail at this maturity). BF blend (avg of Incurred BF 1,196,009 and Paid BF 1,280,236) = 1,238,123; weighted 70% BF-blend / 30% Incurred CL (1,343,936) = 1,269,867. Paid CL (1,614,562) excluded per the Green-band table (zero weight for long-tail lines at this maturity \u2014 paid is too immature and undeveloped to be credible). No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.26%, the second-lowest in the triangle; plausible given this AY's low reported count (297, see Count file) is also the second-lowest \u2014 corroborates a genuinely lighter claim volume year rather than a method artifact. BF's a-priori (Initial Expected) is itself an empirical 3-yr rolling average, not a pricing ELR \u2014 noted per Sec 5.1, modestly reducing confidence in the BF component."
+  },
+  {
+    "period": 2023,
+    "selection": 2018009,
+    "reasoning": "Selected 2,018,009, weighted 60% Incurred BF (2,133,068) / 40% Paid BF (1,845,420). At 23 months this AY sits at the Very-Green/Green boundary under the WC-shifted schedule, where the table nominally favors a priori/BF heavily. However, IE (978,226) is disqualified here \u2014 it is already below the actual incurred loss reported to date (1,651,757), which is a clear stale/unsupported-a-priori signal (Sec 1.1: 'A priori loss ratio stale or unsupported' disqualifies BF-family methods built on it). Rather than default to CL (extremely high-leverage and noisy this early, cdf 1.97-2.95, methods carry effectively zero weight per the maturity table at this age), BF is retained as the best available compromise: it incorporates actual emergence on top of the (weak) a priori and dampens CL's extreme leverage. Incurred is weighted above Paid consistent with the long-tail lead principle. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.41%. Flagged for manual review: the a-priori/Initial-Expected baseline appears stale for the recent AYs (see also 2024) and should be recalibrated with more recent experience in the next study; this reduces confidence in the selection somewhat, though it remains the most defensible available estimate."
+  },
+  {
+    "period": 2024,
+    "selection": 1282354,
+    "reasoning": "Selected 1,282,354. At 11 months (Very Green band even after the WC tail shift; only 30.9% developed on the incurred CDF basis) CL is pure noise (cdf 3.24 incurred / 7.52 paid) and is zero-weighted per Sec 1.2/5.1. Within the BF family, Incurred BF (1,579,941) is weighted above Paid BF (1,220,349) \u2014 70/30 \u2014 reflecting that incurred leads and paid lags severely this early for WC (only 13.3% paid-developed). That incurred-weighted BF blend (1,472,063) is then blended 60/40 with the a-priori Initial Expected (997,790, an empirical 3-yr rolling average per Sec 5.1, not a pricing ELR) to temper first-diagonal noise, giving 1,282,354. No prior ultimate selection available (first-time analysis) \u2014 anchoring (Sec 3.2) and asymmetric conservatism (Sec 3.3) not applicable; selection is method-based only. IELR proxy = 0.26%, in line with other lighter/early AYs; this is a first-diagonal estimate with the widest uncertainty band in the triangle and should be revisited materially as more experience emerges."
+  }
+]

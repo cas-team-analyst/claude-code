@@ -110,7 +110,7 @@ These files control the workflow and provide resources the agent can use to comp
 
 - [Progress Tracker](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/assets/PROGRESS.md) Detailed workflow with checkboxes to save progress.
 
-- [Python Scripts](https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data/sample-run/scripts) Pre-written scripts the agent will use to keep results consistent and avoid using tokens to write static scripts. 
+- [Python Scripts](https://github.com/cas-team-analyst/team-analyst/tree/main/sample-data/sample-run/reserving-analysis/scripts) Pre-written scripts the agent will use to keep results consistent and avoid using tokens to write static scripts. 
 
 - [Peer Review Skill](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/peer-review/SKILL.md) Instructions the agent receives when asked to perform peer review.
 
@@ -128,13 +128,13 @@ Instructions that framework (as opposed to open-ended) selector subagents use to
 
 Explore these files to understand what the final output looks like.
 
-- [Analysis](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/Analysis.xlsx) Complete traditional actuarial analysis. _Note: Values are hard-coded. Including formulas was out of scope for this research project._
+- [Analysis](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/reserving-analysis/Analysis.xlsx) Complete traditional actuarial analysis. _Note: Values are hard-coded. Including formulas was out of scope for this research project._
 
-- [Report](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/REPORT.md) Draft of a complete actuarial report following relevant ASOPs. This uses the related [template](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/assets/REPORT.md). _Note: Some of the sections are missing because they are not covered by this workflow yet._
+- [Report](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/reserving-analysis/REPORT.md) Draft of a complete actuarial report following relevant ASOPs. This uses the related [template](https://github.com/cas-team-analyst/team-analyst/blob/main/skills/reserving-analysis/assets/REPORT.md). _Note: Some of the sections are missing because they are not covered by this workflow yet._
 
-- [Peer Review Output](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/PEER_REVIEW_REPORT.md) Report created by the peer review agent skill.
+- [Peer Review Output](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/peer-review/PEER_REVIEW_REPORT.md) Report created by the peer review agent skill.
 
-- [Replication](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/REPLICATE.md) Instructions to replicate the study and results without the use of AI. Useful for auditing or moving the workflow to a non-AI platform.
+- [Replication](https://github.com/cas-team-analyst/team-analyst/blob/main/sample-data/sample-run/reserving-analysis/REPLICATE.md) Instructions to replicate the study and results without the use of AI. Useful for auditing or moving the workflow to a non-AI platform.
 
 
 # Additional Resources

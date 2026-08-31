@@ -108,7 +108,7 @@ This repo does not currently rely on Claude hooks for behavior.
 
 ## Testing and fixtures
 
-`demo/` contains sample and checkpoint data for validating workflow changes. Use it when changing:
+`sample-data/` contains sample and checkpoint data for validating workflow changes. Use it when changing:
 
 - skill sequencing
 - selector interpretation behavior
@@ -128,4 +128,4 @@ When changing a script or packaging rule, prefer a narrow validation step immedi
 - Keep `README.md`, `.claude-plugin/marketplace.json`, `.claude-plugin/plugin.json`, `GEMINI.md`, and `gemini-extension.json` consistent with one another.
 - Keep the bundle model intact: the plugin ships all skills and all selector/reference agents together.
 - If CI packaging output is wrong, fix `.github/workflows/build-plugin.yml` rather than manually editing the zip.
-- Use `demo/` to test workflow changes before declaring the packaging or skill update complete.
+- Use `sample-data/` to test workflow changes before declaring the packaging or skill update complete.
