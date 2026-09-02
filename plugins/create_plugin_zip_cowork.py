@@ -51,7 +51,7 @@ def collect_files():
                 if "agents" in relative_path.parts and child.suffix == ".md" and child.stem.endswith(".agent"):
                     continue
                 # Skip generated Python artifacts
-                if "__pycache__" in relative_path.parts or child.suffix == ".pyc":
+                if "__pycache__" in relative_path.parts or ".pytest_cache" in relative_path.parts or child.suffix == ".pyc":
                     continue
                 arcname = "skills/" + relative_path.as_posix()
                 files.append((child, arcname))
@@ -62,9 +62,13 @@ def collect_files():
     plugin_dir = PROJECT_ROOT / ".claude-plugin"
     if plugin_dir.exists():
         for child in sorted(plugin_dir.rglob("*")):
-            if child.is_file() and child.name not in (ZIP_FILENAME, "marketplace.json"):
-                arcname = child.relative_to(PROJECT_ROOT).as_posix()
-                files.append((child, arcname))
+            if not child.is_file() or child.name in (ZIP_FILENAME, "marketplace.json"):
+                continue
+            relative_path = child.relative_to(plugin_dir)
+            if "__pycache__" in relative_path.parts or ".pytest_cache" in relative_path.parts or child.suffix == ".pyc":
+                continue
+            arcname = child.relative_to(PROJECT_ROOT).as_posix()
+            files.append((child, arcname))
     else:
         print(f"WARNING: .claude-plugin/ not found, skipping")
 

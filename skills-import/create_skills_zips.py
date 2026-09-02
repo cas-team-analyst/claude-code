@@ -13,7 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = PROJECT_ROOT / "skills"
 OUTPUT_DIR = Path(__file__).resolve().parent
 
-EXCLUDE_DIR_NAMES = {"__pycache__"}
+EXCLUDE_DIR_NAMES = {"__pycache__", ".pytest_cache"}
 EXCLUDE_SUFFIXES = {".pyc"}
 
 
