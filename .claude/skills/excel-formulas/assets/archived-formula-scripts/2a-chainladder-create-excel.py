@@ -230,7 +230,17 @@ def build_main_sheet(ws, measure, df2, df4, fmt, df_prior=None):
     
     ata_end = ata_start + len(periods) - 1
     row_ptr = ata_end + 2
-    
+
+    # BUG FIX: track how many valid (non-blank) ata factors each interval column
+    # actually has. A triangle has fewer diagonals for later development intervals,
+    # so "last n rows of the block" is not the same as "last n valid factors" except
+    # for the first column. Blanks only trail at the bottom (newest periods haven't
+    # developed that far), so valid rows are contiguous from ata_start.
+    valid_counts = {
+        interval: sum(1 for period in periods if ldf_dict.get((str(period), interval)) is not None)
+        for interval in intervals
+    }
+
     # 3. Averages (formulas)
     df_avg = df4[df4['measure'] == measure].copy()
     raw_avg_cols = [col for col in df_avg.columns 
@@ -250,29 +260,38 @@ def build_main_sheet(ws, measure, df2, df4, fmt, df_prior=None):
     # Map periods to ranges
     all_ata_rng = (ata_start, ata_end)
     all_tri_rng = (tri_start, tri_end)
-    n_periods = len(periods)
-    
-    def get_ranges(n):
-        if n >= n_periods:
+
+    # BUG FIX: window off each column's own valid_count, not the shared n_periods/
+    # ata_end. Both blocks are indexed 1:1 by the same period list (see
+    # write_triangle_xlsxwriter), so the same row offset from ata_start/tri_start
+    # lands on the same period in both.
+    def get_ranges(n, valid_count):
+        if valid_count <= 0:
             return all_ata_rng, all_tri_rng
-        return (ata_end - n + 1, ata_end), (tri_end - n + 1, tri_end)
-    
+        col_ata_end = ata_start + valid_count - 1
+        col_tri_end = tri_start + valid_count - 1
+        if n >= valid_count:
+            return (ata_start, col_ata_end), (tri_start, col_tri_end)
+        return (col_ata_end - n + 1, col_ata_end), (col_tri_end - n + 1, col_tri_end)
+
     # Write average formulas
     for r_idx, display in enumerate(display_cols):
         row = avg_start + r_idx
         ws.write(row, 0, display, fmt['label'])
-        
+
         for c_idx in range(len(intervals)):
             col = col_letter(c_idx + 1)
-            
+            interval = intervals[c_idx]
+            valid_count = valid_counts[interval]
+
             if "all" in display:
                 ata_rng, tri_rng = all_ata_rng, all_tri_rng
             elif "3yr" in display:
-                ata_rng, tri_rng = get_ranges(3)
+                ata_rng, tri_rng = get_ranges(3, valid_count)
             elif "5yr" in display:
-                ata_rng, tri_rng = get_ranges(5)
+                ata_rng, tri_rng = get_ranges(5, valid_count)
             elif "10yr" in display:
-                ata_rng, tri_rng = get_ranges(10)
+                ata_rng, tri_rng = get_ranges(10, valid_count)
             else:
                 ata_rng, tri_rng = all_ata_rng, all_tri_rng
             
